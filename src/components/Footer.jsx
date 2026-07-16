@@ -1,10 +1,17 @@
+'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 /**
- * Footer — static server component, no interactivity needed.
- * Identical markup to all 5 original HTML pages.
+ * Footer
  */
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname && pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="footer" id="footer">
       <div className="container">
@@ -40,6 +47,7 @@ export default function Footer() {
             <Link href="/profil">Profil Desa</Link>
             <Link href="/layanan">Layanan Publik</Link>
             <Link href="/potensi">Potensi Desa</Link>
+            <Link href="/berita">Berita Desa</Link>
           </div>
 
           <div className="footer-col">

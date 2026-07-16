@@ -14,6 +14,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Sembunyikan navbar di halaman admin
+  if (pathname && pathname.startsWith('/admin')) {
+    return null;
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -57,6 +62,7 @@ export default function Navbar() {
     { href: '/profil', label: 'Profil' },
     { href: '/layanan', label: 'Layanan' },
     { href: '/potensi', label: 'Potensi' },
+    { href: '/berita', label: 'Berita' },
     { href: '/kontak', label: 'Kontak' },
   ];
 

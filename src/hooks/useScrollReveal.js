@@ -6,7 +6,7 @@ import { useEffect } from 'react';
  * Observes all elements with class "reveal" on the page and adds "revealed"
  * when they enter the viewport.
  */
-export function useScrollReveal() {
+export function useScrollReveal(dependencies = []) {
   useEffect(() => {
     const reveals = document.querySelectorAll('.reveal');
     if (!reveals.length) return;
@@ -29,5 +29,5 @@ export function useScrollReveal() {
     reveals.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, dependencies);
 }

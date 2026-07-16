@@ -1,13 +1,39 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useTiltEffect } from '@/hooks/useTiltEffect';
 import ParticlesCanvas from '@/components/ParticlesCanvas';
 import AnimatedCounter from '@/components/AnimatedCounter';
 
 export default function BerandaPage() {
-  useScrollReveal();
+  const [heroImage, setHeroImage] = useState('/images/hero-village.png');
+  const [latestNews, setLatestNews] = useState([]);
+
+  useScrollReveal([latestNews]);
   useTiltEffect();
+
+  useEffect(() => {
+    async function fetchData() {
+      // Fetch Hero Image
+      const { data: heroData } = await supabase
+        .from('pengaturan_halaman')
+        .select('value')
+        .eq('id', 'hero_image')
+        .single();
+      if (heroData) setHeroImage(heroData.value);
+
+      // Fetch Latest News
+      const { data: newsData } = await supabase
+        .from('berita')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3);
+      if (newsData) setLatestNews(newsData);
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -15,7 +41,7 @@ export default function BerandaPage() {
       <section className="hero" id="hero">
         <div className="hero-bg">
           <img
-            src="/images/hero-village.png"
+            src={heroImage}
             alt="Panorama Desa Negeri Pandan"
             loading="eager"
           />
@@ -241,6 +267,74 @@ export default function BerandaPage() {
           </div>
         </div>
       </section>
+
+      {/* ═══ BERITA TERBARU ═══ */}
+      <section className="section" id="berita" style={{ position: 'relative' }}>
+        <div
+          className="orb orb-green"
+          style={{ width: '400px', height: '400px', top: '-100px', right: '-150px', opacity: 0.5 }}
+        ></div>
+        
+        <div className="container text-center">
+          <div className="section-label" style={{ justifyContent: 'center' }}>
+            Kabar Terkini
+          </div>
+          <h2 className="section-title">
+            Berita <span className="accent">Terbaru</span>
+          </h2>
+        </div>
+        <div className="container" style={{ marginTop: '40px', position: 'relative', zIndex: 1 }}>
+          {latestNews.length === 0 ? (
+            <p className="text-muted" style={{ textAlign: 'center' }}>Belum ada berita terbaru.</p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
+              {latestNews.map((item) => (
+                <Link href={`/berita/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
+                  <div className="glass-card reveal" style={{ 
+                    padding: 0,
+                    borderRadius: '12px', 
+                    overflow: 'hidden', 
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    {item.image_url ? (
+                      <img 
+                        src={item.image_url} 
+                        alt={item.title} 
+                        style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
+                      />
+                    ) : (
+                      <div style={{ width: '100%', height: '200px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span className="text-muted">Tidak ada gambar</span>
+                      </div>
+                    )}
+                    <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <p className="text-muted" style={{ fontSize: '12px', marginBottom: '12px' }}>
+                        {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </p>
+                      <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '12px', lineHeight: '1.4' }}>
+                        {item.title}
+                      </h3>
+                      <p className="text-muted" style={{ fontSize: '14px', flex: 1, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.6' }}>
+                        {item.content}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <Link href="/berita" className="btn btn-outline">
+              Lihat Semua Berita
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="section-divider"></div>
 
       {/* ═══ CTA BANNER ═══ */}
       <section className="section">
