@@ -64,6 +64,7 @@ export default function AdminPotensi() {
       data={data}
       loading={loading}
       onDelete={handleDelete}
+      editBasePath="/admin/potensi/edit"
     />
   );
 }

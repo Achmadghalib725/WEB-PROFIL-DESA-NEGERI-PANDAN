@@ -10,6 +10,14 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 export default function BerandaPage() {
   const [heroImage, setHeroImage] = useState('/images/hero-village.png');
   const [latestNews, setLatestNews] = useState([]);
+  const [stats, setStats] = useState({
+    stat_penduduk: 5240,
+    stat_kk: 1250,
+    stat_lahan: 850,
+    stat_petani: 450,
+    stat_dusun: 4,
+    stat_sekolah: 3
+  });
 
   useScrollReveal([latestNews]);
   useTiltEffect();
@@ -31,6 +39,23 @@ export default function BerandaPage() {
         .order('created_at', { ascending: false })
         .limit(3);
       if (newsData) setLatestNews(newsData);
+
+      // Fetch Stats
+      const statIds = ['stat_penduduk', 'stat_kk', 'stat_lahan', 'stat_petani', 'stat_dusun', 'stat_sekolah'];
+      const { data: statsData } = await supabase
+        .from('pengaturan_halaman')
+        .select('id, value')
+        .in('id', statIds);
+        
+      if (statsData && statsData.length > 0) {
+        setStats(prev => {
+          const newStats = { ...prev };
+          statsData.forEach(item => {
+            newStats[item.id] = parseInt(item.value, 10) || prev[item.id];
+          });
+          return newStats;
+        });
+      }
     }
     fetchData();
   }, []);
@@ -76,19 +101,19 @@ export default function BerandaPage() {
             <div className="hero-stats">
               <div className="hero-stat">
                 <div className="stat-value">
-                  <AnimatedCounter target={5240} />
+                  <AnimatedCounter target={stats.stat_penduduk} />
                 </div>
                 <div className="stat-label">Penduduk</div>
               </div>
               <div className="hero-stat">
                 <div className="stat-value">
-                  <AnimatedCounter target={1250} />
+                  <AnimatedCounter target={stats.stat_kk} />
                 </div>
                 <div className="stat-label">Kepala Keluarga</div>
               </div>
               <div className="hero-stat">
                 <div className="stat-value">
-                  <AnimatedCounter target={850} />
+                  <AnimatedCounter target={stats.stat_lahan} />
                 </div>
                 <div className="stat-label">Hektar Lahan</div>
               </div>
@@ -150,7 +175,7 @@ export default function BerandaPage() {
                     <i className="ph-bold ph-plant"></i>
                   </span>
                   <div className="stat-number">
-                    <AnimatedCounter target={450} />
+                    <AnimatedCounter target={stats.stat_petani} />
                   </div>
                   <div className="stat-text">Petani Aktif</div>
                 </div>
@@ -159,7 +184,7 @@ export default function BerandaPage() {
                     <i className="ph-bold ph-house"></i>
                   </span>
                   <div className="stat-number">
-                    <AnimatedCounter target={4} />
+                    <AnimatedCounter target={stats.stat_dusun} />
                   </div>
                   <div className="stat-text">Dusun</div>
                 </div>
@@ -168,7 +193,7 @@ export default function BerandaPage() {
                     <i className="ph-bold ph-graduation-cap"></i>
                   </span>
                   <div className="stat-number">
-                    <AnimatedCounter target={3} />
+                    <AnimatedCounter target={stats.stat_sekolah} />
                   </div>
                   <div className="stat-text">Sekolah</div>
                 </div>

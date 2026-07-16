@@ -17,6 +17,13 @@ export default function AnimatedCounter({ target, suffix = '' }) {
     const el = ref.current;
     if (!el) return;
 
+    // Jika target berubah dan elemen sudah pernah dianimasikan, 
+    // langsung animasikan ulang tanpa menunggu observer
+    if (animated.current) {
+      animate();
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !animated.current) {

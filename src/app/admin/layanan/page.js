@@ -80,6 +80,7 @@ export default function AdminLayanan() {
       data={data}
       loading={loading}
       onDelete={handleDelete}
+      editBasePath="/admin/layanan/edit"
     />
   );
 }

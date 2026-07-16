@@ -23,7 +23,11 @@ export default function AdminForm({
   const [fileData, setFileData] = useState({});
 
   const handleInputChange = (e, field) => {
-    setFormData(prev => ({ ...prev, [field.name]: e.target.value }));
+    let value = e.target.value;
+    if (field.maxLength && value.length > field.maxLength) {
+      value = value.slice(0, field.maxLength);
+    }
+    setFormData(prev => ({ ...prev, [field.name]: value }));
   };
 
   const handleFileChange = (e, field) => {
@@ -126,6 +130,8 @@ export default function AdminForm({
                   value={formData[field.name]}
                   onChange={(e) => handleInputChange(e, field)}
                   required={field.required}
+                  maxLength={field.maxLength}
+                  max={field.maxLength ? Math.pow(10, field.maxLength) - 1 : undefined}
                   style={inputStyle}
                   placeholder={field.placeholder || ''}
                   onFocus={(e) => e.target.style.borderColor = 'var(--clr-primary)'}

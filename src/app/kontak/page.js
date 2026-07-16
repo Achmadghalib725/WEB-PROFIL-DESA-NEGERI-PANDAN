@@ -49,9 +49,9 @@ export default function KontakPage() {
                   <div>
                     <h4>Alamat Balai Desa</h4>
                     <p>
-                      Jl. Utama Desa No. 1, Kecamatan Kedamaian,
+                      JL. Kedaton,RT.05/RW.03, Negeri Pandan
                       <br />
-                      Kabupaten Makmur, Kode Pos 12345
+                      Kec. Kalianda, Kabupaten Lampung Selatan, Lampung 35551
                     </p>
                   </div>
                 </div>
@@ -62,9 +62,7 @@ export default function KontakPage() {
                   <div>
                     <h4>Telepon / WhatsApp</h4>
                     <p>
-                      Kantor: (0631) 123-4567
-                      <br />
-                      WA Center: 0812-3456-7890
+                      WA Center: 0831-4715-8593
                     </p>
                   </div>
                 </div>
@@ -85,7 +83,7 @@ export default function KontakPage() {
 
               <div className="map-container">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.57311654129782!3d-6.903444341687889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid"
+                  src="https://maps.google.com/maps?q=7JCJ%2BF3X,+Negeri+Pandan,+Kec.+Kalianda,+Kabupaten+Lampung+Selatan&t=&z=16&ie=UTF8&iwloc=&output=embed"
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"

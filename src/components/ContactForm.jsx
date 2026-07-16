@@ -12,8 +12,18 @@ export default function ContactForm() {
     e.preventDefault();
     if (submitted) return;
 
-    setSubmitted(true);
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const subject = e.target.subject.value;
+    const message = e.target.message.value;
 
+    const waNumber = '6283147158593';
+    const text = `Halo Admin Desa Negeri Pandan, saya ingin menyampaikan pesan:\n\n*Nama*: ${name}\n*Kontak*: ${email}\n*Keperluan*: ${subject}\n*Pesan*:\n${message}`;
+    const encodedText = encodeURIComponent(text);
+    
+    window.open(`https://wa.me/${waNumber}?text=${encodedText}`, '_blank');
+
+    setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
       e.target.reset();
@@ -24,11 +34,11 @@ export default function ContactForm() {
     <form className="contact-form" id="contact-form" onSubmit={handleSubmit}>
       <div className="form-group">
         <label htmlFor="name">Nama Lengkap</label>
-        <input type="text" id="name" placeholder="Masukkan nama Anda" required />
+        <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required />
       </div>
       <div className="form-group">
         <label htmlFor="email">Email / No. HP</label>
-        <input type="text" id="email" placeholder="Masukkan kontak Anda" required />
+        <input type="text" id="email" name="email" placeholder="Masukkan kontak Anda" required />
       </div>
       <div className="form-group">
         <label>Keperluan</label>
@@ -83,6 +93,7 @@ export default function ContactForm() {
         <label htmlFor="message">Pesan</label>
         <textarea
           id="message"
+          name="message"
           placeholder="Tuliskan pesan Anda di sini..."
           required
         ></textarea>

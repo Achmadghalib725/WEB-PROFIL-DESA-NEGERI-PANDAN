@@ -46,6 +46,7 @@ export default function AdminBerita() {
       data={berita}
       loading={loading}
       onDelete={handleDelete}
+      editBasePath="/admin/berita/edit"
     />
   );
 }

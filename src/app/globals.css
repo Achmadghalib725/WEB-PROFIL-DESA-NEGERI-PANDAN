@@ -303,6 +303,7 @@ h1, h2, h3, h4, h5 {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.1) 50%, transparent 90%);
+  pointer-events: none;
 }
 
 /* Animated corner glow */
@@ -316,6 +317,7 @@ h1, h2, h3, h4, h5 {
   background: radial-gradient(circle, var(--clr-glow-ultra) 0%, transparent 60%);
   opacity: 0;
   transition: var(--transition-slow);
+  pointer-events: none;
 }
 
 .glass-card:hover {
@@ -2237,4 +2239,14 @@ input[type="radio"]:checked + .radio-pill {
     --max-width: 992px;
     --nav-height: 64px;
   }
+}
+
+/* Sembunyikan spin button (tanda panah atas/bawah) pada input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }

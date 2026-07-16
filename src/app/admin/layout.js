@@ -44,7 +44,8 @@ export default function AdminLayout({ children }) {
     { href: '/admin', label: 'Dashboard Overview', active: pathname === '/admin', icon: 'ph-squares-four' },
     { href: '/admin/berita', label: 'Berita / Artikel', active: pathname.startsWith('/admin/berita'), icon: 'ph-newspaper' },
     { href: '/admin/potensi', label: 'Potensi Desa (UMKM)', active: pathname.startsWith('/admin/potensi'), icon: 'ph-storefront' },
-    { href: '/admin/layanan', label: 'Permintaan Layanan', active: pathname.startsWith('/admin/layanan'), icon: 'ph-files' }
+    { href: '/admin/layanan', label: 'Permintaan Layanan', active: pathname.startsWith('/admin/layanan'), icon: 'ph-files' },
+    { href: '/admin/statistik', label: 'Statistik Desa', active: pathname.startsWith('/admin/statistik'), icon: 'ph-chart-bar' }
   ];
 
   return (
