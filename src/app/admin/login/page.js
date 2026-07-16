@@ -1,9 +1,32 @@
-import { login } from './actions'
+'use client';
+import { useState } from 'react';
+import { createClient } from '@/utils/supabase/client';
 
-export default async function LoginPage({ searchParams }) {
-  const params = await searchParams;
-  const isError = params?.error === 'true'
-  const errorMessage = params?.error !== 'true' ? params?.error : null;
+export default function LoginPage() {
+  const supabase = createClient();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg('');
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setErrorMsg(error.message);
+      setLoading(false);
+    } else {
+      // Use hard redirect to guarantee middleware and cookies sync perfectly on Vercel
+      window.location.href = '/admin';
+    }
+  };
 
   return (
     <div style={{
@@ -21,82 +44,91 @@ export default async function LoginPage({ searchParams }) {
         maxWidth: '400px'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--clr-text)', marginBottom: '8px' }}>
             Login Admin
           </h1>
-          <p className="text-muted" style={{ fontSize: '14px' }}>
+          <p style={{ fontSize: '14px', color: 'var(--clr-text-muted)' }}>
             Website Desa Negeri Pandan
           </p>
         </div>
 
-        <form action={login} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
-            <label htmlFor="email" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-muted, #94a3b8)' }}>
+            <label htmlFor="email" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--clr-text-secondary)' }}>
               Email
             </label>
             <input 
               id="email" 
               name="email" 
               type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required 
               style={{
                 width: '100%',
                 padding: '12px',
                 borderRadius: '8px',
-                border: '1px solid rgba(255,255,255,0.1)',
-                backgroundColor: 'rgba(255,255,255,0.05)',
-                color: 'white',
+                border: '1px solid var(--clr-border)',
+                backgroundColor: 'var(--clr-surface)',
+                color: 'var(--clr-text)',
                 outline: 'none',
-                transition: 'border-color 0.2s',
+                transition: 'var(--transition)',
               }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--clr-primary)'}
+              onBlur={(e) => e.target.style.borderColor = 'var(--clr-border)'}
               placeholder="admin@desa.com"
             />
           </div>
           
           <div>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-muted, #94a3b8)' }}>
+            <label htmlFor="password" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--clr-text-secondary)' }}>
               Password
             </label>
             <input 
               id="password" 
               name="password" 
-              type="password" 
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required 
               style={{
                 width: '100%',
                 padding: '12px',
                 borderRadius: '8px',
-                border: '1px solid rgba(255,255,255,0.1)',
-                backgroundColor: 'rgba(255,255,255,0.05)',
-                color: 'white',
+                border: '1px solid var(--clr-border)',
+                backgroundColor: 'var(--clr-surface)',
+                color: 'var(--clr-text)',
                 outline: 'none',
-                transition: 'border-color 0.2s',
+                transition: 'var(--transition)',
               }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--clr-primary)'}
+              onBlur={(e) => e.target.style.borderColor = 'var(--clr-border)'}
               placeholder="••••••••"
             />
           </div>
 
-          {(isError || errorMessage) && (
-            <div style={{ color: '#ef4444', fontSize: '14px', textAlign: 'center', backgroundColor: '#fef2f2', padding: '10px', borderRadius: '8px' }}>
-              Error: {errorMessage || 'Email atau password salah.'}
+          {errorMsg && (
+            <div style={{ color: '#ef4444', fontSize: '14px', textAlign: 'center', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '10px', borderRadius: '8px' }}>
+              Error: {errorMsg === 'Invalid login credentials' ? 'Email atau password salah.' : errorMsg}
             </div>
           )}
 
           <button 
             type="submit"
+            disabled={loading}
+            className="btn btn-primary"
             style={{
               width: '100%',
               padding: '12px',
-              backgroundColor: '#10b981', // emerald-500
-              color: 'white',
               border: 'none',
               borderRadius: '8px',
               fontWeight: '600',
               cursor: 'pointer',
-              marginTop: '10px'
+              marginTop: '10px',
+              opacity: loading ? 0.7 : 1
             }}
           >
-            Masuk
+            {loading ? 'Memproses...' : 'Masuk'}
           </button>
         </form>
       </div>
