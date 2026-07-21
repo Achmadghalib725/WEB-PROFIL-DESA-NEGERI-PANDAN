@@ -6,42 +6,71 @@ export default function TambahLayanan() {
   const supabase = createClient();
 
   const fields = [
-    { name: 'name', label: 'Nama Pemohon', type: 'text', required: true, placeholder: 'Misal: Budi Santoso' },
-    { name: 'nik', label: 'NIK Pemohon', type: 'text', required: true, placeholder: 'Ketik NIK 16 digit' },
-    { name: 'service_type', label: 'Jenis Layanan', type: 'select', required: true, options: [
-      { label: 'Surat Pengantar KTP', value: 'Surat Pengantar KTP' },
-      { label: 'Surat Keterangan Usaha', value: 'Surat Keterangan Usaha' },
-      { label: 'Surat Pindah', value: 'Surat Pindah' },
-      { label: 'Lainnya', value: 'Lainnya' }
-    ]},
-    { name: 'status', label: 'Status', type: 'select', required: true, defaultValue: 'Menunggu', options: [
-      { label: 'Menunggu Diproses', value: 'Menunggu' },
-      { label: 'Sedang Diproses', value: 'Diproses' },
-      { label: 'Selesai', value: 'Selesai' }
-    ]},
-    { name: 'description', label: 'Keperluan / Keterangan', type: 'textarea', required: true, rows: 4, placeholder: 'Detail keperluan surat...' }
+    { name: 'title', label: 'Judul Layanan', type: 'text', required: true, placeholder: 'Misal: Pembuatan KTP' },
+    { 
+      name: 'icon', 
+      label: 'Jenis Ikon Layanan', 
+      type: 'select', 
+      required: true, 
+      options: [
+        { label: 'Dokumen / Surat Menyurat', value: 'ph-file-text' },
+        { label: 'Sertifikat / Perizinan Usaha', value: 'ph-certificate' },
+        { label: 'Kependudukan / Domisili', value: 'ph-house-line' },
+        { label: 'Bantuan Sosial / Kesra', value: 'ph-handshake' },
+        { label: 'Pendidikan / Sekolah', value: 'ph-graduation-cap' },
+        { label: 'Kesehatan / Medis', value: 'ph-first-aid' },
+        { label: 'Lainnya (Umum)', value: 'ph-folder-open' }
+      ]
+    },
+    { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, rows: 5, placeholder: '1. Fotokopi KK\n2. Surat Pengantar RT/RW' },
+    { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, rows: 5, placeholder: '1. Datang ke Balai Desa\n2. Ambil nomor antrean' }
   ];
 
   const handleSubmit = async (formData) => {
-    // Insert ke tabel layanan
-    const { error } = await supabase
-      .from('layanan')
-      .insert([
-        { 
-          name: formData.name, 
-          nik: formData.nik,
-          service_type: formData.service_type,
-          status: formData.status,
-          description: formData.description
-        }
-      ]);
+    // 1. Ambil data lama
+    const { data: existingData, error: fetchError } = await supabase
+      .from('pengaturan_halaman')
+      .select('value')
+      .eq('id', 'layanan_publik_data')
+      .single();
 
-    if (error) throw error;
+    let layananArray = [];
+    if (!fetchError && existingData?.value) {
+      try {
+        layananArray = typeof existingData.value === 'string' ? JSON.parse(existingData.value) : existingData.value;
+        if (!Array.isArray(layananArray)) layananArray = [];
+      } catch (e) {
+        layananArray = [];
+      }
+    }
+
+    // 2. Tambah data baru
+    const newItem = {
+      id: Date.now().toString(),
+      title: formData.title,
+      icon: formData.icon,
+      requirements: formData.requirements,
+      procedures: formData.procedures,
+      created_at: new Date().toISOString()
+    };
+    
+    layananArray.push(newItem);
+
+    // 3. Simpan kembali
+    const { error: saveError } = await supabase
+      .from('pengaturan_halaman')
+      .upsert({ 
+        id: 'layanan_publik_data', 
+        value: JSON.stringify(layananArray),
+        updated_at: new Date()
+      });
+
+    if (saveError) throw saveError;
   };
 
   return (
     <AdminForm 
-      title="Input Permintaan Layanan (Manual)"
+      title="Tambah Daftar Layanan Publik"
       fields={fields}
       onSubmit={handleSubmit}
       submitLabel="Simpan Layanan"

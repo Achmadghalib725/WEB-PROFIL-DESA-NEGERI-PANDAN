@@ -24,7 +24,6 @@ export default function AdminBerita() {
   }
 
   async function handleDelete(id) {
-    if (!confirm('Apakah Anda yakin ingin menghapus berita ini?')) return;
     await supabase.from('berita').delete().eq('id', id);
     fetchBerita();
   }

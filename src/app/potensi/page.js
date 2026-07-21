@@ -16,12 +16,13 @@ export default function PotensiPage() {
             <span className="separator">/</span>
             <span>Potensi Desa</span>
           </div>
-          <h1>
+          <div className="section-label">Kekayaan Desa</div>
+          <h1 className="section-title" style={{ marginTop: '0.5rem' }}>
             Potensi <span className="accent">Unggulan</span>
           </h1>
-          <p>
-            Mengenal lebih dalam kekayaan sumber daya alam, pertanian, dan
-            pariwisata yang menjadi pilar kebangkitan ekonomi Desa Negeri Pandan.
+          <p className="text-muted" style={{ fontSize: '18px', marginTop: '10px' }}>
+            Mengenal lebih dalam kekayaan sumber daya alam dan pertanian
+            yang menjadi pilar kebangkitan ekonomi Desa Negeri Pandan.
           </p>
         </div>
       </header>
@@ -35,89 +36,91 @@ export default function PotensiPage() {
           {/* Potensi 1: Pertanian */}
           <div className="potensi-detail">
             <div className="potensi-image reveal">
-              <img src="/images/agriculture.png" alt="Sektor Pertanian Desa" />
+              <img src="/images/potensi-pertanian.png" alt="Sektor Pertanian Desa" />
             </div>
             <div className="reveal reveal-delay-1">
               <div className="section-label">Sektor Utama</div>
               <h3>Pertanian &amp; Agrobisnis</h3>
               <p>
-                Dengan luas lahan pertanian lebih dari 850 hektar, sektor pertanian
-                menjadi tulang punggung perekonomian masyarakat Desa Negeri Pandan.
-                Kesuburan tanah vulkanik dan irigasi pegunungan yang terjaga
-                memungkinkan para petani memanen hasil bumi berkualitas tinggi.
+                Sektor pertanian menjadi salah satu pilar utama perekonomian bagi sebagian besar
+                masyarakat Desa Negeri Pandan. Dengan lahan pertanian dan perkebunan yang
+                membentang luas, kesuburan tanah yang terjaga memungkinkan para petani
+                untuk menghasilkan panen yang melimpah dan berkualitas.
               </p>
               <p>
-                Produk unggulan desa meliputi padi organik, sayur-mayur segar, dan
-                palawija. Saat ini, pemerintah desa sedang mengembangkan program
-                hilirisasi produk pertanian agar memiliki nilai jual yang lebih
-                tinggi di pasar.
+                Masyarakat desa secara aktif mengolah lahan mereka untuk menghasilkan
+                berbagai komoditi unggulan seperti padi, sayur-mayur, serta hasil kebun
+                lainnya. Gotong royong dan ketekunan warga terus mendorong sektor ini
+                untuk semakin maju demi kesejahteraan bersama.
               </p>
               <div className="tag-list" style={{ marginTop: '1.5rem' }}>
-                <span className="tag">Padi Organik</span>
+                <span className="tag">Padi</span>
                 <span className="tag">Sayur-mayur</span>
-                <span className="tag">Palawija</span>
-                <span className="tag">Pupuk Kompos</span>
+                <span className="tag">Hasil Kebun</span>
+                <span className="tag">Ketahanan Pangan</span>
               </div>
             </div>
           </div>
 
           <div className="section-divider" style={{ margin: '4rem 0' }}></div>
 
-          {/* Potensi 2: Pariwisata */}
+          {/* Potensi 2: Komunitas */}
           <div className="potensi-detail reverse">
-            <div className="potensi-image reveal">
-              <img src="/images/tourism.png" alt="Sektor Pariwisata Desa" />
+            <div className="reveal" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gridTemplateRows: '1fr 1fr', gap: '16px', height: '420px' }}>
+              <div style={{ gridRow: '1 / 3', height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+                <img src="/images/budaya-1.jpeg" alt="Gotong Royong 1" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              </div>
+              <div style={{ height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+                <img src="/images/budaya-2.jpeg" alt="Gotong Royong 2" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              </div>
+              <div style={{ height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+                <img src="/images/budaya-3.jpeg" alt="Gotong Royong 3" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              </div>
             </div>
             <div className="reveal reveal-delay-1">
-              <div className="section-label">Pariwisata Alam</div>
-              <h3>Ekowisata &amp; Pesona Alam</h3>
+              <div className="section-label">Budaya</div>
+              <h3>Komunitas &amp; Kearifan Lokal</h3>
               <p>
-                Dikelilingi oleh perbukitan yang hijau dan udara yang sejuk, Desa
-                Negeri Pandan menyimpan potensi ekowisata yang luar biasa. Destinasi
-                utama kami adalah Air Terjun Pandan Wangi dan area camping ground di
-                kaki bukit.
+                Semangat gotong royong dan kearifan lokal yang kuat menjadikan
+                masyarakat Desa Negeri Pandan sebagai komunitas yang solid.
+                Kebersamaan ini tercermin dalam berbagai kegiatan warga sehari-hari.
               </p>
               <p>
-                Konsep wisata yang diusung adalah ekowisata, di mana pengunjung tidak
-                hanya menikmati keindahan alam, tetapi juga berinteraksi dengan
-                kehidupan masyarakat desa, belajar bertani, dan menikmati kuliner
-                tradisional.
+                Masyarakat secara aktif menjaga tradisi, adat istiadat, dan nilai-nilai 
+                budaya warisan leluhur. Kegiatan musyawarah dan gotong royong dalam 
+                membangun fasilitas desa menjadi bukti nyata kuatnya ikatan persaudaraan 
+                di Negeri Pandan.
               </p>
               <div className="tag-list" style={{ marginTop: '1.5rem' }}>
-                <span className="tag">Air Terjun</span>
-                <span className="tag">Camping Ground</span>
-                <span className="tag">Tracking Hill</span>
-                <span className="tag">Kuliner Desa</span>
+                <span className="tag">Gotong Royong</span>
+                <span className="tag">Musyawarah</span>
+                <span className="tag">Tradisi Desa</span>
+                <span className="tag">Kearifan Lokal</span>
               </div>
             </div>
           </div>
 
           <div className="section-divider" style={{ margin: '4rem 0' }}></div>
 
-          {/* Potensi 3: UMKM */}
+          {/* Potensi 3: Usaha Lokal & Peternakan */}
           <div className="potensi-detail">
             <div className="potensi-image reveal">
-              <img src="/images/community.png" alt="UMKM dan Kerajinan Desa" />
+              <img src="/images/agriculture.png" alt="Usaha dan Peternakan Desa" />
             </div>
             <div className="reveal reveal-delay-1">
-              <div className="section-label">Ekonomi Kreatif</div>
-              <h3>UMKM &amp; Kerajinan Lokal</h3>
+              <div className="section-label">Penggerak Ekonomi</div>
+              <h3>Usaha Lokal &amp; Peternakan</h3>
               <p>
-                Selain bertani, masyarakat desa juga aktif dalam mengembangkan Usaha
-                Mikro, Kecil, dan Menengah (UMKM). Kearifan lokal dan kreativitas
-                warga menghasilkan berbagai produk kerajinan dan makanan olahan yang
-                khas.
+                Selain mengandalkan hasil bumi, roda perekonomian Desa Negeri Pandan juga digerakkan oleh berbagai usaha lokal dan peternakan yang masih aktif beroperasi.
               </p>
               <p>
-                Kerajinan anyaman pandan, batik tulis dengan pewarna alami, serta
-                aneka keripik dan jajanan tradisional menjadi suvenir favorit bagi
-                para wisatawan yang berkunjung ke desa kami.
+                Di desa ini terdapat sentra pembuatan tahu, serta sekitar 3 hingga 4 pabrik penggilingan jagung yang senantiasa mendukung aktivitas warga. Selain itu, hadirnya peternakan ayam petelur turut menjadi komoditas penting dalam memenuhi kebutuhan pangan masyarakat sekitar.
               </p>
               <div className="tag-list" style={{ marginTop: '1.5rem' }}>
-                <span className="tag">Anyaman Pandan</span>
-                <span className="tag">Batik Tulis</span>
-                <span className="tag">Keripik Sayur</span>
-                <span className="tag">Oleh-oleh Khas</span>
+                <span className="tag">Pabrik Tahu</span>
+                <span className="tag">Giling Jagung</span>
+                <span className="tag">Ayam Petelur</span>
+                <span className="tag">UMKM Desa</span>
               </div>
             </div>
           </div>

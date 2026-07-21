@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 /**
@@ -17,8 +18,13 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="brand-text">
-              Negeri <span>Pandan</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/logo-lamsel.png" alt="Logo Kabupaten Lampung Selatan" width="34" height="34" style={{ objectFit: 'contain' }} />
+              </div>
+              <div className="brand-text" style={{ margin: 0 }}>
+                Negeri <span>Pandan</span>
+              </div>
             </div>
             <p>
               Website resmi Desa Negeri Pandan. Menyediakan informasi terkini
@@ -26,14 +32,8 @@ export default function Footer() {
               desa.
             </p>
             <div className="footer-socials">
-              <a href="#" aria-label="Facebook">
+              <a href="https://www.facebook.com/share/18QMSBzBNP/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
                 <i className="ph-bold ph-facebook-logo"></i>
-              </a>
-              <a href="#" aria-label="Instagram">
-                <i className="ph-bold ph-instagram-logo"></i>
-              </a>
-              <a href="#" aria-label="YouTube">
-                <i className="ph-bold ph-youtube-logo"></i>
               </a>
               <a href="#" aria-label="WhatsApp">
                 <i className="ph-bold ph-whatsapp-logo"></i>
@@ -54,7 +54,6 @@ export default function Footer() {
             <h4>Informasi</h4>
             <Link href="/kontak">Hubungi Kami</Link>
             <a href="#">Peta Desa</a>
-            <a href="#">Galeri</a>
           </div>
 
           <div className="footer-col">
@@ -67,16 +66,15 @@ export default function Footer() {
               <i className="ph-bold ph-phone" style={{ marginRight: '6px' }}></i>{' '}
               (0631) 123-4567
             </a>
-            <a href="#">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=desanegeripandan12@gmail.com" target="_blank" rel="noopener noreferrer">
               <i className="ph-bold ph-envelope" style={{ marginRight: '6px' }}></i>{' '}
-              info@negeripandan.desa.id
+              desanegeripandan12@gmail.com
             </a>
           </div>
         </div>
 
-        <div className="footer-bottom">
+        <div className="footer-bottom" style={{ justifyContent: 'center' }}>
           <p>&copy; 2026 Desa Negeri Pandan. Seluruh hak dilindungi.</p>
-          <p>Dibangun dengan ❤️ untuk masyarakat desa</p>
         </div>
       </div>
     </footer>

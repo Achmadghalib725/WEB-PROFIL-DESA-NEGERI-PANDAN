@@ -16,51 +16,66 @@ export default function AdminLayanan() {
   async function fetchData() {
     setLoading(true);
     const { data: result, error } = await supabase
-      .from('layanan')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .from('pengaturan_halaman')
+      .select('value')
+      .eq('id', 'layanan_publik_data')
+      .single();
     
-    if (error) {
-      if (error.code === '42P01') {
-        setErrorMsg('Tabel "layanan" belum ada di database Supabase Anda. Silakan buat tabel dengan kolom: id, name, nik, service_type, description, status, created_at.');
-      } else {
-        setErrorMsg(error.message);
+    if (error && error.code !== 'PGRST116') {
+      setErrorMsg(error.message);
+    } else if (result && result.value) {
+      try {
+        let parsed = typeof result.value === 'string' ? JSON.parse(result.value) : result.value;
+        setData(Array.isArray(parsed) ? parsed : []);
+      } catch (e) {
+        setData([]);
       }
-    } else if (result) {
-      setData(result);
+    } else {
+      setData([]);
     }
     setLoading(false);
   }
 
   async function handleDelete(id) {
-    if (!confirm('Apakah Anda yakin ingin menghapus data layanan ini?')) return;
-    await supabase.from('layanan').delete().eq('id', id);
-    fetchData();
+    const newData = data.filter(item => item.id !== id);
+    
+    const { error } = await supabase
+      .from('pengaturan_halaman')
+      .upsert({ 
+        id: 'layanan_publik_data', 
+        value: JSON.stringify(newData),
+        updated_at: new Date()
+      });
+      
+    if (!error) {
+      setData(newData);
+    } else {
+      alert('Gagal menghapus data: ' + error.message);
+    }
   }
 
   const columns = [
-    { key: 'name', label: 'Nama Pemohon' },
-    { key: 'service_type', label: 'Jenis Layanan' },
     { 
-      key: 'status', 
-      label: 'Status',
-      render: (item) => (
-        <span style={{ 
-          padding: '4px 8px', 
-          borderRadius: '4px', 
-          fontSize: '12px',
-          fontWeight: 'bold',
-          backgroundColor: item.status === 'Selesai' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
-          color: item.status === 'Selesai' ? '#34d399' : '#fbbf24'
-        }}>
-          {item.status || 'Menunggu'}
-        </span>
-      )
+      key: 'icon', 
+      label: 'Ikon',
+      render: (item) => <i className={`ph-bold ${item.icon}`} style={{ fontSize: '24px', color: 'var(--clr-text-muted)' }}></i>
+    },
+    { key: 'title', label: 'Nama Layanan' },
+    { 
+      key: 'requirements', 
+      label: 'Syarat',
+      render: (item) => {
+        const count = item.requirements ? item.requirements.split('\n').filter(Boolean).length : 0;
+        return `${count} Syarat`;
+      }
     },
     { 
-      key: 'created_at', 
-      label: 'Tanggal',
-      render: (item) => new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+      key: 'procedures', 
+      label: 'Tata Cara',
+      render: (item) => {
+        const count = item.procedures ? item.procedures.split('\n').filter(Boolean).length : 0;
+        return `${count} Langkah`;
+      }
     }
   ];
 
@@ -74,8 +89,8 @@ export default function AdminLayanan() {
 
   return (
     <DataTable 
-      title="Permintaan Layanan Publik"
-      addAction={{ label: '+ Tambah Permintaan (Manual)', href: '/admin/layanan/tambah' }}
+      title="Manajemen Layanan Publik (Syarat & Tata Cara)"
+      addAction={{ label: '+ Tambah Layanan', href: '/admin/layanan/tambah' }}
       columns={columns}
       data={data}
       loading={loading}

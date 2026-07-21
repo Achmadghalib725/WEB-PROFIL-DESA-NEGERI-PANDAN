@@ -7,11 +7,14 @@ export default function AdminForm({
   fields, 
   onSubmit, 
   submitLabel = 'Simpan',
-  cancelHref
+  cancelHref,
+  stayOnSuccess = false
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [openDropdown, setOpenDropdown] = useState(null);
   
   // Initialize state based on fields
   const initialState = {};
@@ -31,19 +34,44 @@ export default function AdminForm({
   };
 
   const handleFileChange = (e, field) => {
-    setFileData(prev => ({ ...prev, [field.name]: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (file) {
+      // Batasi ukuran file (default 500KB)
+      const maxSize = field.maxSize || 500 * 1024; 
+      if (file.size > maxSize) {
+        setErrorMsg(`Ukuran file terlalu besar! Maksimal ${maxSize / 1024}KB.`);
+        e.target.value = ''; // Reset input file
+        return;
+      }
+      setErrorMsg('');
+      setFileData(prev => ({ ...prev, [field.name]: file }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
+    setSuccessMsg('');
     try {
-      await onSubmit(formData, fileData);
-      if (cancelHref) {
-        router.push(cancelHref);
+      const msg = await onSubmit(formData, fileData);
+      setSuccessMsg(msg || 'Data berhasil disimpan!');
+      setLoading(false);
+      
+      // Delay redirect agar notifikasi sukses terlihat (jika tidak stayOnSuccess)
+      if (!stayOnSuccess) {
+        setTimeout(() => {
+          if (cancelHref) {
+            router.push(cancelHref);
+          } else {
+            router.back();
+          }
+        }, 1500);
       } else {
-        router.back();
+        // Jika stayOnSuccess, sembunyikan pesan sukses setelah beberapa detik
+        setTimeout(() => {
+          setSuccessMsg('');
+        }, 3000);
       }
     } catch (err) {
       setErrorMsg(err.message);
@@ -111,19 +139,100 @@ export default function AdminForm({
                   style={inputStyle}
                 />
               ) : field.type === 'select' ? (
-                <select 
-                  value={formData[field.name]}
-                  onChange={(e) => handleInputChange(e, field)}
-                  required={field.required}
-                  style={inputStyle}
-                  onFocus={(e) => e.target.style.borderColor = 'var(--clr-primary)'}
-                  onBlur={(e) => e.target.style.borderColor = 'var(--clr-border)'}
-                >
-                  <option value="" disabled>Pilih {field.label}</option>
-                  {field.options && field.options.map(opt => (
-                    <option key={opt.value} value={opt.value} style={{ color: '#0f172a' }}>{opt.label}</option>
-                  ))}
-                </select>
+                <div style={{ position: 'relative' }}>
+                  <div 
+                    onClick={() => setOpenDropdown(openDropdown === field.name ? null : field.name)}
+                    style={{
+                      ...inputStyle,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      borderColor: openDropdown === field.name ? 'var(--clr-primary)' : 'var(--clr-border)',
+                      color: formData[field.name] ? 'var(--text-light, #f8fafc)' : 'var(--clr-text-muted)'
+                    }}
+                  >
+                    <span>
+                      {formData[field.name] 
+                        ? field.options?.find(o => o.value === formData[field.name])?.label 
+                        : `Pilih ${field.label}`}
+                    </span>
+                    <i className="ph-bold ph-caret-down" style={{ 
+                      transition: 'transform 0.3s',
+                      transform: openDropdown === field.name ? 'rotate(180deg)' : 'none'
+                    }}></i>
+                  </div>
+
+                  {openDropdown === field.name && (
+                    <>
+                      {/* Layar transparan penangkap klik di luar dropdown */}
+                      <div 
+                        style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 40 }}
+                        onClick={() => setOpenDropdown(null)}
+                      />
+                      
+                      {/* Menu Dropdown */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        right: 0,
+                        marginTop: '8px',
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        backdropFilter: 'blur(16px)',
+                        WebkitBackdropFilter: 'blur(16px)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '12px',
+                        padding: '8px',
+                        zIndex: 50,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+                      }}>
+                        {field.options?.map((opt, idx) => {
+                          const isSelected = formData[field.name] === opt.value;
+                          return (
+                            <div
+                              key={idx}
+                              onClick={() => {
+                                handleInputChange({ target: { name: field.name, value: opt.value } }, field);
+                                setOpenDropdown(null);
+                              }}
+                              style={{
+                                padding: '12px 16px',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                fontSize: '15px',
+                                color: isSelected ? 'var(--clr-primary-light)' : 'var(--clr-text-dim)',
+                                background: isSelected ? 'rgba(56, 189, 248, 0.1)' : 'transparent',
+                                transition: 'all 0.2s ease',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!isSelected) {
+                                  e.target.style.background = 'rgba(255,255,255,0.05)';
+                                  e.target.style.color = '#fff';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isSelected) {
+                                  e.target.style.background = 'transparent';
+                                  e.target.style.color = 'var(--clr-text-dim)';
+                                }
+                              }}
+                            >
+                              {opt.label}
+                              {isSelected && <i className="ph-bold ph-check"></i>}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
               ) : (
                 <input 
                   type={field.type || 'text'} 
@@ -144,6 +253,13 @@ export default function AdminForm({
           {errorMsg && (
             <div style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--fs-small)' }}>
               {errorMsg}
+            </div>
+          )}
+
+          {successMsg && (
+            <div style={{ color: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--fs-small)' }}>
+              <i className="ph-bold ph-check-circle" style={{ marginRight: '8px' }}></i>
+              {successMsg}
             </div>
           )}
 

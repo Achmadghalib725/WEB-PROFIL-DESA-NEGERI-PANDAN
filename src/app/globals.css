@@ -869,14 +869,14 @@ h1, h2, h3, h4, h5 {
 
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
   margin-top: var(--space-lg);
 }
 
 .stat-card {
   text-align: center;
-  padding: var(--space-md) var(--space-sm);
+  padding: 16px;
   background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-md);
@@ -934,7 +934,7 @@ h1, h2, h3, h4, h5 {
 /* ── Feature / Potensi Cards ── */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-lg);
 }
 
@@ -1161,6 +1161,7 @@ h1, h2, h3, h4, h5 {
   letter-spacing: -0.2px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1171,6 +1172,7 @@ h1, h2, h3, h4, h5 {
   line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1346,7 +1348,7 @@ h1, h2, h3, h4, h5 {
 
 .footer-col a:hover {
   color: var(--clr-primary-light);
-  padding-left: 10px;
+  transform: translateX(10px);
 }
 
 .footer-bottom {
@@ -1830,7 +1832,6 @@ input[type="radio"]:checked + .radio-pill {
   width: 100%;
   height: 100%;
   border: none;
-  filter: grayscale(0.4) brightness(0.6) contrast(1.3) hue-rotate(80deg);
 }
 
 /* ── Berita Page Filters ── */
@@ -2245,8 +2246,10 @@ input[type="radio"]:checked + .radio-pill {
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }

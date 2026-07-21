@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function DataTable({ 
   title, 
@@ -9,6 +10,8 @@ export default function DataTable({
   onDelete,
   editBasePath
 }) {
+  const [itemToDelete, setItemToDelete] = useState(null);
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
@@ -85,7 +88,7 @@ export default function DataTable({
                         </Link>
                       )}
                       <button 
-                        onClick={() => onDelete(item.id)}
+                        onClick={() => setItemToDelete(item.id)}
                         style={{
                           padding: '6px 16px',
                           backgroundColor: 'rgba(239, 68, 68, 0.1)', // red-500 with opacity
@@ -111,6 +114,62 @@ export default function DataTable({
         </table>
         </div>
       </div>
+
+      {/* Modal Konfirmasi Hapus */}
+      {itemToDelete && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          backdropFilter: 'blur(4px)',
+          zIndex: 9999,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <div className="glass-card" style={{
+            padding: '30px',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center',
+            borderRadius: '16px',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          }}>
+            <div style={{ 
+              width: '60px', height: '60px', borderRadius: '50%', 
+              backgroundColor: 'rgba(239, 68, 68, 0.1)', 
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              margin: '0 auto 20px', color: '#ef4444', fontSize: '32px'
+            }}>
+              <i className="ph-bold ph-trash"></i>
+            </div>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '20px', color: 'var(--text-light, #f8fafc)' }}>Konfirmasi Hapus</h3>
+            <p style={{ color: 'var(--clr-text-muted)', marginBottom: '24px', fontSize: '15px' }}>
+              Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              <button 
+                onClick={() => setItemToDelete(null)}
+                className="btn"
+                style={{ flex: 1, backgroundColor: 'transparent', border: '1px solid var(--clr-border)', color: 'var(--clr-text)' }}
+              >
+                Batal
+              </button>
+              <button 
+                onClick={() => {
+                  onDelete(itemToDelete);
+                  setItemToDelete(null);
+                }}
+                className="btn"
+                style={{ flex: 1, backgroundColor: '#ef4444', color: '#fff', border: 'none' }}
+              >
+                Ya, Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

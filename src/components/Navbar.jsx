@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 /**
@@ -70,8 +71,8 @@ export default function Navbar() {
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`} id="navbar">
       <div className="container">
         <Link href="/" className="nav-brand">
-          <div className="brand-icon">
-            <i className="ph-bold ph-leaf"></i>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src="/images/logo-lamsel.png" alt="Logo Kabupaten Lampung Selatan" width="34" height="34" style={{ objectFit: 'contain' }} />
           </div>
           <div className="brand-text">
             Negeri <span>Pandan</span>

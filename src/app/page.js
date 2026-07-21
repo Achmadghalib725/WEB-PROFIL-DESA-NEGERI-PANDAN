@@ -46,7 +46,7 @@ export default function BerandaPage() {
         .from('pengaturan_halaman')
         .select('id, value')
         .in('id', statIds);
-        
+
       if (statsData && statsData.length > 0) {
         setStats(prev => {
           const newStats = { ...prev };
@@ -140,7 +140,7 @@ export default function BerandaPage() {
           <div className="about-grid">
             <div className="about-image reveal">
               <img
-                src="/images/community.png"
+                src="/images/tentang-kami.png"
                 alt="Kehidupan masyarakat Desa Negeri Pandan"
               />
               <div className="floating-badge">
@@ -148,7 +148,7 @@ export default function BerandaPage() {
                   <i className="ph-bold ph-house-line"></i>
                 </span>
                 <div className="badge-text">
-                  Sejak 1800-an
+                  Sejak 1957
                   <span>Desa Bersejarah</span>
                 </div>
               </div>
@@ -170,15 +170,6 @@ export default function BerandaPage() {
                 terus berkembang menuju desa yang mandiri dan sejahtera.
               </p>
               <div className="stats-row">
-                <div className="stat-card">
-                  <span className="stat-icon">
-                    <i className="ph-bold ph-plant"></i>
-                  </span>
-                  <div className="stat-number">
-                    <AnimatedCounter target={stats.stat_petani} />
-                  </div>
-                  <div className="stat-text">Petani Aktif</div>
-                </div>
                 <div className="stat-card">
                   <span className="stat-icon">
                     <i className="ph-bold ph-house"></i>
@@ -230,7 +221,7 @@ export default function BerandaPage() {
             {/* Pertanian */}
             <div className="feature-card glass-card reveal">
               <div className="card-image">
-                <img src="/images/agriculture.png" alt="Pertanian Desa Negeri Pandan" />
+                <img src="/images/potensi-pertanian.png" alt="Pertanian Desa Negeri Pandan" />
                 <span className="card-badge">Unggulan</span>
               </div>
               <div className="card-body">
@@ -239,8 +230,8 @@ export default function BerandaPage() {
                 </div>
                 <h3 className="card-title">Pertanian</h3>
                 <p className="card-desc">
-                  Lahan pertanian yang subur menghasilkan padi, sayuran, dan hasil
-                  bumi berkualitas tinggi yang menjadi tulang punggung ekonomi desa.
+                  Pertanian di Desa Negeri Pandan didominasi oleh petani padi dan jagung,
+                  memanfaatkan lahan subur yang menjadi tulang punggung ekonomi desa.
                 </p>
                 <Link href="/potensi" className="card-link">
                   Selengkapnya →
@@ -248,31 +239,12 @@ export default function BerandaPage() {
               </div>
             </div>
 
-            {/* Pariwisata */}
-            <div className="feature-card glass-card reveal reveal-delay-1">
-              <div className="card-image">
-                <img src="/images/tourism.png" alt="Pariwisata Desa Negeri Pandan" />
-                <span className="card-badge">Wisata</span>
-              </div>
-              <div className="card-body">
-                <div className="card-icon">
-                  <i className="ph-bold ph-mountains"></i>
-                </div>
-                <h3 className="card-title">Pariwisata</h3>
-                <p className="card-desc">
-                  Keindahan alam berupa air terjun, perbukitan, dan panorama sawah
-                  yang memikat menjadi daya tarik wisata alam yang memesona.
-                </p>
-                <Link href="/potensi" className="card-link">
-                  Selengkapnya →
-                </Link>
-              </div>
-            </div>
+
 
             {/* Komunitas */}
             <div className="feature-card glass-card reveal reveal-delay-2">
               <div className="card-image">
-                <img src="/images/community.png" alt="Komunitas Desa Negeri Pandan" />
+                <img src="/images/budaya-1.jpeg" alt="Komunitas Desa Negeri Pandan" />
                 <span className="card-badge">Budaya</span>
               </div>
               <div className="card-body">
@@ -299,7 +271,7 @@ export default function BerandaPage() {
           className="orb orb-green"
           style={{ width: '400px', height: '400px', top: '-100px', right: '-150px', opacity: 0.5 }}
         ></div>
-        
+
         <div className="container text-center">
           <div className="section-label" style={{ justifyContent: 'center' }}>
             Kabar Terkini
@@ -315,19 +287,19 @@ export default function BerandaPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
               {latestNews.map((item) => (
                 <Link href={`/berita/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
-                  <div className="glass-card reveal" style={{ 
+                  <div className="glass-card reveal" style={{
                     padding: 0,
-                    borderRadius: '12px', 
-                    overflow: 'hidden', 
+                    borderRadius: '12px',
+                    overflow: 'hidden',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column'
                   }}>
                     {item.image_url ? (
-                      <img 
-                        src={item.image_url} 
-                        alt={item.title} 
-                        style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        style={{ width: '100%', height: '200px', objectFit: 'cover' }}
                       />
                     ) : (
                       <div style={{ width: '100%', height: '200px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

@@ -13,7 +13,6 @@ export default function AdminStatistik() {
     'stat_penduduk', 
     'stat_kk', 
     'stat_lahan', 
-    'stat_petani', 
     'stat_dusun', 
     'stat_sekolah'
   ];
@@ -23,7 +22,6 @@ export default function AdminStatistik() {
     'stat_penduduk': '5240',
     'stat_kk': '1250',
     'stat_lahan': '850',
-    'stat_petani': '450',
     'stat_dusun': '4',
     'stat_sekolah': '3'
   };
@@ -69,7 +67,6 @@ export default function AdminStatistik() {
     { name: 'stat_penduduk', label: 'Jumlah Penduduk', type: 'number', required: true, defaultValue: data['stat_penduduk'], maxLength: 6 },
     { name: 'stat_kk', label: 'Jumlah Kepala Keluarga (KK)', type: 'number', required: true, defaultValue: data['stat_kk'], maxLength: 6 },
     { name: 'stat_lahan', label: 'Total Hektar Lahan', type: 'number', required: true, defaultValue: data['stat_lahan'], maxLength: 6 },
-    { name: 'stat_petani', label: 'Jumlah Petani Aktif', type: 'number', required: true, defaultValue: data['stat_petani'], maxLength: 6 },
     { name: 'stat_dusun', label: 'Jumlah Dusun', type: 'number', required: true, defaultValue: data['stat_dusun'], maxLength: 6 },
     { name: 'stat_sekolah', label: 'Jumlah Sekolah', type: 'number', required: true, defaultValue: data['stat_sekolah'], maxLength: 6 }
   ];
@@ -87,7 +84,7 @@ export default function AdminStatistik() {
 
     if (upsertError) throw upsertError;
     
-    alert('Data statistik berhasil diperbarui!');
+    return 'Data statistik berhasil diperbarui!';
   };
 
   return (
@@ -97,6 +94,7 @@ export default function AdminStatistik() {
       onSubmit={handleSubmit}
       submitLabel="Simpan Perubahan"
       cancelHref="/admin"
+      stayOnSuccess={true}
     />
   );
 }

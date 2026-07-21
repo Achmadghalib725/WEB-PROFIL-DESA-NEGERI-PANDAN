@@ -15,10 +15,11 @@ export default function KontakPage() {
             <span className="separator">/</span>
             <span>Kontak</span>
           </div>
-          <h1>
+          <div className="section-label">Pusat Bantuan</div>
+          <h1 className="section-title" style={{ marginTop: '0.5rem' }}>
             Hubungi <span className="accent">Kami</span>
           </h1>
-          <p>
+          <p className="text-muted" style={{ fontSize: '18px', marginTop: '10px' }}>
             Punya pertanyaan, saran, atau keperluan administrasi? Silakan hubungi
             kami melalui formulir di bawah ini atau kunjungi Balai Desa.
           </p>
@@ -73,9 +74,7 @@ export default function KontakPage() {
                   <div>
                     <h4>Email Resmi</h4>
                     <p>
-                      info@negeripandan.desa.id
-                      <br />
-                      pelayanan@negeripandan.desa.id
+                      desanegeripandan12@gmail.com
                     </p>
                   </div>
                 </div>

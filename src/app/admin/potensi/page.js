@@ -33,7 +33,6 @@ export default function AdminPotensi() {
   }
 
   async function handleDelete(id) {
-    if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
     await supabase.from('potensi').delete().eq('id', id);
     fetchData();
   }
