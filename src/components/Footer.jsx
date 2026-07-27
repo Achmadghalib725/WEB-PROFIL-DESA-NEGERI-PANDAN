@@ -20,7 +20,7 @@ export default function Footer() {
           <div className="footer-brand">
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/images/logo-lamsel.png" alt="Logo Kabupaten Lampung Selatan" width="34" height="34" style={{ objectFit: 'contain' }} />
+                <img src="/images/logo-lamsel.png" alt="Logo Kabupaten Lampung Selatan" width="34" height="34" style={{ objectFit: 'contain', width: '34px', height: '34px' }} />
               </div>
               <div className="brand-text" style={{ margin: 0 }}>
                 Negeri <span>Pandan</span>

@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import Cropper from 'react-easy-crop';
+import getCroppedImg from '@/utils/cropImage';
 
 const ROLES = [
   { id: 'kepala_desa', label: 'Kepala Desa' },
@@ -21,9 +23,18 @@ export default function AdminOrganisasi() {
   const supabase = createClient();
   const [data, setData] = useState({});
   const [dusuns, setDusuns] = useState([]);
+  const [sejarahKades, setSejarahKades] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+
+  // Cropper states
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [targetId, setTargetId] = useState({ type: null, id: null });
 
   useEffect(() => {
     fetchData();
@@ -54,11 +65,29 @@ export default function AdminOrganisasi() {
             { id: 'kadus_6', jabatan: 'KADUS VI\nLUBUK JUKUNG', name: 'KHOLIJAN MAULANA', image_url: '', rts: ['11. YUSMUNAZI', '12. ROJANI'] }
           ]);
         }
+        
+        if (parsed?.sejarah_kades && Array.isArray(parsed.sejarah_kades)) {
+          setSejarahKades(parsed.sejarah_kades);
+        } else {
+          // Default sejarah fallback
+          setSejarahKades([
+            { tahun: "1957", nama: "KHADIN SINGA LANA" },
+            { tahun: "1957 s/d 1976", nama: "RAJA MANGUNANG / RUSLI" },
+            { tahun: "Pjs", nama: "A. RAHMAN / JURAGAN" },
+            { tahun: "1977 s/d 1987", nama: "M. YUNUS KR" },
+            { tahun: "1987 s/d 1997", nama: "M. UBAT" },
+            { tahun: "1997 s/d 2007", nama: "SUPLIMANSYAH" },
+            { tahun: "2007 s/d 2013", nama: "SUHAR PUJIANTO" },
+            { tahun: "2013 s/d 2019", nama: "RIDWAN" },
+            { tahun: "Pjs", nama: "KR. RAHMAN SANGUN DIRATU" }
+          ]);
+        }
       } catch (e) {
         console.error(e);
       }
     } else {
       setDusuns([]);
+      setSejarahKades([]);
     }
     setLoading(false);
   }
@@ -76,7 +105,7 @@ export default function AdminOrganisasi() {
     const filePath = `${folder}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('public_assets')
+      .from('assets')
       .upload(filePath, file);
 
     if (uploadError) {
@@ -84,7 +113,7 @@ export default function AdminOrganisasi() {
     }
 
     const { data: { publicUrl } } = supabase.storage
-      .from('public_assets')
+      .from('assets')
       .getPublicUrl(filePath);
 
     return publicUrl;
@@ -93,10 +122,10 @@ export default function AdminOrganisasi() {
   const deleteImageFromStorage = async (url) => {
     if (!url) return;
     try {
-      const urlParts = url.split('/public_assets/');
+      const urlParts = url.split('/assets/');
       if (urlParts.length === 2) {
         const path = urlParts[1];
-        await supabase.storage.from('public_assets').remove([path]);
+        await supabase.storage.from('assets').remove([path]);
       }
     } catch (e) {
       console.error('Error deleting old image:', e);
@@ -105,22 +134,13 @@ export default function AdminOrganisasi() {
 
   const handleFileChange = async (id, file) => {
     if (!file) return;
-    try {
-      setSaving(true);
-      if (data[id]?.image_url) {
-        await deleteImageFromStorage(data[id].image_url);
-      }
-      const publicUrl = await uploadImage(id, file);
-      setData(prev => ({
-        ...prev,
-        [id]: { ...prev[id], image_url: publicUrl }
-      }));
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      alert('Gagal mengunggah foto');
-    } finally {
-      setSaving(false);
-    }
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      setImageSrc(reader.result);
+      setTargetId({ type: 'role', id });
+      setCropModalOpen(true);
+    });
+    reader.readAsDataURL(file);
   };
 
   const handleRemoveImage = async (id) => {
@@ -177,18 +197,95 @@ export default function AdminOrganisasi() {
     setDusuns(newDusuns);
   };
 
+  // --- SEJARAH HANDLERS ---
+  const handleAddSejarah = () => {
+    setSejarahKades([...sejarahKades, { tahun: '', nama: '' }]);
+  };
+
+  const handleRemoveSejarah = (index) => {
+    if (confirm('Yakin ingin menghapus riwayat kades ini?')) {
+      const newSejarah = [...sejarahKades];
+      newSejarah.splice(index, 1);
+      setSejarahKades(newSejarah);
+    }
+  };
+
+  const handleSejarahChange = (index, field, value) => {
+    const newSejarah = [...sejarahKades];
+    newSejarah[index][field] = value;
+    setSejarahKades(newSejarah);
+  };
+
+  const handleArsipKades = () => {
+    const tahunAwal = prompt('Masukkan tahun AWAL Kepala Desa ini menjabat (misal: 2019):');
+    if (!tahunAwal) return;
+    
+    const tahunAkhir = prompt('Masukkan tahun AKHIR masa jabatan Kepala Desa ini (misal: 2026):');
+    if (!tahunAkhir) return;
+
+    const namaKadesSaatIni = data['kepala_desa']?.name || 'Tidak diketahui';
+
+    // Tambahkan ke riwayat
+    const newSejarah = [...sejarahKades, { tahun: `${tahunAwal} s/d ${tahunAkhir}`, nama: namaKadesSaatIni }];
+    setSejarahKades(newSejarah);
+
+    // Kosongkan Kepala Desa saat ini
+    setData(prev => ({
+      ...prev,
+      kepala_desa: { ...prev['kepala_desa'], name: '', image_url: '' }
+    }));
+    
+    // Kosongkan periode untuk Kades baru
+    setData(prev => ({ ...prev, periode: '' }));
+
+    alert('Berhasil! Kades sebelumnya telah dipindah ke Riwayat. Silakan isi nama Kades yang baru terpilih.');
+  };
+
   const handleDusunFileChange = async (index, file) => {
     if (!file) return;
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      setImageSrc(reader.result);
+      setTargetId({ type: 'dusun', id: index });
+      setCropModalOpen(true);
+    });
+    reader.readAsDataURL(file);
+  };
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handleCropSave = async () => {
     try {
       setSaving(true);
-      if (dusuns[index]?.image_url) {
-        await deleteImageFromStorage(dusuns[index].image_url);
+      const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+      const file = new File([croppedImage], 'profile.jpg', { type: 'image/jpeg' });
+      
+      if (targetId.type === 'role') {
+        const id = targetId.id;
+        if (data[id]?.image_url) {
+          await deleteImageFromStorage(data[id].image_url);
+        }
+        const publicUrl = await uploadImage(id, file);
+        setData(prev => ({
+          ...prev,
+          [id]: { ...prev[id], image_url: publicUrl }
+        }));
+      } else if (targetId.type === 'dusun') {
+        const idx = targetId.id;
+        if (dusuns[idx]?.image_url) {
+          await deleteImageFromStorage(dusuns[idx].image_url);
+        }
+        const publicUrl = await uploadImage(dusuns[idx].id, file, 'dusun');
+        handleDusunChange(idx, 'image_url', publicUrl);
       }
-      const publicUrl = await uploadImage(dusuns[index].id, file, 'dusun');
-      handleDusunChange(index, 'image_url', publicUrl);
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      alert('Gagal mengunggah foto');
+      
+      setCropModalOpen(false);
+      setImageSrc(null);
+    } catch (e) {
+      console.error(e);
+      alert('Gagal memotong gambar');
     } finally {
       setSaving(false);
     }
@@ -200,7 +297,8 @@ export default function AdminOrganisasi() {
     try {
       const payload = {
         ...data,
-        dusuns: dusuns
+        dusuns: dusuns,
+        sejarah_kades: sejarahKades
       };
       
       const { error } = await supabase
@@ -222,29 +320,54 @@ export default function AdminOrganisasi() {
 
   return (
     <div className="admin-container">
-      <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '24px' }}>
+      <div className="admin-header" style={{ marginBottom: '24px' }}>
         <h1 style={{ margin: 0 }}>Manajemen Struktur Organisasi</h1>
-        <button 
-          style={{
-            padding: '12px 24px',
-            backgroundColor: 'var(--clr-primary)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-            fontWeight: '600',
-            cursor: saving ? 'not-allowed' : 'pointer',
-            opacity: saving ? 0.7 : 1,
-            transition: 'all 0.3s ease',
-            boxShadow: '0 4px 14px rgba(34, 197, 94, 0.3)'
-          }}
-          onMouseEnter={(e) => !saving && (e.currentTarget.style.backgroundColor = 'var(--clr-primary-dark)')}
-          onMouseLeave={(e) => !saving && (e.currentTarget.style.backgroundColor = 'var(--clr-primary)')}
-          onClick={handleSave}
-          disabled={saving}
-        >
-          {saving ? 'Menyimpan...' : 'Simpan Perubahan'}
-        </button>
       </div>
+
+      {/* Floating Save Button */}
+      <button 
+        style={{
+          position: 'fixed',
+          bottom: '40px',
+          right: '40px',
+          zIndex: 900,
+          padding: '16px 28px',
+          backgroundColor: 'var(--clr-primary)',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '50px',
+          fontWeight: '600',
+          fontSize: '1rem',
+          cursor: saving ? 'not-allowed' : 'pointer',
+          opacity: saving ? 0.7 : 1,
+          transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          boxShadow: '0 8px 20px rgba(34, 197, 94, 0.15), 0 0 0 1px rgba(255,255,255,0.05) inset',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}
+        onMouseEnter={(e) => {
+          if (!saving) {
+            e.currentTarget.style.backgroundColor = 'var(--clr-primary-light)';
+            e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+            e.currentTarget.style.boxShadow = '0 12px 28px rgba(34, 197, 94, 0.25), 0 0 0 1px rgba(255,255,255,0.1) inset';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!saving) {
+            e.currentTarget.style.backgroundColor = 'var(--clr-primary)';
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 8px 20px rgba(34, 197, 94, 0.15), 0 0 0 1px rgba(255,255,255,0.05) inset';
+          }
+        }}
+        onClick={handleSave}
+        disabled={saving}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M208,40H48A16,16,0,0,0,32,56V200a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V56A16,16,0,0,0,208,40Zm-96,16a16,16,0,1,1-16,16A16,16,0,0,1,112,56Zm48,144H96a8,8,0,0,1-8-8V144a8,8,0,0,1,8-8h64a8,8,0,0,1,8,8v48A8,8,0,0,1,160,200Z"></path>
+        </svg>
+        {saving ? 'Menyimpan...' : 'Simpan Perubahan'}
+      </button>
 
       {message && (
         <div style={{ padding: '16px', marginBottom: '24px', backgroundColor: message.includes('berhasil') ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', color: message.includes('berhasil') ? '#4ade80' : '#ef4444', borderRadius: '8px', border: `1px solid ${message.includes('berhasil') ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}` }}>
@@ -261,6 +384,7 @@ export default function AdminOrganisasi() {
             value={data.periode || ''} 
             onChange={(e) => setData(prev => ({ ...prev, periode: e.target.value }))}
             placeholder="Contoh: Periode 2019 - 2025"
+            maxLength={50}
             style={{ 
               width: '100%', 
               padding: '12px 16px', 
@@ -278,7 +402,18 @@ export default function AdminOrganisasi() {
       </div>
 
       <div className="admin-card" style={{ padding: '30px', background: 'var(--clr-bg-alt)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-        <h2 style={{ marginBottom: '24px', color: '#fff', fontSize: '1.4rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px' }}>Pengurus Inti & Lembaga</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
+          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Pengurus Inti & Lembaga</h2>
+          <button 
+            onClick={handleArsipKades}
+            style={{ padding: '8px 16px', background: 'rgba(234, 179, 8, 0.2)', color: '#facc15', border: '1px solid rgba(234, 179, 8, 0.4)', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234, 179, 8, 0.3)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234, 179, 8, 0.2)'; }}
+            title="Klik saat pergantian Kades untuk menyimpan Kades saat ini ke riwayat"
+          >
+            Arsipkan Kades (Pergantian)
+          </button>
+        </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px', marginBottom: '40px' }}>
           {ROLES.map(role => (
@@ -304,6 +439,7 @@ export default function AdminOrganisasi() {
                   value={data[role.id]?.name || ''} 
                   onChange={(e) => handleNameChange(role.id, e.target.value)}
                   placeholder="Masukkan nama lengkap..."
+                  maxLength={100}
                   style={{ 
                     width: '100%', 
                     padding: '12px 16px', 
@@ -413,6 +549,7 @@ export default function AdminOrganisasi() {
                     value={dusun.jabatan} 
                     onChange={(e) => handleDusunChange(dIdx, 'jabatan', e.target.value)}
                     placeholder="Contoh: KADUS I WAY TEMAGA"
+                    maxLength={100}
                     style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.05)', color: '#fff', outline: 'none' }}
                   />
                   <small style={{ color: 'var(--clr-text-dim)', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>Gunakan "\n" untuk baris baru di bagan</small>
@@ -425,6 +562,7 @@ export default function AdminOrganisasi() {
                     value={dusun.name} 
                     onChange={(e) => handleDusunChange(dIdx, 'name', e.target.value)}
                     placeholder="Nama Lengkap..."
+                    maxLength={100}
                     style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.05)', color: '#fff', outline: 'none' }}
                   />
                 </div>
@@ -462,6 +600,7 @@ export default function AdminOrganisasi() {
                           type="text" 
                           value={rt}
                           onChange={(e) => handleRTChange(dIdx, rIdx, e.target.value)}
+                          maxLength={50}
                           style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.2)', color: '#fff', outline: 'none', fontSize: '0.85rem' }}
                         />
                         <button 
@@ -484,7 +623,128 @@ export default function AdminOrganisasi() {
             </div>
           )}
         </div>
+
+        {/* SEJARAH KEPALA DESA SECTION */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px', marginTop: '40px' }}>
+          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Riwayat Kepala Desa</h2>
+          <button 
+            onClick={handleAddSejarah}
+            style={{ padding: '8px 16px', background: 'var(--clr-primary)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}
+          >
+            + Tambah Riwayat
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {sejarahKades.map((sejarah, sIdx) => (
+            <div 
+              key={sIdx}
+              style={{ 
+                display: 'flex', 
+                gap: '16px', 
+                alignItems: 'center', 
+                padding: '16px', 
+                background: 'rgba(255,255,255,0.02)', 
+                border: '1px solid rgba(255,255,255,0.05)', 
+                borderRadius: '12px' 
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', color: 'var(--clr-text-dim)' }}>Tahun / Periode</label>
+                <input 
+                  type="text" 
+                  value={sejarah.tahun} 
+                  onChange={(e) => handleSejarahChange(sIdx, 'tahun', e.target.value)}
+                  placeholder="Misal: 2013 s/d 2019"
+                  maxLength={50}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                />
+              </div>
+              <div style={{ flex: 2 }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', color: 'var(--clr-text-dim)' }}>Nama Kepala Desa</label>
+                <input 
+                  type="text" 
+                  value={sejarah.nama} 
+                  onChange={(e) => handleSejarahChange(sIdx, 'nama', e.target.value)}
+                  placeholder="Nama Kepala Desa..."
+                  maxLength={100}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                />
+              </div>
+              <div style={{ marginTop: '24px' }}>
+                <button 
+                  onClick={() => handleRemoveSejarah(sIdx)}
+                  style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: 'none', borderRadius: '8px', width: '42px', height: '42px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#ef4444'; e.currentTarget.style.color = '#fff' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'; e.currentTarget.style.color = '#ef4444' }}
+                  title="Hapus Riwayat"
+                >
+                  <i className="ph-bold ph-trash" style={{ fontSize: '1.2rem' }}></i>
+                </button>
+              </div>
+            </div>
+          ))}
+          {sejarahKades.length === 0 && (
+            <div style={{ padding: '30px', textAlign: 'center', color: 'var(--clr-text-dim)', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '12px' }}>
+              Belum ada data riwayat Kepala Desa.
+            </div>
+          )}
+        </div>
+
       </div>
+
+      {/* Cropper Modal */}
+      {cropModalOpen && imageSrc && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '90%', maxWidth: '500px', background: 'var(--clr-bg-alt)', borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+              <h3 style={{ margin: 0, color: '#fff' }}>Sesuaikan Ukuran Foto (1:1)</h3>
+            </div>
+            
+            <div style={{ position: 'relative', width: '100%', height: '400px', background: '#333' }}>
+              <Cropper
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            
+            <div style={{ padding: '16px 20px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <label style={{ color: 'var(--clr-text-dim)', fontSize: '0.9rem', fontWeight: '500' }}>Zoom</label>
+              <input
+                type="range"
+                value={zoom}
+                min={1}
+                max={3}
+                step={0.1}
+                onChange={(e) => setZoom(Number(e.target.value))}
+                style={{ flex: 1, cursor: 'pointer', accentColor: 'var(--clr-primary)' }}
+              />
+            </div>
+            
+            <div style={{ padding: '20px', display: 'flex', gap: '12px', justifyContent: 'flex-end', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <button 
+                onClick={() => { setCropModalOpen(false); setImageSrc(null); }}
+                style={{ padding: '10px 20px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer' }}
+                disabled={saving}
+              >
+                Batal
+              </button>
+              <button 
+                onClick={handleCropSave}
+                style={{ padding: '10px 20px', background: 'var(--clr-primary)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+                disabled={saving}
+              >
+                {saving ? 'Memproses...' : 'Potong & Simpan'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

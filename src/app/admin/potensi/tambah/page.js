@@ -6,7 +6,7 @@ export default function TambahPotensi() {
   const supabase = createClient();
 
   const fields = [
-    { name: 'title', label: 'Nama Potensi / UMKM', type: 'text', required: true, placeholder: 'Misal: Kripik Singkong Mang Jali' },
+    { name: 'title', label: 'Nama Potensi / UMKM', type: 'text', required: true, maxLength: 100, placeholder: 'Misal: Kripik Singkong Mang Jali' },
     { name: 'category', label: 'Kategori', type: 'select', required: true, options: [
       { label: 'UMKM', value: 'UMKM' },
       { label: 'Pertanian', value: 'Pertanian' },
@@ -14,7 +14,7 @@ export default function TambahPotensi() {
       { label: 'Kesenian', value: 'Kesenian' }
     ]},
     { name: 'image', label: 'Gambar Potensi', type: 'file', required: false },
-    { name: 'description', label: 'Deskripsi Singkat', type: 'textarea', required: true, rows: 6, placeholder: 'Jelaskan tentang potensi/UMKM ini...' }
+    { name: 'description', label: 'Deskripsi Singkat', type: 'textarea', required: true, maxLength: 2000, rows: 6, placeholder: 'Jelaskan tentang potensi/UMKM ini...' }
   ];
 
   const handleSubmit = async (formData, fileData) => {

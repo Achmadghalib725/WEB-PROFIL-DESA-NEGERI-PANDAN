@@ -44,7 +44,6 @@ export default function AdminLayout({ children }) {
   const navItems = [
     { href: '/admin', label: 'Dashboard Overview', active: pathname === '/admin', icon: 'ph-squares-four' },
     { href: '/admin/berita', label: 'Berita / Artikel', active: pathname.startsWith('/admin/berita'), icon: 'ph-newspaper' },
-    { href: '/admin/potensi', label: 'Potensi Desa (UMKM)', active: pathname.startsWith('/admin/potensi'), icon: 'ph-storefront' },
     { href: '/admin/layanan', label: 'Layanan Publik', active: pathname.startsWith('/admin/layanan'), icon: 'ph-files' },
     { href: '/admin/organisasi', label: 'Struktur Organisasi', active: pathname.startsWith('/admin/organisasi'), icon: 'ph-users-three' },
     { href: '/admin/statistik', label: 'Statistik Desa', active: pathname.startsWith('/admin/statistik'), icon: 'ph-chart-bar' }
@@ -92,7 +91,7 @@ export default function AdminLayout({ children }) {
         <div className="sidebar-header" style={{ padding: '24px', borderBottom: '1px solid var(--clr-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'padding 0.4s ease' }}>
           <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '32px' }}>
-              <img src="/images/logo-lamsel.png" alt="Logo Lamsel" width="32" height="32" style={{ objectFit: 'contain' }} />
+              <img src="/images/logo-lamsel.png" alt="Logo Lamsel" width="32" height="32" style={{ objectFit: 'contain', width: '32px', height: '32px' }} />
             </div>
             <div className="brand-text sidebar-text">Admin<span>Panel</span></div>
           </div>

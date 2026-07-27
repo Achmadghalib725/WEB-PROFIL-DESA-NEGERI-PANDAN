@@ -36,10 +36,10 @@ export default function AdminForm({
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
     if (file) {
-      // Batasi ukuran file (default 500KB)
-      const maxSize = field.maxSize || 500 * 1024; 
+      // Batasi ukuran file (default 2MB)
+      const maxSize = field.maxSize || 2 * 1024 * 1024; 
       if (file.size > maxSize) {
-        setErrorMsg(`Ukuran file terlalu besar! Maksimal ${maxSize / 1024}KB.`);
+        setErrorMsg(`Ukuran file terlalu besar! Maksimal ${maxSize / (1024 * 1024)}MB.`);
         e.target.value = ''; // Reset input file
         return;
       }
@@ -95,13 +95,6 @@ export default function AdminForm({
   return (
     <div>
       <div style={{ marginBottom: 'var(--space-xl)' }}>
-        <button 
-          onClick={() => cancelHref ? router.push(cancelHref) : router.back()} 
-          style={{ background: 'none', border: 'none', cursor: 'pointer', marginBottom: 'var(--space-sm)', color: 'var(--clr-text-muted)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: 'var(--fs-small)' }}
-          type="button"
-        >
-          <i className="ph ph-arrow-left"></i> Kembali
-        </button>
         <div className="section-label">Formulir Data</div>
         <h1 className="section-title">
           {title.split(' ').map((word, i, arr) => 
@@ -124,6 +117,7 @@ export default function AdminForm({
                   value={formData[field.name]}
                   onChange={(e) => handleInputChange(e, field)}
                   required={field.required}
+                  maxLength={field.maxLength}
                   rows={field.rows || 5}
                   style={{ ...inputStyle, resize: 'vertical' }}
                   placeholder={field.placeholder || ''}
@@ -281,6 +275,27 @@ export default function AdminForm({
       </div>
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* Kustomisasi tombol input file */
+        input[type="file"] {
+          color: var(--clr-text-muted);
+        }
+        input[type="file"]::file-selector-button {
+          margin-right: 16px;
+          padding: 8px 16px;
+          background-color: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 6px;
+          color: var(--text-light, #f8fafc);
+          cursor: pointer;
+          font-family: inherit;
+          font-weight: 500;
+          transition: all 0.2s ease;
+        }
+        input[type="file"]::file-selector-button:hover {
+          background-color: rgba(255,255,255,0.1);
+          border-color: rgba(255,255,255,0.2);
+        }
       `}} />
     </div>
   );

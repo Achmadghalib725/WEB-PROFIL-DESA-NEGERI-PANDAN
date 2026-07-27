@@ -11,12 +11,12 @@ export default function BerandaPage() {
   const [heroImage, setHeroImage] = useState('/images/hero-village.png');
   const [latestNews, setLatestNews] = useState([]);
   const [stats, setStats] = useState({
-    stat_penduduk: 5240,
-    stat_kk: 1250,
-    stat_lahan: 850,
-    stat_petani: 450,
-    stat_dusun: 4,
-    stat_sekolah: 3
+    stat_penduduk: 0,
+    stat_kk: 0,
+    stat_lahan: 0,
+    stat_petani: 0,
+    stat_dusun: 0,
+    stat_sekolah: 0
   });
 
   useScrollReveal([latestNews]);
@@ -37,7 +37,7 @@ export default function BerandaPage() {
         .from('berita')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(3);
+        .limit(4);
       if (newsData) setLatestNews(newsData);
 
       // Fetch Stats
@@ -307,9 +307,16 @@ export default function BerandaPage() {
                       </div>
                     )}
                     <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <p className="text-muted" style={{ fontSize: '12px', marginBottom: '12px' }}>
-                        {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                        <p className="text-muted" style={{ fontSize: '12px', margin: 0 }}>
+                          {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </p>
+                        {item.kategori && (
+                          <span style={{ fontSize: '10px', fontWeight: 'bold', padding: '4px 8px', backgroundColor: 'var(--clr-primary)', color: '#fff', borderRadius: '4px', textTransform: 'uppercase' }}>
+                            {item.kategori}
+                          </span>
+                        )}
+                      </div>
                       <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '12px', lineHeight: '1.4' }}>
                         {item.title}
                       </h3>

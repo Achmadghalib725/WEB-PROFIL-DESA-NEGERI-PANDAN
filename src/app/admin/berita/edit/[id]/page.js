@@ -40,9 +40,10 @@ export default function EditBerita() {
   }
 
   const fields = [
-    { name: 'title', label: 'Judul Berita', type: 'text', required: true, defaultValue: data.title },
+    { name: 'title', label: 'Judul Berita', type: 'text', required: true, maxLength: 100, defaultValue: data.title },
+    { name: 'kategori', label: 'Kategori / Tag (Opsional)', type: 'text', required: false, maxLength: 30, defaultValue: data.kategori || '' },
     { name: 'image', label: 'Gambar Cover Baru (Biarkan kosong jika tidak mengubah)', type: 'file', accept: 'image/*', required: false },
-    { name: 'content', label: 'Isi Berita', type: 'textarea', required: true, rows: 10, defaultValue: data.content }
+    { name: 'content', label: 'Isi Berita', type: 'textarea', required: true, maxLength: 5000, rows: 10, defaultValue: data.content }
   ];
 
   const handleSubmit = async (formData, fileData) => {
@@ -72,7 +73,8 @@ export default function EditBerita() {
     const { error: updateError } = await supabase
       .from('berita')
       .update({ 
-        title: formData.title, 
+        title: formData.title,
+        kategori: formData.kategori || null,
         content: formData.content, 
         image_url: imageUrl 
       })

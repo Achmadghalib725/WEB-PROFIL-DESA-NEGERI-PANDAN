@@ -72,7 +72,7 @@ export default function Navbar() {
       <div className="container">
         <Link href="/" className="nav-brand">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/images/logo-lamsel.png" alt="Logo Kabupaten Lampung Selatan" width="34" height="34" style={{ objectFit: 'contain' }} />
+            <img src="/images/logo-lamsel.png" alt="Logo Kabupaten Lampung Selatan" width="34" height="34" style={{ objectFit: 'contain', width: '34px', height: '34px' }} />
           </div>
           <div className="brand-text">
             Negeri <span>Pandan</span>

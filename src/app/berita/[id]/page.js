@@ -59,9 +59,16 @@ export default function DetailBerita() {
           )}
           
           <div style={{ padding: '40px' }}>
-            <p style={{ color: 'var(--primary-color, #10b981)', fontWeight: '500', marginBottom: '10px' }}>
-              {new Date(berita.created_at).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+              <p style={{ color: 'var(--primary-color, #10b981)', fontWeight: '500', margin: 0 }}>
+                {new Date(berita.created_at).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              </p>
+              {berita.kategori && (
+                <span style={{ fontSize: '12px', fontWeight: 'bold', padding: '6px 12px', backgroundColor: 'var(--clr-primary)', color: '#fff', borderRadius: '6px', textTransform: 'uppercase' }}>
+                  {berita.kategori}
+                </span>
+              )}
+            </div>
             <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '30px', lineHeight: '1.4' }}>
               {berita.title}
             </h1>

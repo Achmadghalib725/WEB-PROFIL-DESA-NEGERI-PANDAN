@@ -6,7 +6,7 @@ export default function TambahLayanan() {
   const supabase = createClient();
 
   const fields = [
-    { name: 'title', label: 'Judul Layanan', type: 'text', required: true, placeholder: 'Misal: Pembuatan KTP' },
+    { name: 'title', label: 'Judul Layanan', type: 'text', required: true, maxLength: 100, placeholder: 'Misal: Pembuatan KTP' },
     { 
       name: 'icon', 
       label: 'Jenis Ikon Layanan', 
@@ -22,8 +22,8 @@ export default function TambahLayanan() {
         { label: 'Lainnya (Umum)', value: 'ph-folder-open' }
       ]
     },
-    { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, rows: 5, placeholder: '1. Fotokopi KK\n2. Surat Pengantar RT/RW' },
-    { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, rows: 5, placeholder: '1. Datang ke Balai Desa\n2. Ambil nomor antrean' }
+    { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, placeholder: '1. Fotokopi KK\n2. Surat Pengantar RT/RW' },
+    { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, placeholder: '1. Datang ke Balai Desa\n2. Ambil nomor antrean' }
   ];
 
   const handleSubmit = async (formData) => {

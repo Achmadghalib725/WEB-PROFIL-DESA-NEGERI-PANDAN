@@ -6,9 +6,10 @@ export default function TambahBerita() {
   const supabase = createClient();
 
   const fields = [
-    { name: 'title', label: 'Judul Berita', type: 'text', required: true, placeholder: 'Masukkan judul berita...' },
+    { name: 'title', label: 'Judul Berita', type: 'text', required: true, maxLength: 100, placeholder: 'Masukkan judul berita...' },
+    { name: 'kategori', label: 'Kategori / Tag (Opsional)', type: 'text', required: false, maxLength: 30, placeholder: 'Contoh: Pengumuman, Kegiatan Ibu-ibu, dll...' },
     { name: 'image', label: 'Gambar Cover (Opsional)', type: 'file', accept: 'image/*', required: false },
-    { name: 'content', label: 'Isi Berita', type: 'textarea', required: true, rows: 10, placeholder: 'Tulis isi berita di sini...' }
+    { name: 'content', label: 'Isi Berita', type: 'textarea', required: true, maxLength: 5000, rows: 10, placeholder: 'Tulis isi berita di sini...' }
   ];
 
   const handleSubmit = async (formData, fileData) => {
@@ -40,6 +41,7 @@ export default function TambahBerita() {
       .insert([
         { 
           title: formData.title, 
+          kategori: formData.kategori || null,
           content: formData.content, 
           image_url: imageUrl 
         }

@@ -36,7 +36,7 @@ export default function EditLayanan() {
   if (!initialData) return <div style={{ padding: '20px', color: 'white' }}>Layanan tidak ditemukan!</div>;
 
   const fields = [
-    { name: 'title', label: 'Judul Layanan', type: 'text', required: true, defaultValue: initialData.title },
+    { name: 'title', label: 'Judul Layanan', type: 'text', required: true, maxLength: 100, defaultValue: initialData.title },
     { 
       name: 'icon', 
       label: 'Jenis Ikon Layanan', 
@@ -53,8 +53,8 @@ export default function EditLayanan() {
         { label: 'Lainnya (Umum)', value: 'ph-folder-open' }
       ]
     },
-    { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, rows: 5, defaultValue: initialData.requirements },
-    { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, rows: 5, defaultValue: initialData.procedures }
+    { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, defaultValue: initialData.requirements },
+    { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, defaultValue: initialData.procedures }
   ];
 
   const handleSubmit = async (formData) => {

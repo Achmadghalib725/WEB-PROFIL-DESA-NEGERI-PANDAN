@@ -14,13 +14,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <head>
+      </head>
+      <body>
         {/* Phosphor Icons — loaded before paint so icons are visible immediately */}
         <Script
           src="https://unpkg.com/@phosphor-icons/web"
           strategy="beforeInteractive"
         />
-      </head>
-      <body>
         <Navbar />
         {children}
         <Footer />

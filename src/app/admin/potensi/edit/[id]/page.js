@@ -40,7 +40,7 @@ export default function EditPotensi() {
   }
 
   const fields = [
-    { name: 'title', label: 'Nama Potensi / Produk', type: 'text', required: true, defaultValue: data.title },
+    { name: 'title', label: 'Nama Potensi / UMKM', type: 'text', required: true, maxLength: 100, defaultValue: data.title },
     { 
       name: 'category', 
       label: 'Kategori', 
@@ -48,15 +48,14 @@ export default function EditPotensi() {
       required: true, 
       defaultValue: data.category,
       options: [
-        { value: 'Kuliner', label: 'Kuliner' },
-        { value: 'Kerajinan', label: 'Kerajinan' },
-        { value: 'Pertanian', label: 'Pertanian' },
-        { value: 'Pariwisata', label: 'Pariwisata' },
-        { value: 'Lainnya', label: 'Lainnya' }
+        { label: 'UMKM', value: 'UMKM' },
+        { label: 'Pertanian', value: 'Pertanian' },
+        { label: 'Pariwisata', value: 'Pariwisata' },
+        { label: 'Kesenian', value: 'Kesenian' }
       ]
     },
-    { name: 'image', label: 'Gambar Produk Baru (Biarkan kosong jika tidak mengubah)', type: 'file', accept: 'image/*', required: false },
-    { name: 'description', label: 'Deskripsi Singkat', type: 'textarea', required: true, rows: 5, defaultValue: data.description }
+    { name: 'image', label: 'Gambar Potensi Baru (Kosongkan jika tidak diubah)', type: 'file', required: false },
+    { name: 'description', label: 'Deskripsi Singkat', type: 'textarea', required: true, maxLength: 2000, rows: 6, defaultValue: data.description }
   ];
 
   const handleSubmit = async (formData, fileData) => {

@@ -30,6 +30,27 @@ export default function ProfilPage() {
   ];
   const dusuns = (orgData && orgData.dusuns && orgData.dusuns.length > 0) ? orgData.dusuns : defaultDusuns;
 
+  const sejarahKades = (orgData && orgData.sejarah_kades && orgData.sejarah_kades.length > 0) 
+    ? orgData.sejarah_kades 
+    : [
+        { tahun: "1957", nama: "KHADIN SINGA LANA" },
+        { tahun: "1957 s/d 1976", nama: "RAJA MANGUNANG / RUSLI" },
+        { tahun: "Pjs", nama: "A. RAHMAN / JURAGAN" },
+        { tahun: "1977 s/d 1987", nama: "M. YUNUS KR" },
+        { tahun: "1987 s/d 1997", nama: "M. UBAT" },
+        { tahun: "1997 s/d 2007", nama: "SUPLIMANSYAH" },
+        { tahun: "2007 s/d 2013", nama: "SUHAR PUJIANTO" },
+        { tahun: "2013 s/d 2019", nama: "RIDWAN" },
+        { tahun: "Pjs", nama: "KR. RAHMAN SANGUN DIRATU" }
+      ];
+
+  // Ekstrak tahun mulai kades saat ini dari periode, misal "Periode 2019 - 2025" -> "2019"
+  let tahunMulaiSaatIni = "...";
+  if (orgData.periode) {
+    const match = orgData.periode.match(/\d{4}/);
+    if (match) tahunMulaiSaatIni = match[0];
+  }
+
   return (
     <main>
       <header className="page-header">
@@ -62,45 +83,19 @@ export default function ProfilPage() {
           </p>
 
           <div className="timeline" style={{ marginTop: '3rem' }}>
+            {sejarahKades.map((item, idx) => (
+              <div key={idx} className="timeline-item reveal">
+                <div className="timeline-year">{item.tahun}</div>
+                <h3>{item.nama}</h3>
+              </div>
+            ))}
+
+            {/* Kades Saat Ini (Otomatis dari Pengurus Inti) */}
             <div className="timeline-item reveal">
-              <div className="timeline-year">1957</div>
-              <h3>KHADIN SINGA LANA</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">1957 s/d 1976</div>
-              <h3>RAJA MANGUNANG / RUSLI</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">Pjs</div>
-              <h3>A. RAHMAN / JURAGAN</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">1977 s/d 1987</div>
-              <h3>M. YUNUS KR</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">1987 s/d 1997</div>
-              <h3>M. UBAT</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">1997 s/d 2007</div>
-              <h3>SUPLIMANSYAH</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">2007 s/d 2013</div>
-              <h3>SUHAR PUJIANTO</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">2013 s/d 2019</div>
-              <h3>RIDWAN</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">Pjs</div>
-              <h3>KR. RAHMAN SANGUN DIRATU</h3>
-            </div>
-            <div className="timeline-item reveal">
-              <div className="timeline-year">2019 s/d Sekarang</div>
-              <h3>SUPLIMANSYAH</h3>
+              <div className="timeline-year">{tahunMulaiSaatIni} s/d Sekarang</div>
+              <h3 style={{ color: 'var(--clr-primary-light)' }}>
+                {orgData.kepala_desa?.name ? orgData.kepala_desa.name : 'SUPLIMANSYAH'}
+              </h3>
             </div>
           </div>
         </div>
