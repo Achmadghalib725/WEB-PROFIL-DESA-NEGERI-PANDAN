@@ -402,7 +402,7 @@ export default function AdminOrganisasi() {
       </div>
 
       <div className="admin-card" style={{ padding: '30px', background: 'var(--clr-bg-alt)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
           <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Pengurus Inti & Lembaga</h2>
           <button 
             onClick={handleArsipKades}
@@ -419,6 +419,7 @@ export default function AdminOrganisasi() {
           {ROLES.map(role => (
             <div 
               key={role.id} 
+              className="role-card"
               style={{ 
                 padding: '24px', 
                 border: '1px solid rgba(255,255,255,0.05)', 
@@ -511,7 +512,7 @@ export default function AdminOrganisasi() {
         </div>
 
         {/* DUSUN SECTION */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
           <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Manajemen Kepala Dusun (Kadus)</h2>
           <button 
             onClick={handleAddDusun}
@@ -541,7 +542,7 @@ export default function AdminOrganisasi() {
                 Hapus
               </button>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+              <div className="dusun-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: 'var(--clr-text-dim)' }}>Nama Dusun / Jabatan</label>
                   <input 
@@ -625,7 +626,7 @@ export default function AdminOrganisasi() {
         </div>
 
         {/* SEJARAH KEPALA DESA SECTION */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px', marginTop: '40px' }}>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px', marginTop: '40px' }}>
           <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Riwayat Kepala Desa</h2>
           <button 
             onClick={handleAddSejarah}
@@ -639,6 +640,7 @@ export default function AdminOrganisasi() {
           {sejarahKades.map((sejarah, sIdx) => (
             <div 
               key={sIdx}
+              className="sejarah-row"
               style={{ 
                 display: 'flex', 
                 gap: '16px', 
@@ -745,6 +747,40 @@ export default function AdminOrganisasi() {
           </div>
         </div>
       )}
+      {/* Responsive CSS */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @media (max-width: 768px) {
+          .admin-card {
+            padding: 16px !important;
+          }
+          .section-header {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 12px;
+          }
+          .section-header h2 {
+            font-size: 1.2rem !important;
+          }
+          .role-card {
+            padding: 16px !important;
+          }
+          .sejarah-row {
+            flex-direction: column;
+            align-items: stretch !important;
+            gap: 12px !important;
+          }
+          .sejarah-row > div {
+            width: 100%;
+          }
+          .sejarah-row button {
+            align-self: flex-start;
+            margin-top: 8px !important;
+          }
+          .dusun-row {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}} />
     </div>
   );
 }

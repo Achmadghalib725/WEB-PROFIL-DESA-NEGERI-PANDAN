@@ -330,7 +330,7 @@ export default function AdminLayout({ children }) {
             z-index: 30;
           }
           .admin-main {
-            padding: 20px !important;
+            padding: 12px !important;
             padding-top: 80px !important;
           }
         }
