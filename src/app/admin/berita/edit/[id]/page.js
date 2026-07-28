@@ -67,6 +67,19 @@ export default function EditBerita() {
         .getPublicUrl(filePath);
         
       imageUrl = publicUrl;
+
+      // Hapus gambar lama jika ada
+      if (data.image_url) {
+        try {
+          const oldUrlParts = data.image_url.split('/assets/');
+          if (oldUrlParts.length === 2) {
+            const oldPath = oldUrlParts[1];
+            await supabase.storage.from('assets').remove([oldPath]);
+          }
+        } catch (e) {
+          console.error('Error deleting old image:', e);
+        }
+      }
     }
 
     // Update berita ke database
