@@ -77,7 +77,7 @@ export default function AkunPage() {
 
   return (
     <div className="admin-page" style={{ paddingBottom: '40px' }}>
-      <div className="page-header" style={{ marginBottom: '32px', animation: 'fadeInUp 0.6s ease-out' }}>
+      <div style={{ marginBottom: '32px', animation: 'fadeInUp 0.6s ease-out' }}>
         <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--clr-text)', marginBottom: '8px', letterSpacing: '-0.5px' }}>Pengaturan Akun</h1>
         <p style={{ color: 'var(--clr-text-muted)', fontSize: '15px' }}>Kelola informasi profil dan keamanan akun administrator Anda.</p>
       </div>
