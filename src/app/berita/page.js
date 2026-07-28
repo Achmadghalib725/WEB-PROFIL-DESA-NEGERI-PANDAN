@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
@@ -51,9 +52,11 @@ export default function BeritaPage() {
                   flexDirection: 'column'
                 }}>
                   {item.image_url ? (
-                    <img 
+                    <Image 
                       src={item.image_url} 
                       alt={item.title} 
+                      width={400}
+                      height={200}
                       style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
                     />
                   ) : (

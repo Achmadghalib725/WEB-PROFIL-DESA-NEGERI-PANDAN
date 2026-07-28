@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useTiltEffect } from '@/hooks/useTiltEffect';
@@ -65,10 +66,12 @@ export default function BerandaPage() {
       {/* ═══ HERO ═══ */}
       <section className="hero" id="hero">
         <div className="hero-bg">
-          <img
+          <Image
             src={heroImage}
             alt="Panorama Desa Negeri Pandan"
-            loading="eager"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
           />
         </div>
         <div className="hero-overlay"></div>
@@ -139,9 +142,12 @@ export default function BerandaPage() {
         <div className="container">
           <div className="about-grid">
             <div className="about-image reveal">
-              <img
+              <Image
                 src="/images/tentang-kami.png"
                 alt="Kehidupan masyarakat Desa Negeri Pandan"
+                width={600}
+                height={400}
+                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
               />
               <div className="floating-badge">
                 <span className="badge-icon">
@@ -221,7 +227,7 @@ export default function BerandaPage() {
             {/* Pertanian */}
             <div className="feature-card glass-card reveal">
               <div className="card-image">
-                <img src="/images/potensi-pertanian.png" alt="Pertanian Desa Negeri Pandan" />
+                <Image src="/images/potensi-pertanian.png" alt="Pertanian Desa Negeri Pandan" width={400} height={300} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <span className="card-badge">Unggulan</span>
               </div>
               <div className="card-body">
@@ -244,7 +250,7 @@ export default function BerandaPage() {
             {/* Komunitas */}
             <div className="feature-card glass-card reveal reveal-delay-2">
               <div className="card-image">
-                <img src="/images/budaya-1.jpeg" alt="Komunitas Desa Negeri Pandan" />
+                <Image src="/images/budaya-1.jpeg" alt="Komunitas Desa Negeri Pandan" width={400} height={300} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <span className="card-badge">Budaya</span>
               </div>
               <div className="card-body">
@@ -296,9 +302,11 @@ export default function BerandaPage() {
                     flexDirection: 'column'
                   }}>
                     {item.image_url ? (
-                      <img
+                      <Image
                         src={item.image_url}
                         alt={item.title}
+                        width={400}
+                        height={200}
                         style={{ width: '100%', height: '200px', objectFit: 'cover' }}
                       />
                     ) : (

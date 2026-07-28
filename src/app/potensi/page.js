@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useTiltEffect } from '@/hooks/useTiltEffect';
 
@@ -35,8 +36,8 @@ export default function PotensiPage() {
         <div className="container">
           {/* Potensi 1: Pertanian */}
           <div className="potensi-detail">
-            <div className="potensi-image reveal">
-              <img src="/images/potensi-pertanian.png" alt="Sektor Pertanian Desa" />
+            <div className="potensi-image reveal" style={{ position: 'relative', minHeight: '400px' }}>
+              <Image src="/images/potensi-pertanian.png" alt="Sektor Pertanian Desa" fill style={{ objectFit: 'cover', borderRadius: 'var(--radius-xl)' }} />
             </div>
             <div className="reveal reveal-delay-1">
               <div className="section-label">Sektor Utama</div>
@@ -67,14 +68,14 @@ export default function PotensiPage() {
           {/* Potensi 2: Komunitas */}
           <div className="potensi-detail reverse">
             <div className="reveal" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gridTemplateRows: '1fr 1fr', gap: '16px', height: '420px' }}>
-              <div style={{ gridRow: '1 / 3', height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
-                <img src="/images/budaya-1.jpeg" alt="Gotong Royong 1" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              <div style={{ gridRow: '1 / 3', height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden', position: 'relative' }}>
+                <Image src="/images/budaya-1.jpeg" alt="Gotong Royong 1" fill style={{ objectFit: 'cover' }} />
               </div>
-              <div style={{ height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
-                <img src="/images/budaya-2.jpeg" alt="Gotong Royong 2" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              <div style={{ height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden', position: 'relative' }}>
+                <Image src="/images/budaya-2.jpeg" alt="Gotong Royong 2" fill style={{ objectFit: 'cover' }} />
               </div>
-              <div style={{ height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
-                <img src="/images/budaya-3.jpeg" alt="Gotong Royong 3" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+              <div style={{ height: '100%', borderRadius: 'var(--radius-xl)', overflow: 'hidden', position: 'relative' }}>
+                <Image src="/images/budaya-3.jpeg" alt="Gotong Royong 3" fill style={{ objectFit: 'cover' }} />
               </div>
             </div>
             <div className="reveal reveal-delay-1">
@@ -104,8 +105,8 @@ export default function PotensiPage() {
 
           {/* Potensi 3: Usaha Lokal & Peternakan */}
           <div className="potensi-detail">
-            <div className="potensi-image reveal">
-              <img src="/images/agriculture.png" alt="Usaha dan Peternakan Desa" />
+            <div className="potensi-image reveal" style={{ position: 'relative', minHeight: '400px' }}>
+              <Image src="/images/agriculture.png" alt="Usaha dan Peternakan Desa" fill style={{ objectFit: 'cover', borderRadius: 'var(--radius-xl)' }} />
             </div>
             <div className="reveal reveal-delay-1">
               <div className="section-label">Penggerak Ekonomi</div>
