@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import ThemeToggle from '@/components/ThemeToggle';
 
 /**
  * Navbar — replicates initNavbar() from main.js.
@@ -96,16 +97,19 @@ export default function Navbar() {
           })}
         </div>
 
-        <button
-          className={`nav-toggle${menuOpen ? ' active' : ''}`}
-          id="navToggle"
-          aria-label="Toggle navigation"
-          onClick={toggleMenu}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <ThemeToggle />
+          <button
+            className={`nav-toggle${menuOpen ? ' active' : ''}`}
+            id="navToggle"
+            aria-label="Toggle navigation"
+            onClick={toggleMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </nav>
   );

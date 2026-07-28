@@ -2,6 +2,7 @@ import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CursorGlow from '@/components/CursorGlow';
+import ThemeProvider from '@/components/ThemeProvider';
 import './globals.css';
 
 export const metadata = {
@@ -12,19 +13,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <head>
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {/* Phosphor Icons — loaded before paint so icons are visible immediately */}
         <Script
           src="https://unpkg.com/@phosphor-icons/web"
           strategy="afterInteractive"
         />
-        <Navbar />
-        {children}
-        <Footer />
-        <CursorGlow />
+        <ThemeProvider attribute="data-theme" defaultTheme="dark">
+          <Navbar />
+          {children}
+          <Footer />
+          <CursorGlow />
+        </ThemeProvider>
       </body>
     </html>
   );
