@@ -32,8 +32,7 @@ export default function AdminLayout({ children }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/admin/login');
-    router.refresh(); // Force refresh to clear state
+    window.location.href = '/admin/login';
   };
 
   // Close sidebar on mobile when navigating

@@ -290,7 +290,7 @@ export default function AkunPage() {
               style={{
                 padding: '14px',
                 backgroundColor: 'var(--clr-primary)',
-                color: 'var(--clr-surface)',
+                color: '#ffffff',
                 border: 'none',
                 borderRadius: 'var(--radius-sm)',
                 fontWeight: '600',
