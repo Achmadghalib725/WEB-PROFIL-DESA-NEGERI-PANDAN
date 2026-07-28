@@ -22,6 +22,7 @@ export default function TambahLayanan() {
         { label: 'Lainnya (Umum)', value: 'ph-folder-open' }
       ]
     },
+    { name: 'description', label: 'Deskripsi Singkat', type: 'textarea', required: false, maxLength: 500, rows: 3, placeholder: 'Misal: Layanan ini diperuntukkan bagi warga yang ingin mengurus...' },
     { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, placeholder: '1. Fotokopi KK\n2. Surat Pengantar RT/RW' },
     { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, placeholder: '1. Datang ke Balai Desa\n2. Ambil nomor antrean' }
   ];
@@ -48,6 +49,7 @@ export default function TambahLayanan() {
     const newItem = {
       id: Date.now().toString(),
       title: formData.title,
+      description: formData.description || '',
       icon: formData.icon,
       requirements: formData.requirements,
       procedures: formData.procedures,

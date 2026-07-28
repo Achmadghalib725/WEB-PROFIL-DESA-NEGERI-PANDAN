@@ -122,6 +122,11 @@ export default function LayananPage() {
                         padding: isOpen ? '0 24px 24px 24px' : '0 24px',
                       }}
                     >
+                      {service.description && (
+                        <p style={{ color: 'var(--clr-text-dim)', marginBottom: '24px', marginTop: '10px', lineHeight: '1.6' }}>
+                          {service.description}
+                        </p>
+                      )}
                       <div style={{ borderTop: '1px solid var(--clr-border)', paddingTop: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' }}>
                         
                         {/* Persyaratan */}

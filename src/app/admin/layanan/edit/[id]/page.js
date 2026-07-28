@@ -53,6 +53,7 @@ export default function EditLayanan() {
         { label: 'Lainnya (Umum)', value: 'ph-folder-open' }
       ]
     },
+    { name: 'description', label: 'Deskripsi Singkat', type: 'textarea', required: false, maxLength: 500, rows: 3, defaultValue: initialData.description || '' },
     { name: 'requirements', label: 'Syarat Berkas (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, defaultValue: initialData.requirements },
     { name: 'procedures', label: 'Tata Cara (Satu per baris)', type: 'textarea', required: true, maxLength: 2000, rows: 5, defaultValue: initialData.procedures }
   ];
@@ -78,6 +79,7 @@ export default function EditLayanan() {
       layananArray[index] = {
         ...layananArray[index],
         title: formData.title,
+        description: formData.description || '',
         icon: formData.icon,
         requirements: formData.requirements,
         procedures: formData.procedures,
