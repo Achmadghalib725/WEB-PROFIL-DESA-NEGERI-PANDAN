@@ -24,7 +24,24 @@ export default function AdminBerita() {
   }
 
   async function handleDelete(id) {
-    await supabase.from('berita').delete().eq('id', id);
+    const itemToDelete = berita.find(item => item.id === id);
+    
+    // Hapus data dari tabel
+    const { error } = await supabase.from('berita').delete().eq('id', id);
+    
+    // Jika berhasil dihapus dan ada gambar, hapus juga dari storage
+    if (!error && itemToDelete && itemToDelete.image_url) {
+      try {
+        const urlParts = itemToDelete.image_url.split('/assets/');
+        if (urlParts.length === 2) {
+          const path = urlParts[1];
+          await supabase.storage.from('assets').remove([path]);
+        }
+      } catch (e) {
+        console.error('Error deleting image from storage:', e);
+      }
+    }
+    
     fetchBerita();
   }
 
