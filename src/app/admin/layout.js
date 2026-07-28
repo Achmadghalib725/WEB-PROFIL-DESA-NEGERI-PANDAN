@@ -162,7 +162,23 @@ export default function AdminLayout({ children }) {
 
         {/* Profile & Logout Section */}
         <div className="sidebar-footer" style={{ padding: '20px', borderTop: '1px solid var(--clr-border)', backgroundColor: 'var(--clr-surface)', transition: 'padding 0.4s ease' }}>
-          <div className="profile-info" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+          <Link 
+            href="/admin/akun"
+            className="profile-info" 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              marginBottom: '16px',
+              padding: '8px',
+              borderRadius: 'var(--radius-sm)',
+              textDecoration: 'none',
+              transition: 'background-color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--clr-surface-hover)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            title={isDesktopCollapsed ? 'Pengaturan Akun' : ''}
+          >
             <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--clr-primary-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>
               <i className="ph ph-user"></i>
             </div>
@@ -172,7 +188,7 @@ export default function AdminLayout({ children }) {
                 {adminEmail}
               </div>
             </div>
-          </div>
+          </Link>
           
           <button 
             className="logout-btn"
