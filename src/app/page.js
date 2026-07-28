@@ -5,8 +5,12 @@ import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useTiltEffect } from '@/hooks/useTiltEffect';
-import ParticlesCanvas from '@/components/ParticlesCanvas';
+import dynamic from 'next/dynamic';
 import AnimatedCounter from '@/components/AnimatedCounter';
+
+const ParticlesCanvas = dynamic(() => import('@/components/ParticlesCanvas'), { 
+  ssr: false,
+});
 
 export default function BerandaPage() {
   const [heroImage, setHeroImage] = useState('/images/hero-village.png');

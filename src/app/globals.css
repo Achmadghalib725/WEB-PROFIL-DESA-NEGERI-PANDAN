@@ -777,6 +777,7 @@ h1, h2, h3, h4, h5 {
   background-clip: text;
   line-height: 1;
   letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
 }
 
 .hero-stat .stat-label {
@@ -991,6 +992,7 @@ h1, h2, h3, h4, h5 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-card .stat-text {

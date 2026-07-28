@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         {/* Phosphor Icons — loaded before paint so icons are visible immediately */}
         <Script
           src="https://unpkg.com/@phosphor-icons/web"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
         <ThemeProvider attribute="data-theme" defaultTheme="dark">
           <Navbar />
