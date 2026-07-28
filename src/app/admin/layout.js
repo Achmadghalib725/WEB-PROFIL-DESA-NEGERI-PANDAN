@@ -225,7 +225,7 @@ export default function AdminLayout({ children }) {
 
       {/* Main Content */}
       <main className="admin-main" style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
-        <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <div className="container" style={{ maxWidth: '1600px', margin: '0 auto' }}>
           {children}
         </div>
       </main>
