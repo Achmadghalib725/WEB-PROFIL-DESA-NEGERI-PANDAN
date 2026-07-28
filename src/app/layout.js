@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CursorGlow from '@/components/CursorGlow';
 import ThemeProvider from '@/components/ThemeProvider';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import './globals.css';
 
 export const metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
           <CursorGlow />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
