@@ -14,7 +14,7 @@ export default function DataTable({
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className="admin-table-header" style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <div>
           <span style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '2px', color: 'var(--clr-primary)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ width: '30px', height: '2px', backgroundColor: 'var(--clr-primary)' }}></span>
@@ -32,7 +32,7 @@ export default function DataTable({
 
       <div className="glass-card" style={{ padding: 0 }}>
         <div style={{ overflowX: 'auto', width: '100%' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+          <table className="admin-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
             <tr style={{ backgroundColor: 'var(--clr-surface-active)', borderBottom: '1px solid var(--clr-border)' }}>
               {columns.map((col, idx) => (
@@ -60,11 +60,11 @@ export default function DataTable({
               data.map((item, rowIndex) => (
                 <tr key={rowIndex} style={{ borderBottom: '1px solid var(--clr-border)', transition: 'background-color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--clr-surface)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                   {columns.map((col, colIndex) => (
-                    <td key={colIndex} style={{ padding: '16px 24px', color: 'var(--clr-text-light)' }}>
+                    <td key={colIndex} data-label={col.label} style={{ padding: '16px 24px', color: 'var(--clr-text-light)' }}>
                       {col.render ? col.render(item) : item[col.key]}
                     </td>
                   ))}
-                  <td style={{ padding: '16px 24px', textAlign: 'center' }}>
+                  <td data-label="Aksi" style={{ padding: '16px 24px', textAlign: 'center' }}>
                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                       {editBasePath && (
                         <Link 
@@ -170,6 +170,72 @@ export default function DataTable({
           </div>
         </div>
       )}
+      {/* Responsive Table CSS */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @media (max-width: 768px) {
+          .admin-table-header {
+            flex-direction: column;
+            align-items: flex-start !important;
+          }
+          
+          .admin-data-table, 
+          .admin-data-table thead, 
+          .admin-data-table tbody, 
+          .admin-data-table th, 
+          .admin-data-table td, 
+          .admin-data-table tr { 
+            display: block; 
+          }
+          
+          /* Sembunyikan thead (tapi tetap ada untuk aksesibilitas screen reader) */
+          .admin-data-table thead tr { 
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+          }
+          
+          .admin-data-table tr { 
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            background-color: var(--clr-surface) !important;
+            box-shadow: var(--shadow-sm);
+            padding: 8px 0;
+          }
+          
+          .admin-data-table td { 
+            /* Beri ruang di sebelah kiri untuk label kolom */
+            border: none !important;
+            position: relative;
+            padding-left: 45% !important; 
+            padding-top: 12px !important;
+            padding-bottom: 12px !important;
+            text-align: left !important;
+            min-height: 44px;
+            word-break: break-word;
+          }
+          
+          .admin-data-table td:before { 
+            /* Label kolom berfungsi seperti th di desktop */
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            width: 35%; 
+            padding-right: 10px; 
+            white-space: nowrap;
+            font-weight: 600;
+            color: var(--clr-text-secondary);
+            content: attr(data-label);
+            font-size: var(--fs-small);
+          }
+          
+          /* Ratakan tombol aksi ke kiri di versi mobile */
+          .admin-data-table td[data-label="Aksi"] > div {
+            justify-content: flex-start !important;
+            flex-wrap: wrap;
+          }
+        }
+      `}} />
     </div>
   );
 }

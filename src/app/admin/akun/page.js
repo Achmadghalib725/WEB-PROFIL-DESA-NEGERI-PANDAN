@@ -82,7 +82,7 @@ export default function AkunPage() {
         <p style={{ color: 'var(--clr-text-muted)', fontSize: '15px' }}>Kelola informasi profil dan keamanan akun administrator Anda.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '24px', alignItems: 'start' }}>
         
         {/* Profile Card */}
         <div style={{ 

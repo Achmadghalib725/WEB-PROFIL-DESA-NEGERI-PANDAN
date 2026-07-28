@@ -257,7 +257,7 @@ export default function AdminForm({
             </div>
           )}
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: 'var(--space-sm)' }}>
+          <div className="admin-form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: 'var(--space-sm)' }}>
             <button 
               type="submit" 
               disabled={loading}
@@ -295,6 +295,17 @@ export default function AdminForm({
         input[type="file"]::file-selector-button:hover {
           background-color: rgba(255,255,255,0.1);
           border-color: rgba(255,255,255,0.2);
+        }
+        
+        @media (max-width: 768px) {
+          .admin-form-actions {
+            flex-direction: column;
+            width: 100%;
+          }
+          .admin-form-actions button {
+            width: 100%;
+            justify-content: center;
+          }
         }
       `}} />
     </div>
