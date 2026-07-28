@@ -28,6 +28,11 @@ export default function AdminOrganisasi() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
+  // Custom Dialog States
+  const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, type: null, index: null, title: '' });
+  const [promptModal, setPromptModal] = useState({ isOpen: false, step: 1, tahunAwal: '', tahunAkhir: '' });
+  const [alertModal, setAlertModal] = useState({ isOpen: false, message: '', type: 'info' });
+
   // Cropper states
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
@@ -162,15 +167,17 @@ export default function AdminOrganisasi() {
     setDusuns([...dusuns, { id: newId, jabatan: 'KADUS BARU', name: '', image_url: '', rts: [] }]);
   };
 
-  const handleRemoveDusun = async (index) => {
-    if (confirm('Yakin ingin menghapus dusun ini?')) {
-      if (dusuns[index]?.image_url) {
-        await deleteImageFromStorage(dusuns[index].image_url);
-      }
-      const newDusuns = [...dusuns];
-      newDusuns.splice(index, 1);
-      setDusuns(newDusuns);
+  const handleRemoveDusun = (index) => {
+    setDeleteConfirm({ isOpen: true, type: 'dusun', index, title: 'Yakin ingin menghapus dusun ini?' });
+  };
+
+  const executeRemoveDusun = async (index) => {
+    if (dusuns[index]?.image_url) {
+      await deleteImageFromStorage(dusuns[index].image_url);
     }
+    const newDusuns = [...dusuns];
+    newDusuns.splice(index, 1);
+    setDusuns(newDusuns);
   };
 
   const handleDusunChange = (index, field, value) => {
@@ -203,11 +210,22 @@ export default function AdminOrganisasi() {
   };
 
   const handleRemoveSejarah = (index) => {
-    if (confirm('Yakin ingin menghapus riwayat kades ini?')) {
-      const newSejarah = [...sejarahKades];
-      newSejarah.splice(index, 1);
-      setSejarahKades(newSejarah);
+    setDeleteConfirm({ isOpen: true, type: 'sejarah', index, title: 'Yakin ingin menghapus riwayat kades ini?' });
+  };
+
+  const executeRemoveSejarah = (index) => {
+    const newSejarah = [...sejarahKades];
+    newSejarah.splice(index, 1);
+    setSejarahKades(newSejarah);
+  };
+
+  const confirmDeleteAction = async () => {
+    if (deleteConfirm.type === 'dusun') {
+      await executeRemoveDusun(deleteConfirm.index);
+    } else if (deleteConfirm.type === 'sejarah') {
+      executeRemoveSejarah(deleteConfirm.index);
     }
+    setDeleteConfirm({ isOpen: false, type: null, index: null, title: '' });
   };
 
   const handleSejarahChange = (index, field, value) => {
@@ -217,11 +235,12 @@ export default function AdminOrganisasi() {
   };
 
   const handleArsipKades = () => {
-    const tahunAwal = prompt('Masukkan tahun AWAL Kepala Desa ini menjabat (misal: 2019):');
-    if (!tahunAwal) return;
-    
-    const tahunAkhir = prompt('Masukkan tahun AKHIR masa jabatan Kepala Desa ini (misal: 2026):');
-    if (!tahunAkhir) return;
+    setPromptModal({ isOpen: true, step: 1, tahunAwal: '', tahunAkhir: '' });
+  };
+
+  const executeArsipKades = () => {
+    const { tahunAwal, tahunAkhir } = promptModal;
+    if (!tahunAwal || !tahunAkhir) return;
 
     const namaKadesSaatIni = data['kepala_desa']?.name || 'Tidak diketahui';
 
@@ -238,7 +257,8 @@ export default function AdminOrganisasi() {
     // Kosongkan periode untuk Kades baru
     setData(prev => ({ ...prev, periode: '' }));
 
-    alert('Berhasil! Kades sebelumnya telah dipindah ke Riwayat. Silakan isi nama Kades yang baru terpilih.');
+    setPromptModal({ isOpen: false, step: 1, tahunAwal: '', tahunAkhir: '' });
+    setAlertModal({ isOpen: true, type: 'success', message: 'Berhasil! Kades sebelumnya telah dipindah ke Riwayat. Silakan isi nama Kades yang baru terpilih.' });
   };
 
   const handleDusunFileChange = async (index, file) => {
@@ -285,7 +305,7 @@ export default function AdminOrganisasi() {
       setImageSrc(null);
     } catch (e) {
       console.error(e);
-      alert('Gagal memotong gambar');
+      setAlertModal({ isOpen: true, type: 'error', message: 'Gagal memotong gambar' });
     } finally {
       setSaving(false);
     }
@@ -747,6 +767,125 @@ export default function AdminOrganisasi() {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm.isOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
+          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', textAlign: 'center', background: 'var(--clr-bg-alt)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '24px' }}>
+              <i className="ph ph-warning-circle"></i>
+            </div>
+            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: '#fff' }}>Hapus Data?</h3>
+            <p style={{ color: 'var(--clr-text-muted)', marginBottom: '24px', lineHeight: '1.5' }}>
+              {deleteConfirm.title}<br/>Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              <button 
+                onClick={() => setDeleteConfirm({ isOpen: false, type: null, index: null, title: '' })}
+                style={{ flex: 1, padding: '10px', backgroundColor: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontWeight: '500', cursor: 'pointer' }}
+              >
+                Batal
+              </button>
+              <button 
+                onClick={confirmDeleteAction}
+                style={{ flex: 1, padding: '10px', backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: '500', cursor: 'pointer' }}
+              >
+                Ya, Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Prompt Modal */}
+      {promptModal.isOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
+          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', background: 'var(--clr-bg-alt)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'rgba(234, 179, 8, 0.1)', color: '#eab308', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', fontSize: '24px' }}>
+              <i className="ph ph-archive"></i>
+            </div>
+            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px', color: '#fff' }}>Arsipkan Kepala Desa</h3>
+            
+            {promptModal.step === 1 ? (
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: 'var(--clr-text-dim)' }}>Tahun Awal Jabatan</label>
+                <input 
+                  autoFocus
+                  type="text" 
+                  value={promptModal.tahunAwal}
+                  onChange={(e) => setPromptModal(prev => ({ ...prev, tahunAwal: e.target.value }))}
+                  placeholder="Misal: 2019"
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                />
+              </div>
+            ) : (
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', color: 'var(--clr-text-dim)' }}>Tahun Akhir Jabatan</label>
+                <input 
+                  autoFocus
+                  type="text" 
+                  value={promptModal.tahunAkhir}
+                  onChange={(e) => setPromptModal(prev => ({ ...prev, tahunAkhir: e.target.value }))}
+                  placeholder="Misal: 2026"
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                />
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button 
+                onClick={() => setPromptModal({ isOpen: false, step: 1, tahunAwal: '', tahunAkhir: '' })}
+                style={{ padding: '10px 16px', backgroundColor: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer' }}
+              >
+                Batal
+              </button>
+              {promptModal.step === 1 ? (
+                <button 
+                  onClick={() => {
+                    if (promptModal.tahunAwal) setPromptModal(prev => ({ ...prev, step: 2 }));
+                  }}
+                  disabled={!promptModal.tahunAwal}
+                  style={{ padding: '10px 16px', backgroundColor: 'var(--clr-primary)', color: '#fff', border: 'none', borderRadius: '8px', cursor: promptModal.tahunAwal ? 'pointer' : 'not-allowed', opacity: promptModal.tahunAwal ? 1 : 0.5 }}
+                >
+                  Lanjut &rarr;
+                </button>
+              ) : (
+                <button 
+                  onClick={executeArsipKades}
+                  disabled={!promptModal.tahunAkhir}
+                  style={{ padding: '10px 16px', backgroundColor: 'var(--clr-primary)', color: '#fff', border: 'none', borderRadius: '8px', cursor: promptModal.tahunAkhir ? 'pointer' : 'not-allowed', opacity: promptModal.tahunAkhir ? 1 : 0.5 }}
+                >
+                  Simpan & Arsipkan
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Alert Modal */}
+      {alertModal.isOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
+          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', textAlign: 'center', background: 'var(--clr-bg-alt)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: alertModal.type === 'success' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', color: alertModal.type === 'success' ? '#22c55e' : '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '32px' }}>
+              <i className={alertModal.type === 'success' ? 'ph ph-check-circle' : 'ph ph-info'}></i>
+            </div>
+            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: '#fff' }}>
+              {alertModal.type === 'success' ? 'Berhasil' : 'Informasi'}
+            </h3>
+            <p style={{ color: 'var(--clr-text-muted)', marginBottom: '24px', lineHeight: '1.5' }}>
+              {alertModal.message}
+            </p>
+            <button 
+              onClick={() => setAlertModal({ isOpen: false, message: '', type: 'info' })}
+              style={{ padding: '10px 32px', backgroundColor: alertModal.type === 'success' ? 'var(--clr-primary)' : '#ef4444', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: '500', cursor: 'pointer' }}
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+      
       {/* Responsive CSS */}
       <style dangerouslySetInnerHTML={{__html: `
         @media (max-width: 768px) {
