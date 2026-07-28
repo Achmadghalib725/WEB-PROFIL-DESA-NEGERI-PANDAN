@@ -6,9 +6,10 @@ import { createClient } from '@/utils/supabase/client';
 import './org.css';
 
 export default function ProfilPage() {
-  useScrollReveal();
   const supabase = createClient();
   const [orgData, setOrgData] = useState({});
+  
+  useScrollReveal([orgData]);
 
   useEffect(() => {
     async function fetchOrgData() {
