@@ -791,8 +791,8 @@ h1, h2, h3, h4, h5 {
 .hero-scroll {
   position: absolute;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 5%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
