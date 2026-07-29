@@ -8,7 +8,8 @@ export default function DataTable({
   data, 
   loading, 
   onDelete,
-  editBasePath
+  editBasePath,
+  extraAction
 }) {
   const [itemToDelete, setItemToDelete] = useState(null);
 
@@ -23,11 +24,14 @@ export default function DataTable({
           </span>
           <h1 className="section-title" style={{ margin: 0, fontSize: '32px' }}>{title}</h1>
         </div>
-        {addAction && (
-          <Link href={addAction.href} className="btn btn-primary" style={{ textDecoration: 'none' }}>
-            {addAction.label}
-          </Link>
-        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          {extraAction}
+          {addAction && (
+            <Link href={addAction.href} className="btn btn-primary" style={{ textDecoration: 'none' }}>
+              {addAction.label}
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className="glass-card" style={{ padding: 0 }}>

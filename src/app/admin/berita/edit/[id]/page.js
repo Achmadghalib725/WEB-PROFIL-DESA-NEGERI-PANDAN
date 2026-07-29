@@ -9,6 +9,7 @@ export default function EditBerita() {
   const supabase = createClient();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -20,6 +21,17 @@ export default function EditBerita() {
         .single();
         
       if (result) setData(result);
+
+      const { data: katRes } = await supabase.from('pengaturan_halaman').select('value').eq('id', 'kategori_berita').maybeSingle();
+      if (katRes?.value) {
+        try {
+          const parsed = typeof katRes.value === 'string' ? JSON.parse(katRes.value) : katRes.value;
+          if (Array.isArray(parsed)) {
+            setCategoryOptions(parsed.map(cat => ({ label: cat, value: cat })));
+          }
+        } catch(e) {}
+      }
+      
       setLoading(false);
     }
     fetchData();
@@ -41,7 +53,7 @@ export default function EditBerita() {
 
   const fields = [
     { name: 'title', label: 'Judul Berita', type: 'text', required: true, maxLength: 100, defaultValue: data.title },
-    { name: 'kategori', label: 'Kategori / Tag (Opsional)', type: 'text', required: false, maxLength: 30, defaultValue: data.kategori || '' },
+    { name: 'kategori', label: 'Kategori Berita', type: 'select', options: categoryOptions, required: false, defaultValue: data.kategori || '' },
     { name: 'image', label: 'Gambar Cover Baru (Biarkan kosong jika tidak mengubah)', type: 'file', accept: 'image/*', required: false },
     { name: 'content', label: 'Isi Berita', type: 'textarea', required: true, maxLength: 5000, rows: 10, defaultValue: data.content }
   ];
