@@ -6,9 +6,9 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function sitemap() {
-  // Ganti URL_UTAMA dengan domain asli website Anda (misal: https://negeri-pandan.vercel.app)
+  // Ganti URL_UTAMA dengan domain asli website Anda
   // Atau gunakan environment variable
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://negeri-pandan.vercel.app'; // Sesuaikan jika ada domain asli
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://web-profil-desa-negeri-pandan.vercel.app'; 
 
   // 1. Halaman statis (Menu Utama)
   const staticPages = [

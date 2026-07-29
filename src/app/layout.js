@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: 'Desa Negeri Pandan',
     description: 'Portal informasi resmi, layanan publik, dan berita Desa Negeri Pandan.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://negeri-pandan.vercel.app',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://web-profil-desa-negeri-pandan.vercel.app',
     siteName: 'Desa Negeri Pandan',
     locale: 'id_ID',
     type: 'website',

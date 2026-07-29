@@ -1,5 +1,5 @@
 export default function robots() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://negeri-pandan.vercel.app'; // Sesuaikan jika ada domain asli
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://web-profil-desa-negeri-pandan.vercel.app';
 
   return {
     rules: {
