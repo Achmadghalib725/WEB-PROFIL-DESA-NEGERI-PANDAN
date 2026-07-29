@@ -46,7 +46,7 @@ export default function AdminDashboard() {
     try {
       const [beritaRes, pengaturanRes] = await Promise.all([
         supabase.from('berita').select('id, title, created_at').order('created_at', { ascending: false }).limit(5),
-        supabase.from('pengaturan_halaman').select('id, updated_at').order('updated_at', { ascending: false }).limit(5)
+        supabase.from('pengaturan_halaman').select('id, updated_at').order('updated_at', { ascending: false }).limit(15)
       ]);
 
       const activities = [];
@@ -63,18 +63,22 @@ export default function AdminDashboard() {
       }
       
       if (pengaturanRes.data) {
+        let hasStatUpdate = false;
         pengaturanRes.data.forEach(p => {
           let title = '';
           let icon = 'ph-gear';
-          if (p.id === 'layanan_publik_data') {
+          
+          if (p.id.startsWith('stat_')) {
+            if (hasStatUpdate) return;
+            hasStatUpdate = true;
+            title = 'Data Statistik Desa diperbarui';
+            icon = 'ph-chart-bar';
+          } else if (p.id === 'layanan_publik_data') {
             title = 'Data Layanan Publik diperbarui';
             icon = 'ph-users';
           } else if (p.id === 'struktur_organisasi') {
             title = 'Struktur Pemerintahan diperbarui';
             icon = 'ph-users-three';
-          } else if (p.id === 'statistik_desa') {
-            title = 'Data Statistik Desa diperbarui';
-            icon = 'ph-chart-bar';
           } else if (p.id === 'kategori_berita') {
             title = 'Kategori Berita diperbarui';
             icon = 'ph-list';
