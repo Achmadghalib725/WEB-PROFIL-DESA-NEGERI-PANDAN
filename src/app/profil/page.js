@@ -46,11 +46,10 @@ export default function ProfilPage() {
       ];
 
   // Ekstrak tahun mulai kades saat ini dari periode, misal "Periode 2019 - 2025" -> "2019"
-  let tahunMulaiSaatIni = "...";
-  if (orgData.periode) {
-    const match = orgData.periode.match(/\d{4}/);
-    if (match) tahunMulaiSaatIni = match[0];
-  }
+  let tahunMulaiSaatIni = "2019";
+  const periodeText = orgData.periode || 'Periode 2019 - 2025';
+  const match = periodeText.match(/\d{4}/);
+  if (match) tahunMulaiSaatIni = match[0];
 
   return (
     <main>

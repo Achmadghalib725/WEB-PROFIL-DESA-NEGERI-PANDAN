@@ -8,21 +8,36 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 export default function BeritaPage() {
   const [berita, setBerita] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [loading, setLoading] = useState(true);
 
   useScrollReveal([berita]);
 
   useEffect(() => {
-    async function fetchBerita() {
-      const { data } = await supabase
+    async function fetchData() {
+      // Fetch berita
+      const { data: beritaData } = await supabase
         .from('berita')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (data) setBerita(data);
+      if (beritaData) setBerita(beritaData);
+
+      // Fetch categories
+      const { data: catData } = await supabase.from('pengaturan_halaman').select('value').eq('id', 'kategori_berita').maybeSingle();
+      if (catData?.value) {
+        try {
+          const parsed = typeof catData.value === 'string' ? JSON.parse(catData.value) : catData.value;
+          if (Array.isArray(parsed)) {
+            setCategories(parsed);
+          }
+        } catch(e) {}
+      }
+
       setLoading(false);
     }
-    fetchBerita();
+    fetchData();
   }, []);
 
   return (
@@ -35,13 +50,36 @@ export default function BeritaPage() {
           <p className="text-muted" style={{ fontSize: '18px', marginTop: '10px' }}>Informasi dan kabar terbaru seputar Desa Negeri Pandan</p>
         </div>
 
+        {/* Filter Kategori */}
+        {!loading && categories.length > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '40px' }} className="reveal">
+            <button 
+              onClick={() => setSelectedCategory('Semua')}
+              className={selectedCategory === 'Semua' ? 'btn btn-primary' : 'btn btn-outline'}
+              style={{ padding: '8px 20px', fontSize: '14px', borderRadius: '50px', border: selectedCategory !== 'Semua' ? '1px solid var(--clr-border)' : 'none', color: selectedCategory !== 'Semua' ? 'var(--clr-text)' : '#fff' }}
+            >
+              Semua
+            </button>
+            {categories.map((cat, idx) => (
+              <button 
+                key={idx}
+                onClick={() => setSelectedCategory(cat)}
+                className={selectedCategory === cat ? 'btn btn-primary' : 'btn btn-outline'}
+                style={{ padding: '8px 20px', fontSize: '14px', borderRadius: '50px', border: selectedCategory !== cat ? '1px solid var(--clr-border)' : 'none', color: selectedCategory !== cat ? 'var(--clr-text)' : '#fff' }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
+
         {loading ? (
           <p className="text-muted" style={{ textAlign: 'center' }}>Memuat berita...</p>
         ) : berita.length === 0 ? (
           <p className="text-muted" style={{ textAlign: 'center' }}>Belum ada berita untuk saat ini.</p>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
-            {berita.map((item) => (
+            {berita.filter(item => selectedCategory === 'Semua' || item.kategori === selectedCategory).map((item) => (
               <Link href={`/berita/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
                 <div className="glass-card reveal" style={{ 
                   padding: 0,
