@@ -69,11 +69,11 @@ export default function DetailBerita() {
                 </span>
               )}
             </div>
-            <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '30px', lineHeight: '1.4' }}>
+            <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--clr-text)', marginBottom: '30px', lineHeight: '1.4' }}>
               {berita.title}
             </h1>
             
-            <div style={{ color: 'var(--text-muted, #94a3b8)', fontSize: '16px', lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
+            <div style={{ color: 'var(--clr-text-secondary)', backgroundColor: 'var(--clr-surface)', padding: '24px', borderRadius: '12px', border: '1px solid var(--clr-border)', fontSize: '16px', lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
               {berita.content}
             </div>
           </div>
