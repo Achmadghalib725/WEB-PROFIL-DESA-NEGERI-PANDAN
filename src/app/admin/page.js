@@ -44,65 +44,24 @@ export default function AdminDashboard() {
   async function fetchHistory() {
     setLoadingHistory(true);
     try {
-      const [beritaRes, pengaturanRes] = await Promise.all([
-        supabase.from('berita').select('id, title, created_at').order('created_at', { ascending: false }).limit(5),
-        supabase.from('pengaturan_halaman').select('id, updated_at').order('updated_at', { ascending: false }).limit(15)
-      ]);
-
-      const activities = [];
-      if (beritaRes.data) {
-        beritaRes.data.forEach(b => {
-          activities.push({
-            id: `berita-${b.id}`,
-            title: `Berita ditambahkan: "${b.title}"`,
-            date: new Date(b.created_at),
-            type: 'berita',
-            icon: 'ph-newspaper'
-          });
-        });
+      const { data } = await supabase.from('pengaturan_halaman').select('value').eq('id', 'activity_logs').single();
+      
+      let logs = [];
+      if (data && data.value) {
+        logs = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
       }
       
-      if (pengaturanRes.data) {
-        let hasStatUpdate = false;
-        pengaturanRes.data.forEach(p => {
-          let title = '';
-          let icon = 'ph-gear';
-          
-          if (p.id.startsWith('stat_')) {
-            if (hasStatUpdate) return;
-            hasStatUpdate = true;
-            title = 'Data Statistik Desa diperbarui';
-            icon = 'ph-chart-bar';
-          } else if (p.id === 'layanan_publik_data') {
-            title = 'Data Layanan Publik diperbarui';
-            icon = 'ph-users';
-          } else if (p.id === 'struktur_organisasi') {
-            title = 'Struktur Pemerintahan diperbarui';
-            icon = 'ph-users-three';
-          } else if (p.id === 'kategori_berita') {
-            title = 'Kategori Berita diperbarui';
-            icon = 'ph-list';
-          } else if (p.id === 'kontak_desa') {
-            title = 'Informasi Kontak Desa diperbarui';
-            icon = 'ph-phone';
-          } else {
-            title = `Pengaturan "${p.id}" diperbarui`;
-          }
-
-          if (p.updated_at) {
-            activities.push({
-              id: `pengaturan-${p.id}`,
-              title,
-              date: new Date(p.updated_at),
-              type: 'pengaturan',
-              icon
-            });
-          }
-        });
+      if (!Array.isArray(logs)) {
+        logs = [];
       }
+      
+      // Ensure all dates are parsed correctly
+      logs = logs.map(log => ({
+        ...log,
+        date: new Date(log.date)
+      }));
 
-      activities.sort((a, b) => b.date - a.date);
-      setHistory(activities.slice(0, 5));
+      setHistory(logs.slice(0, 10)); // Tampilkan 10 aktivitas terbaru
     } catch (e) {
       console.error('Error fetching history:', e);
     }
@@ -160,8 +119,8 @@ export default function AdminDashboard() {
                     width: '40px', 
                     height: '40px', 
                     borderRadius: '8px', 
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)', 
-                    color: 'var(--clr-primary-light)', 
+                    backgroundColor: item.action === 'Tambah' ? 'rgba(16, 185, 129, 0.1)' : item.action === 'Hapus' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(59, 130, 246, 0.1)', 
+                    color: item.action === 'Tambah' ? '#10b981' : item.action === 'Hapus' ? '#ef4444' : '#3b82f6', 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'center',
@@ -170,7 +129,21 @@ export default function AdminDashboard() {
                     <i className={`ph-bold ${item.icon}`}></i>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '15px', fontWeight: '500', color: 'var(--clr-text)', marginBottom: '4px' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '500', color: 'var(--clr-text)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ 
+                        fontSize: '11px', 
+                        padding: '2px 8px', 
+                        borderRadius: '4px', 
+                        backgroundColor: item.action === 'Tambah' ? 'rgba(16, 185, 129, 0.15)' : item.action === 'Hapus' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.15)',
+                        color: item.action === 'Tambah' ? '#10b981' : item.action === 'Hapus' ? '#ef4444' : '#3b82f6',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase'
+                      }}>
+                        {item.action}
+                      </span>
+                      {item.target}
+                    </div>
+                    <div style={{ fontSize: '13px', color: 'var(--clr-text-secondary)', marginBottom: '4px' }}>
                       {item.title}
                     </div>
                     <div style={{ fontSize: '12px', color: 'var(--clr-text-muted)' }}>

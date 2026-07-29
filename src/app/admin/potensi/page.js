@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import DataTable from '@/components/admin/DataTable';
+import { logActivity } from '@/utils/logActivity';
 
 export default function AdminPotensi() {
   const supabase = createClient();
@@ -51,6 +52,7 @@ export default function AdminPotensi() {
       }
     }
     
+    logActivity('Hapus', 'Potensi UMKM', itemToDelete ? itemToDelete.title : 'Data Potensi', 'ph-storefront');
     fetchData();
   }
 

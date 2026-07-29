@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import AdminForm from '@/components/admin/AdminForm';
+import { logActivity } from '@/utils/logActivity';
 
 export default function TambahBerita() {
   const supabase = createClient();
@@ -65,6 +66,9 @@ export default function TambahBerita() {
       ]);
 
     if (insertError) throw insertError;
+    
+    logActivity('Tambah', 'Berita', formData.title, 'ph-newspaper');
+    return 'Berita berhasil ditambahkan!';
   };
 
   return (

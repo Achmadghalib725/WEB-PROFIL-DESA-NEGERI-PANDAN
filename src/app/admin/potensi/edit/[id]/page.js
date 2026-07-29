@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import AdminForm from '@/components/admin/AdminForm';
+import { logActivity } from '@/utils/logActivity';
 
 export default function EditPotensi() {
   const { id } = useParams();
@@ -106,6 +107,7 @@ export default function EditPotensi() {
       .eq('id', id);
 
     if (updateError) throw updateError;
+    logActivity('Edit', 'Potensi UMKM', formData.title, 'ph-storefront');
   };
 
   return (

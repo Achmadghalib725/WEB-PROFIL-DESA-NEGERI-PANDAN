@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import DataTable from '@/components/admin/DataTable';
+import { logActivity } from '@/utils/logActivity';
 
 export default function AdminLayanan() {
   const supabase = createClient();
@@ -48,6 +49,7 @@ export default function AdminLayanan() {
       }], { onConflict: 'id' });
       
     if (!error) {
+      logActivity('Hapus', 'Layanan Publik', `ID Layanan: ${id}`, 'ph-users');
       setData(newData);
     } else {
       alert('Gagal menghapus data: ' + error.message);

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import DataTable from '@/components/admin/DataTable';
+import { logActivity } from '@/utils/logActivity';
 
 export default function AdminBerita() {
   const supabase = createClient();
@@ -55,14 +56,17 @@ export default function AdminBerita() {
       await supabase.from('pengaturan_halaman').insert([{ id: 'kategori_berita', value: JSON.stringify(updated), updated_at: new Date().toISOString() }]);
     }
     
+    logActivity('Tambah', 'Kategori Berita', newCategory, 'ph-list');
     setCategories(updated);
     setNewCategory('');
     setIsSavingCategory(false);
   }
 
   async function handleDeleteCategory(index) {
+    const deletedCategory = categories[index];
     const updated = categories.filter((_, i) => i !== index);
     await supabase.from('pengaturan_halaman').update({ value: JSON.stringify(updated), updated_at: new Date().toISOString() }).eq('id', 'kategori_berita');
+    logActivity('Hapus', 'Kategori Berita', deletedCategory, 'ph-list');
     setCategories(updated);
   }
 
@@ -85,6 +89,7 @@ export default function AdminBerita() {
       }
     }
     
+    logActivity('Hapus', 'Berita', itemToDelete ? itemToDelete.title : 'Berita', 'ph-newspaper');
     fetchBerita();
   }
 

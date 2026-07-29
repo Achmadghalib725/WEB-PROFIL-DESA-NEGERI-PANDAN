@@ -1,6 +1,7 @@
 'use client';
 import { createClient } from '@/utils/supabase/client';
 import AdminForm from '@/components/admin/AdminForm';
+import { logActivity } from '@/utils/logActivity';
 
 export default function TambahLayanan() {
   const supabase = createClient();
@@ -66,6 +67,8 @@ export default function TambahLayanan() {
     }], { onConflict: 'id' });
 
     if (saveError) throw saveError;
+    
+    logActivity('Tambah', 'Layanan Publik', formData.title, 'ph-users');
   };
 
   return (

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import AdminForm from '@/components/admin/AdminForm';
+import { logActivity } from '@/utils/logActivity';
 
 export default function AdminStatistik() {
   const supabase = createClient();
@@ -85,6 +86,7 @@ export default function AdminStatistik() {
 
     if (upsertError) throw upsertError;
     
+    logActivity('Edit', 'Statistik Desa', 'Pembaruan data statistik penduduk', 'ph-chart-bar');
     return 'Data statistik berhasil diperbarui!';
   };
 

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import AdminForm from '@/components/admin/AdminForm';
 import { useParams } from 'next/navigation';
+import { logActivity } from '@/utils/logActivity';
 
 export default function EditLayanan() {
   const { id } = useParams();
@@ -95,6 +96,7 @@ export default function EditLayanan() {
         }], { onConflict: 'id' });
 
       if (saveError) throw saveError;
+      logActivity('Edit', 'Layanan Publik', formData.title, 'ph-users');
     } else {
       throw new Error('Data tidak ditemukan saat menyimpan.');
     }

@@ -1,6 +1,7 @@
 'use client';
 import { createClient } from '@/utils/supabase/client';
 import AdminForm from '@/components/admin/AdminForm';
+import { logActivity } from '@/utils/logActivity';
 
 export default function TambahPotensi() {
   const supabase = createClient();
@@ -53,6 +54,7 @@ export default function TambahPotensi() {
       ]);
 
     if (error) throw error;
+    logActivity('Tambah', 'Potensi UMKM', formData.title, 'ph-storefront');
   };
 
   return (

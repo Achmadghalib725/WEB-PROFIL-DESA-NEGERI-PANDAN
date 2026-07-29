@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from '@/utils/cropImage';
+import { logActivity } from '@/utils/logActivity';
 
 const ROLES = [
   { id: 'kepala_desa', label: 'Kepala Desa' },
@@ -326,6 +327,8 @@ export default function AdminOrganisasi() {
         .upsert([{ id: 'struktur_organisasi', value: payload, updated_at: new Date().toISOString() }], { onConflict: 'id' });
 
       if (error) throw error;
+      
+      logActivity('Edit', 'Struktur Pemerintahan', 'Pembaruan bagan perangkat desa', 'ph-users-three');
       setMessage('Perubahan berhasil disimpan!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
