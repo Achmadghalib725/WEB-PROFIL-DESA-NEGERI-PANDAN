@@ -12,7 +12,7 @@ export default function BeritaPage() {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [loading, setLoading] = useState(true);
 
-  useScrollReveal([berita]);
+  useScrollReveal([berita, categories, selectedCategory]);
 
   useEffect(() => {
     async function fetchData() {
@@ -78,55 +78,61 @@ export default function BeritaPage() {
         ) : berita.length === 0 ? (
           <p className="text-muted" style={{ textAlign: 'center' }}>Belum ada berita untuk saat ini.</p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
-            {berita.filter(item => selectedCategory === 'Semua' || item.kategori === selectedCategory).map((item) => (
-              <Link href={`/berita/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
-                <div className="glass-card reveal" style={{ 
-                  padding: 0,
-                  borderRadius: '12px', 
-                  overflow: 'hidden', 
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}>
-                  {item.image_url ? (
-                    <Image 
-                      src={item.image_url} 
-                      alt={item.title} 
-                      width={400}
-                      height={200}
-                      style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
-                    />
-                  ) : (
-                    <div style={{ width: '100%', height: '200px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span className="text-muted">Tidak ada gambar</span>
-                    </div>
-                  )}
-                  <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                      <p className="text-muted" style={{ fontSize: '12px', margin: 0 }}>
-                        {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </p>
-                      {item.kategori && (
-                        <span style={{ fontSize: '10px', fontWeight: 'bold', padding: '4px 8px', backgroundColor: 'var(--clr-primary)', color: '#fff', borderRadius: '4px', textTransform: 'uppercase' }}>
-                          {item.kategori}
-                        </span>
+          <>
+            {berita.filter(item => selectedCategory === 'Semua' || item.kategori === selectedCategory).length === 0 ? (
+              <p className="text-muted" style={{ textAlign: 'center' }}>Tidak ada berita untuk kategori ini.</p>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
+                {berita.filter(item => selectedCategory === 'Semua' || item.kategori === selectedCategory).map((item) => (
+                  <Link href={`/berita/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
+                    <div className="glass-card reveal" style={{ 
+                      padding: 0,
+                      borderRadius: '12px', 
+                      overflow: 'hidden', 
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}>
+                      {item.image_url ? (
+                        <Image 
+                          src={item.image_url} 
+                          alt={item.title} 
+                          width={400}
+                          height={200}
+                          style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
+                        />
+                      ) : (
+                        <div style={{ width: '100%', height: '200px', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <span className="text-muted">Tidak ada gambar</span>
+                        </div>
                       )}
+                      <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                          <p className="text-muted" style={{ fontSize: '12px', margin: 0 }}>
+                            {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                          </p>
+                          {item.kategori && (
+                            <span style={{ fontSize: '10px', fontWeight: 'bold', padding: '4px 8px', backgroundColor: 'var(--clr-primary)', color: '#fff', borderRadius: '4px', textTransform: 'uppercase' }}>
+                              {item.kategori}
+                            </span>
+                          )}
+                        </div>
+                        <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '12px', lineHeight: '1.4' }}>
+                          {item.title}
+                        </h3>
+                        <p className="text-muted" style={{ fontSize: '14px', flex: 1, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.6' }}>
+                          {item.content}
+                        </p>
+                        <span style={{ color: 'var(--primary-color, #10b981)', fontWeight: '500', fontSize: '14px', marginTop: '15px', display: 'inline-block' }}>
+                          Baca selengkapnya →
+                        </span>
+                      </div>
                     </div>
-                    <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '12px', lineHeight: '1.4' }}>
-                      {item.title}
-                    </h3>
-                    <p className="text-muted" style={{ fontSize: '14px', flex: 1, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.6' }}>
-                      {item.content}
-                    </p>
-                    <span style={{ color: 'var(--primary-color, #10b981)', fontWeight: '500', fontSize: '14px', marginTop: '15px', display: 'inline-block' }}>
-                      Baca selengkapnya →
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
