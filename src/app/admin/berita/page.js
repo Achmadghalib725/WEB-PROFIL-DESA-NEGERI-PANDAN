@@ -50,9 +50,9 @@ export default function AdminBerita() {
     // Check if kategori_berita row exists
     const { data } = await supabase.from('pengaturan_halaman').select('id').eq('id', 'kategori_berita').single();
     if (data) {
-      await supabase.from('pengaturan_halaman').update({ value: JSON.stringify(updated) }).eq('id', 'kategori_berita');
+      await supabase.from('pengaturan_halaman').update({ value: JSON.stringify(updated), updated_at: new Date().toISOString() }).eq('id', 'kategori_berita');
     } else {
-      await supabase.from('pengaturan_halaman').insert([{ id: 'kategori_berita', value: JSON.stringify(updated) }]);
+      await supabase.from('pengaturan_halaman').insert([{ id: 'kategori_berita', value: JSON.stringify(updated), updated_at: new Date().toISOString() }]);
     }
     
     setCategories(updated);
@@ -62,7 +62,7 @@ export default function AdminBerita() {
 
   async function handleDeleteCategory(index) {
     const updated = categories.filter((_, i) => i !== index);
-    await supabase.from('pengaturan_halaman').update({ value: JSON.stringify(updated) }).eq('id', 'kategori_berita');
+    await supabase.from('pengaturan_halaman').update({ value: JSON.stringify(updated), updated_at: new Date().toISOString() }).eq('id', 'kategori_berita');
     setCategories(updated);
   }
 

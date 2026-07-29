@@ -41,11 +41,11 @@ export default function AdminLayanan() {
     
     const { error } = await supabase
       .from('pengaturan_halaman')
-      .upsert({ 
+      .upsert([{ 
         id: 'layanan_publik_data', 
         value: JSON.stringify(newData),
-        updated_at: new Date()
-      });
+        updated_at: new Date().toISOString()
+      }], { onConflict: 'id' });
       
     if (!error) {
       setData(newData);

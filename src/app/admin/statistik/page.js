@@ -75,7 +75,8 @@ export default function AdminStatistik() {
     // Siapkan data untuk di-upsert (update atau insert)
     const upsertData = Object.keys(formData).map(key => ({
       id: key,
-      value: formData[key]
+      value: formData[key],
+      updated_at: new Date().toISOString()
     }));
 
     const { error: upsertError } = await supabase

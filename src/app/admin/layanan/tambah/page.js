@@ -59,13 +59,11 @@ export default function TambahLayanan() {
     layananArray.push(newItem);
 
     // 3. Simpan kembali
-    const { error: saveError } = await supabase
-      .from('pengaturan_halaman')
-      .upsert({ 
-        id: 'layanan_publik_data', 
-        value: JSON.stringify(layananArray),
-        updated_at: new Date()
-      });
+    const { error: saveError } = await supabase.from('pengaturan_halaman').upsert([{ 
+      id: 'layanan_publik_data', 
+      value: JSON.stringify(layananArray),
+      updated_at: new Date().toISOString()
+    }], { onConflict: 'id' });
 
     if (saveError) throw saveError;
   };

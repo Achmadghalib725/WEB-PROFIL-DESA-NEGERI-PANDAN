@@ -323,7 +323,7 @@ export default function AdminOrganisasi() {
       
       const { error } = await supabase
         .from('pengaturan_halaman')
-        .upsert({ id: 'struktur_organisasi', value: payload });
+        .upsert([{ id: 'struktur_organisasi', value: payload, updated_at: new Date().toISOString() }], { onConflict: 'id' });
 
       if (error) throw error;
       setMessage('Perubahan berhasil disimpan!');
