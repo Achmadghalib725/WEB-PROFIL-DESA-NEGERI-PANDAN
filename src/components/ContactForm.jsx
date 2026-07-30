@@ -79,10 +79,10 @@ export default function ContactForm() {
           style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
             padding: '0.8rem 1rem',
-            background: 'var(--clr-bg-alt, rgba(255, 255, 255, 0.03))',
+            background: 'var(--clr-bg-alt, rgba(128, 128, 128, 0.05))',
             border: isDropdownOpen ? '1px solid var(--clr-primary)' : '1px solid var(--clr-border)',
             borderRadius: 'var(--radius-full)',
-            color: selectedSubject ? 'var(--clr-text-primary)' : 'var(--clr-text-muted)',
+            color: selectedSubject ? 'var(--clr-text)' : 'var(--clr-text-muted)',
             cursor: 'pointer',
             transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
             boxShadow: isDropdownOpen ? '0 0 0 3px rgba(16, 185, 129, 0.2)' : 'none'
@@ -97,12 +97,12 @@ export default function ContactForm() {
             position: 'absolute',
             top: 'calc(100% + 8px)',
             left: 0, right: 0,
-            background: '#0d1511', /* Solid dark green/gray background */
+            background: 'var(--clr-surface)',
             border: '1px solid var(--clr-border)',
             borderRadius: '16px',
             padding: '8px',
             zIndex: 50,
-            boxShadow: '0 10px 25px rgba(0,0,0,0.8)',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
             display: 'flex', flexDirection: 'column', gap: '4px'
           }}>
             {options.map((opt) => (
@@ -117,11 +117,11 @@ export default function ContactForm() {
                   borderRadius: '12px',
                   cursor: 'pointer',
                   background: selectedSubject === opt.value ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
-                  color: selectedSubject === opt.value ? 'var(--clr-primary-light)' : 'var(--clr-text-primary)',
+                  color: selectedSubject === opt.value ? 'var(--clr-primary)' : 'var(--clr-text)',
                   transition: 'background 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
-                  if (selectedSubject !== opt.value) e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                  if (selectedSubject !== opt.value) e.currentTarget.style.background = 'rgba(128,128,128,0.1)';
                 }}
                 onMouseLeave={(e) => {
                   if (selectedSubject !== opt.value) e.currentTarget.style.background = 'transparent';
