@@ -107,7 +107,8 @@ export default function AdminDashboard() {
           ) : history.length === 0 ? (
             <div style={{ padding: '30px', textAlign: 'center', color: 'var(--clr-text-muted)' }}>Belum ada riwayat aktivitas.</div>
           ) : (
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            <>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {(showAllLogs ? history : history.slice(0, 10)).map((item, idx, arr) => (
                 <li key={item.id} style={{ 
                   display: 'flex', 
@@ -152,6 +153,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 </li>
+              ))}
             </ul>
             {history.length > 10 && (
               <div style={{ padding: '15px 20px', borderTop: '1px solid var(--clr-border)', textAlign: 'center', backgroundColor: 'var(--clr-surface)' }}>
@@ -164,6 +166,7 @@ export default function AdminDashboard() {
                 </button>
               </div>
             )}
+            </>
           )}
         </div>
       </div>
