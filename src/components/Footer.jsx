@@ -64,7 +64,7 @@ export default function Footer() {
             </a>
             <a href="#">
               <i className="ph-bold ph-phone" style={{ marginRight: '6px' }}></i>{' '}
-              (0631) 123-4567
+              0821-6084-4106
             </a>
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=desanegeripandan12@gmail.com" target="_blank" rel="noopener noreferrer">
               <i className="ph-bold ph-envelope" style={{ marginRight: '6px' }}></i>{' '}

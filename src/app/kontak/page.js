@@ -63,7 +63,7 @@ export default function KontakPage() {
                   <div>
                     <h4>Telepon / WhatsApp</h4>
                     <p>
-                      WA Center: 0831-4715-8593
+                      WA Center: 0821-6084-4106
                     </p>
                   </div>
                 </div>

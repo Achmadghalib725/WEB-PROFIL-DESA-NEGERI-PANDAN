@@ -37,7 +37,7 @@ export default function ContactForm() {
     const subject = selectedSubject === 'Lainnya' ? e.target.customSubject.value : selectedSubject;
     const message = e.target.message.value;
 
-    const waNumber = '6283147158593';
+    const waNumber = '6282160844106';
     const text = `Halo Admin Desa Negeri Pandan, saya ingin menyampaikan pesan:\n\n*Nama*: ${name}\n*Kontak*: ${email}\n*Keperluan*: ${subject}\n*Pesan*:\n${message}`;
     const encodedText = encodeURIComponent(text);
     
