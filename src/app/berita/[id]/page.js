@@ -60,7 +60,7 @@ export default function DetailBerita() {
           
           <div style={{ padding: '40px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-              <p style={{ color: 'var(--primary-color, #10b981)', fontWeight: '500', margin: 0 }}>
+              <p style={{ color: 'var(--clr-primary)', fontWeight: '500', margin: 0 }}>
                 {new Date(berita.created_at).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
               {berita.kategori && (

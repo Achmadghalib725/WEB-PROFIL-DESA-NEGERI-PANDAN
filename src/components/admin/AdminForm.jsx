@@ -143,7 +143,7 @@ export default function AdminForm({
                       alignItems: 'center',
                       cursor: 'pointer',
                       borderColor: openDropdown === field.name ? 'var(--clr-primary)' : 'var(--clr-border)',
-                      color: formData[field.name] ? 'var(--text-light, #f8fafc)' : 'var(--clr-text-muted)'
+                      color: formData[field.name] ? 'var(--clr-text)' : 'var(--clr-text-muted)'
                     }}
                   >
                     <span>
@@ -286,7 +286,7 @@ export default function AdminForm({
           background-color: rgba(255,255,255,0.05);
           border: 1px solid rgba(255,255,255,0.1);
           border-radius: 6px;
-          color: var(--text-light, #f8fafc);
+          color: var(--clr-text);
           cursor: pointer;
           font-family: inherit;
           font-weight: 500;

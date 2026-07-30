@@ -339,7 +339,7 @@ export default function AdminOrganisasi() {
     }
   };
 
-  if (loading) return <div style={{ padding: '40px', color: '#fff' }}>Memuat data struktur organisasi...</div>;
+  if (loading) return <div style={{ padding: '40px', color: 'var(--clr-text)' }}>Memuat data struktur organisasi...</div>;
 
   return (
     <div className="admin-container">
@@ -399,7 +399,7 @@ export default function AdminOrganisasi() {
       )}
 
       <div className="admin-card" style={{ padding: '30px', background: 'var(--clr-bg-alt)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '30px' }}>
-        <h2 style={{ marginBottom: '24px', color: '#fff', fontSize: '1.4rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px' }}>Pengaturan Umum</h2>
+        <h2 style={{ marginBottom: '24px', color: 'var(--clr-text)', fontSize: '1.4rem', borderBottom: '1px solid var(--clr-border)', paddingBottom: '16px' }}>Pengaturan Umum</h2>
         <div style={{ marginBottom: '20px', maxWidth: '400px' }}>
           <label style={{ display: 'block', marginBottom: '10px', fontSize: '0.9rem', color: 'var(--clr-text-dim)', fontWeight: '500' }}>Periode Jabatan</label>
           <input 
@@ -412,9 +412,9 @@ export default function AdminOrganisasi() {
               width: '100%', 
               padding: '12px 16px', 
               borderRadius: '8px', 
-              border: '1px solid rgba(255, 255, 255, 0.1)', 
-              background: 'rgba(0, 0, 0, 0.2)', 
-              color: '#fff', 
+              border: '1px solid var(--clr-border)', 
+              background: 'var(--clr-surface)', 
+              color: 'var(--clr-text)', 
               outline: 'none', 
               transition: 'all 0.3s ease' 
             }}
@@ -425,8 +425,8 @@ export default function AdminOrganisasi() {
       </div>
 
       <div className="admin-card" style={{ padding: '30px', background: 'var(--clr-bg-alt)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
-          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Pengurus Inti & Lembaga</h2>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--clr-border)', paddingBottom: '16px', marginBottom: '24px' }}>
+          <h2 style={{ margin: 0, color: 'var(--clr-text)', fontSize: '1.4rem' }}>Pengurus Inti & Lembaga</h2>
           <button 
             onClick={handleArsipKades}
             style={{ padding: '8px 16px', background: 'rgba(234, 179, 8, 0.2)', color: '#facc15', border: '1px solid rgba(234, 179, 8, 0.4)', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s' }}
@@ -468,9 +468,9 @@ export default function AdminOrganisasi() {
                     width: '100%', 
                     padding: '12px 16px', 
                     borderRadius: '8px', 
-                    border: '1px solid rgba(255, 255, 255, 0.1)', 
-                    background: 'rgba(0, 0, 0, 0.2)', 
-                    color: '#fff', 
+                    border: '1px solid var(--clr-border)', 
+                    background: 'var(--clr-surface)', 
+                    color: 'var(--clr-text)', 
                     outline: 'none', 
                     transition: 'all 0.3s ease' 
                   }}
@@ -515,7 +515,7 @@ export default function AdminOrganisasi() {
                         gap: '8px', 
                         padding: '12px 16px', 
                         background: 'rgba(255,255,255,0.03)', 
-                        border: '1px dashed rgba(255,255,255,0.2)', 
+                        border: '1px dashed var(--clr-border)', 
                         borderRadius: '8px', 
                         color: 'var(--clr-text-dim)', 
                         cursor: 'pointer', 
@@ -535,8 +535,8 @@ export default function AdminOrganisasi() {
         </div>
 
         {/* DUSUN SECTION */}
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px' }}>
-          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Manajemen Kepala Dusun (Kadus)</h2>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--clr-border)', paddingBottom: '16px', marginBottom: '24px' }}>
+          <h2 style={{ margin: 0, color: 'var(--clr-text)', fontSize: '1.4rem' }}>Manajemen Kepala Dusun (Kadus)</h2>
           <button 
             onClick={handleAddDusun}
             style={{ padding: '8px 16px', background: 'var(--clr-primary)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}
@@ -551,7 +551,7 @@ export default function AdminOrganisasi() {
               key={dusun.id} 
               style={{ 
                 padding: '24px', 
-                border: '1px solid rgba(255,255,255,0.1)', 
+                border: '1px solid var(--clr-border)', 
                 borderRadius: '16px', 
                 background: 'rgba(0,0,0,0.15)', 
                 position: 'relative'
@@ -574,7 +574,7 @@ export default function AdminOrganisasi() {
                     onChange={(e) => handleDusunChange(dIdx, 'jabatan', e.target.value)}
                     placeholder="Contoh: KADUS I WAY TEMAGA"
                     maxLength={100}
-                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.05)', color: '#fff', outline: 'none' }}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none' }}
                   />
                   <small style={{ color: 'var(--clr-text-dim)', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>Gunakan "\n" untuk baris baru di bagan</small>
                 </div>
@@ -587,7 +587,7 @@ export default function AdminOrganisasi() {
                     onChange={(e) => handleDusunChange(dIdx, 'name', e.target.value)}
                     placeholder="Nama Lengkap..."
                     maxLength={100}
-                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.05)', color: '#fff', outline: 'none' }}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none' }}
                   />
                 </div>
 
@@ -601,7 +601,7 @@ export default function AdminOrganisasi() {
                   ) : (
                     <div>
                       <input type="file" id={`dusun-file-${dusun.id}`} accept="image/*" onChange={(e) => handleDusunFileChange(dIdx, e.target.files[0])} style={{ display: 'none' }} />
-                      <label htmlFor={`dusun-file-${dusun.id}`} style={{ display: 'inline-block', padding: '10px 14px', background: 'rgba(255,255,255,0.05)', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}>Pilih Foto</label>
+                      <label htmlFor={`dusun-file-${dusun.id}`} style={{ display: 'inline-block', padding: '10px 14px', background: 'var(--clr-surface)', border: '1px dashed var(--clr-border)', borderRadius: '8px', color: 'var(--clr-text)', cursor: 'pointer', fontSize: '0.85rem' }}>Pilih Foto</label>
                     </div>
                   )}
                 </div>
@@ -611,7 +611,7 @@ export default function AdminOrganisasi() {
               <div style={{ background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h4 style={{ margin: 0, color: 'var(--clr-primary-light)' }}>Daftar RT di {(dusun.jabatan || '').split('\n')[0]}</h4>
-                  <button onClick={() => handleAddRT(dIdx)} style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>+ Tambah RT</button>
+                  <button onClick={() => handleAddRT(dIdx)} style={{ padding: '6px 12px', background: 'var(--clr-surface-active)', color: 'var(--clr-text)', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>+ Tambah RT</button>
                 </div>
                 
                 {dusun.rts.length === 0 ? (
@@ -625,7 +625,7 @@ export default function AdminOrganisasi() {
                           value={rt}
                           onChange={(e) => handleRTChange(dIdx, rIdx, e.target.value)}
                           maxLength={50}
-                          style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.2)', color: '#fff', outline: 'none', fontSize: '0.85rem' }}
+                          style={{ flex: 1, padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none', fontSize: '0.85rem' }}
                         />
                         <button 
                           onClick={() => handleRemoveRT(dIdx, rIdx)}
@@ -642,15 +642,15 @@ export default function AdminOrganisasi() {
             </div>
           ))}
           {dusuns.length === 0 && (
-            <div style={{ padding: '30px', textAlign: 'center', color: 'var(--clr-text-dim)', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '12px' }}>
+            <div style={{ padding: '30px', textAlign: 'center', color: 'var(--clr-text-dim)', border: '1px dashed var(--clr-border)', borderRadius: '12px' }}>
               Belum ada data Dusun. Klik "+ Tambah Dusun" untuk mulai menambahkan.
             </div>
           )}
         </div>
 
         {/* SEJARAH KEPALA DESA SECTION */}
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '16px', marginBottom: '24px', marginTop: '40px' }}>
-          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Riwayat Kepala Desa</h2>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--clr-border)', paddingBottom: '16px', marginBottom: '24px', marginTop: '40px' }}>
+          <h2 style={{ margin: 0, color: 'var(--clr-text)', fontSize: '1.4rem' }}>Riwayat Kepala Desa</h2>
           <button 
             onClick={handleAddSejarah}
             style={{ padding: '8px 16px', background: 'var(--clr-primary)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}
@@ -682,7 +682,7 @@ export default function AdminOrganisasi() {
                   onChange={(e) => handleSejarahChange(sIdx, 'tahun', e.target.value)}
                   placeholder="Misal: 2013 s/d 2019"
                   maxLength={50}
-                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none' }}
                 />
               </div>
               <div style={{ flex: 2 }}>
@@ -693,7 +693,7 @@ export default function AdminOrganisasi() {
                   onChange={(e) => handleSejarahChange(sIdx, 'nama', e.target.value)}
                   placeholder="Nama Kepala Desa..."
                   maxLength={100}
-                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none' }}
                 />
               </div>
               <div style={{ marginTop: '24px' }}>
@@ -710,7 +710,7 @@ export default function AdminOrganisasi() {
             </div>
           ))}
           {sejarahKades.length === 0 && (
-            <div style={{ padding: '30px', textAlign: 'center', color: 'var(--clr-text-dim)', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '12px' }}>
+            <div style={{ padding: '30px', textAlign: 'center', color: 'var(--clr-text-dim)', border: '1px dashed var(--clr-border)', borderRadius: '12px' }}>
               Belum ada data riwayat Kepala Desa.
             </div>
           )}
@@ -722,8 +722,8 @@ export default function AdminOrganisasi() {
       {cropModalOpen && imageSrc && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '90%', maxWidth: '500px', background: 'var(--clr-bg-alt)', borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <h3 style={{ margin: 0, color: '#fff' }}>Sesuaikan Ukuran Foto (1:1)</h3>
+            <div style={{ padding: '20px', borderBottom: '1px solid var(--clr-border)' }}>
+              <h3 style={{ margin: 0, color: 'var(--clr-text)' }}>Sesuaikan Ukuran Foto (1:1)</h3>
             </div>
             
             <div style={{ position: 'relative', width: '100%', height: '400px', background: '#333' }}>
@@ -754,7 +754,7 @@ export default function AdminOrganisasi() {
             <div style={{ padding: '20px', display: 'flex', gap: '12px', justifyContent: 'flex-end', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
               <button 
                 onClick={() => { setCropModalOpen(false); setImageSrc(null); }}
-                style={{ padding: '10px 20px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer' }}
+                style={{ padding: '10px 20px', background: 'transparent', color: 'var(--clr-text)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer' }}
                 disabled={saving}
               >
                 Batal
@@ -774,18 +774,18 @@ export default function AdminOrganisasi() {
       {/* Delete Confirmation Modal */}
       {deleteConfirm.isOpen && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', textAlign: 'center', background: 'var(--clr-bg-alt)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', textAlign: 'center', background: 'var(--clr-bg-alt)', border: '1px solid var(--clr-border)' }}>
             <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '24px' }}>
               <i className="ph ph-warning-circle"></i>
             </div>
-            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: '#fff' }}>Hapus Data?</h3>
+            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: 'var(--clr-text)' }}>Hapus Data?</h3>
             <p style={{ color: 'var(--clr-text-muted)', marginBottom: '24px', lineHeight: '1.5' }}>
               {deleteConfirm.title}<br/>Tindakan ini tidak dapat dibatalkan.
             </p>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
               <button 
                 onClick={() => setDeleteConfirm({ isOpen: false, type: null, index: null, title: '' })}
-                style={{ flex: 1, padding: '10px', backgroundColor: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontWeight: '500', cursor: 'pointer' }}
+                style={{ flex: 1, padding: '10px', backgroundColor: 'transparent', color: 'var(--clr-text)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontWeight: '500', cursor: 'pointer' }}
               >
                 Batal
               </button>
@@ -803,11 +803,11 @@ export default function AdminOrganisasi() {
       {/* Prompt Modal */}
       {promptModal.isOpen && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', background: 'var(--clr-bg-alt)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', background: 'var(--clr-bg-alt)', border: '1px solid var(--clr-border)' }}>
             <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'rgba(234, 179, 8, 0.1)', color: '#eab308', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', fontSize: '24px' }}>
               <i className="ph ph-archive"></i>
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px', color: '#fff' }}>Arsipkan Kepala Desa</h3>
+            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px', color: 'var(--clr-text)' }}>Arsipkan Kepala Desa</h3>
             
             {promptModal.step === 1 ? (
               <div style={{ marginBottom: '24px' }}>
@@ -818,7 +818,7 @@ export default function AdminOrganisasi() {
                   value={promptModal.tahunAwal}
                   onChange={(e) => setPromptModal(prev => ({ ...prev, tahunAwal: e.target.value }))}
                   placeholder="Misal: 2019"
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none' }}
                 />
               </div>
             ) : (
@@ -830,7 +830,7 @@ export default function AdminOrganisasi() {
                   value={promptModal.tahunAkhir}
                   onChange={(e) => setPromptModal(prev => ({ ...prev, tahunAkhir: e.target.value }))}
                   placeholder="Misal: 2026"
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)', color: '#fff', outline: 'none' }}
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--clr-border)', background: 'var(--clr-surface)', color: 'var(--clr-text)', outline: 'none' }}
                 />
               </div>
             )}
@@ -838,7 +838,7 @@ export default function AdminOrganisasi() {
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button 
                 onClick={() => setPromptModal({ isOpen: false, step: 1, tahunAwal: '', tahunAkhir: '' })}
-                style={{ padding: '10px 16px', backgroundColor: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer' }}
+                style={{ padding: '10px 16px', backgroundColor: 'transparent', color: 'var(--clr-text)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer' }}
               >
                 Batal
               </button>
@@ -869,11 +869,11 @@ export default function AdminOrganisasi() {
       {/* Alert Modal */}
       {alertModal.isOpen && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', textAlign: 'center', background: 'var(--clr-bg-alt)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="glass-card" style={{ padding: '30px', maxWidth: '400px', width: '90%', borderRadius: '16px', textAlign: 'center', background: 'var(--clr-bg-alt)', border: '1px solid var(--clr-border)' }}>
             <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: alertModal.type === 'success' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', color: alertModal.type === 'success' ? '#22c55e' : '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '32px' }}>
               <i className={alertModal.type === 'success' ? 'ph ph-check-circle' : 'ph ph-info'}></i>
             </div>
-            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: '#fff' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: 'var(--clr-text)' }}>
               {alertModal.type === 'success' ? 'Berhasil' : 'Informasi'}
             </h3>
             <p style={{ color: 'var(--clr-text-muted)', marginBottom: '24px', lineHeight: '1.5' }}>

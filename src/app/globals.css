@@ -300,6 +300,18 @@ h1, h2, h3, h4, h5 {
   margin-right: auto;
 }
 
+.text-muted {
+  color: var(--clr-text-muted);
+}
+
+.text-secondary {
+  color: var(--clr-text-secondary);
+}
+
+.text-primary {
+  color: var(--clr-primary);
+}
+
 /* ── Decorative Orbs ── */
 .orb {
   position: absolute;

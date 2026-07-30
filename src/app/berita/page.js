@@ -117,13 +117,13 @@ export default function BeritaPage() {
                             </span>
                           )}
                         </div>
-                        <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-light, #f8fafc)', marginBottom: '12px', lineHeight: '1.4' }}>
+                        <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--clr-text)', marginBottom: '12px', lineHeight: '1.4' }}>
                           {item.title}
                         </h3>
                         <p className="text-muted" style={{ fontSize: '14px', flex: 1, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.6' }}>
                           {item.content}
                         </p>
-                        <span style={{ color: 'var(--primary-color, #10b981)', fontWeight: '500', fontSize: '14px', marginTop: '15px', display: 'inline-block' }}>
+                        <span style={{ color: 'var(--clr-primary)', fontWeight: '500', fontSize: '14px', marginTop: '15px', display: 'inline-block' }}>
                           Baca selengkapnya →
                         </span>
                       </div>

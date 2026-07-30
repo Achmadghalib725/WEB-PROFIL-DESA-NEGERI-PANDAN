@@ -148,7 +148,7 @@ export default function DataTable({
             }}>
               <i className="ph-bold ph-trash"></i>
             </div>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '20px', color: 'var(--text-light, #f8fafc)' }}>Konfirmasi Hapus</h3>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '20px', color: 'var(--clr-text)' }}>Konfirmasi Hapus</h3>
             <p style={{ color: 'var(--clr-text-muted)', marginBottom: '24px', fontSize: '15px' }}>
               Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
             </p>
