@@ -9,7 +9,6 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({ berita: 0, layanan: 0 });
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
-  const [showAllLogs, setShowAllLogs] = useState(false);
 
   useEffect(() => {
     fetchStats();
@@ -62,7 +61,7 @@ export default function AdminDashboard() {
         date: new Date(log.date)
       }));
 
-      setHistory(logs); // Simpan semua riwayat
+      setHistory(logs.slice(0, 10)); // Tampilkan 10 aktivitas terbaru
     } catch (e) {
       console.error('Error fetching history:', e);
     }
@@ -109,13 +108,13 @@ export default function AdminDashboard() {
           ) : (
             <>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {(showAllLogs ? history : history.slice(0, 10)).map((item, idx, arr) => (
+              {history.map((item, idx) => (
                 <li key={item.id} style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '15px', 
                   padding: '20px', 
-                  borderBottom: idx < arr.length - 1 ? '1px solid var(--clr-border)' : 'none' 
+                  borderBottom: idx < history.length - 1 ? '1px solid var(--clr-border)' : 'none' 
                 }}>
                   <div style={{ 
                     width: '40px', 
@@ -155,15 +154,15 @@ export default function AdminDashboard() {
                 </li>
               ))}
             </ul>
-            {history.length > 10 && (
+            {history.length >= 10 && (
               <div style={{ padding: '15px 20px', borderTop: '1px solid var(--clr-border)', textAlign: 'center', backgroundColor: 'var(--clr-surface)' }}>
-                <button 
-                  onClick={() => setShowAllLogs(!showAllLogs)}
+                <Link 
+                  href="/admin/riwayat"
                   className="btn btn-outline"
-                  style={{ padding: '8px 24px', fontSize: '14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', color: 'var(--clr-text)' }}
+                  style={{ display: 'inline-block', padding: '8px 24px', fontSize: '14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', color: 'var(--clr-text)', textDecoration: 'none' }}
                 >
-                  {showAllLogs ? 'Sembunyikan Sebagian' : 'Lihat Semua Riwayat'}
-                </button>
+                  Lihat Semua Riwayat
+                </Link>
               </div>
             )}
             </>
