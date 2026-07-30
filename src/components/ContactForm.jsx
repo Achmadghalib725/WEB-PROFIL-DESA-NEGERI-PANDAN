@@ -97,7 +97,7 @@ export default function ContactForm() {
             position: 'absolute',
             top: 'calc(100% + 8px)',
             left: 0, right: 0,
-            background: 'var(--clr-surface)',
+            background: 'var(--clr-bg-card)',
             border: '1px solid var(--clr-border)',
             borderRadius: '16px',
             padding: '8px',
