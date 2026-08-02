@@ -85,7 +85,7 @@ export default function PetaPage() {
               >
                 <i className="ph-bold ph-info"></i>
               </span>
-              <h3 style={{ fontSize: '1.15rem', margin: 0, color: 'var(--clr-text-primary)' }}>
+              <h3 style={{ fontSize: '1.15rem', margin: 0, color: 'var(--clr-text)' }}>
                 Cara Menggunakan Peta
               </h3>
             </div>
@@ -131,7 +131,7 @@ export default function PetaPage() {
               >
                 <i className="ph-bold ph-newspaper-clipping"></i>
               </span>
-              <h3 style={{ fontSize: '1.15rem', margin: 0, color: 'var(--clr-text-primary)' }}>
+              <h3 style={{ fontSize: '1.15rem', margin: 0, color: 'var(--clr-text)' }}>
                 Catatan & Sumber Data
               </h3>
             </div>

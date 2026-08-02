@@ -114,18 +114,18 @@ export default function ProfilPage() {
           <div className="demografi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginTop: '3rem' }}>
             {/* Batas Wilayah */}
             <div className="glass-card reveal">
-               <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--clr-text-primary)' }}>Batas Wilayah Desa</h3>
+               <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--clr-text)' }}>Batas Wilayah Desa</h3>
                <p style={{ color: 'var(--clr-text-secondary)', marginBottom: '1.5rem' }}>Letak geografi Desa Negeri Pandan, terletak diantara:</p>
                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                 <li style={{ marginBottom: '0.8rem', paddingBottom: '0.8rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                 <li style={{ marginBottom: '0.8rem', paddingBottom: '0.8rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <span style={{ color: 'var(--clr-primary-light)', display: 'block', fontSize: '0.9rem' }}>Sebelah Utara</span>
                     <strong>Berbatasan dg Desa Tanjung Sari-Palas</strong>
                  </li>
-                 <li style={{ marginBottom: '0.8rem', paddingBottom: '0.8rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                 <li style={{ marginBottom: '0.8rem', paddingBottom: '0.8rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <span style={{ color: 'var(--clr-primary-light)', display: 'block', fontSize: '0.9rem' }}>Sebelah Selatan</span>
                     <strong>Berbatasan dg Desa Sukaratu dan Palembapang</strong>
                  </li>
-                 <li style={{ marginBottom: '0.8rem', paddingBottom: '0.8rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                 <li style={{ marginBottom: '0.8rem', paddingBottom: '0.8rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <span style={{ color: 'var(--clr-primary-light)', display: 'block', fontSize: '0.9rem' }}>Sebelah Barat</span>
                     <strong>Berbatasan dg Desa Sukaratu dan Tajimalela</strong>
                  </li>
@@ -138,17 +138,17 @@ export default function ProfilPage() {
             
             {/* Orbitasi */}
             <div className="glass-card reveal reveal-delay-1">
-               <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: 'var(--clr-text-primary)' }}>Orbitasi</h3>
+               <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: 'var(--clr-text)' }}>Orbitasi</h3>
                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                 <li style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                 <li style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <span style={{ color: 'var(--clr-text-secondary)' }}>Jarak ke ibu kota kecamatan</span>
                     <strong style={{ fontSize: '1.1rem', color: 'var(--clr-primary-light)' }}>6 Km</strong>
                  </li>
-                 <li style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                 <li style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <span style={{ color: 'var(--clr-text-secondary)' }}>Lama tempuh ke kecamatan</span>
                     <strong style={{ fontSize: '1.1rem', color: 'var(--clr-primary-light)' }}>10 Menit</strong>
                  </li>
-                 <li style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                 <li style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <span style={{ color: 'var(--clr-text-secondary)' }}>Jarak ke ibu kota kabupaten</span>
                     <strong style={{ fontSize: '1.1rem', color: 'var(--clr-primary-light)' }}>8 Km</strong>
                  </li>

@@ -191,3 +191,33 @@
   width: 20px;
   border-bottom: 2px dashed var(--clr-primary-light);
 }
+
+/* ── Light Mode Specifics for Org Tree ── */
+[data-theme='light'] .org-tree-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .org-node {
+  background: #ffffff;
+  border-color: var(--clr-border);
+  box-shadow: 0 4px 16px rgba(15, 36, 25, 0.06);
+}
+
+[data-theme='light'] .org-node:hover {
+  border-color: var(--clr-primary);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.18);
+}
+
+[data-theme='light'] .org-node-kades {
+  border: 2px solid var(--clr-primary);
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+}
+
+[data-theme='light'] .org-rt-list {
+  border-top: 1px solid var(--clr-border);
+}
+
+[data-theme='light'] .org-photo {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

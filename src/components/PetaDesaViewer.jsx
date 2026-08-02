@@ -427,10 +427,10 @@ export default function PetaDesaViewer() {
 
         .viewer-tab-bar {
           display: flex;
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--clr-surface);
           padding: 4px;
           border-radius: 14px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid var(--clr-border);
           gap: 4px;
           flex-wrap: wrap;
         }
@@ -440,7 +440,7 @@ export default function PetaDesaViewer() {
           border-radius: 10px;
           border: none;
           background: transparent;
-          color: #94a3b8;
+          color: var(--clr-text-secondary);
           font-weight: 600;
           font-size: 0.85rem;
           cursor: pointer;
@@ -451,12 +451,12 @@ export default function PetaDesaViewer() {
         }
 
         .viewer-tab-btn:hover {
-          color: #ffffff;
-          background: rgba(255, 255, 255, 0.06);
+          color: var(--clr-text);
+          background: var(--clr-surface-hover);
         }
 
         .viewer-tab-btn.active {
-          background: var(--clr-primary, #10b981);
+          background: var(--clr-primary);
           color: #ffffff;
           box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
         }
@@ -482,7 +482,7 @@ export default function PetaDesaViewer() {
           gap: 12px;
           margin-bottom: 1rem;
           padding-bottom: 0.85rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          border-bottom: 1px solid var(--clr-border);
         }
 
         .cetak-badges-group {
@@ -494,7 +494,7 @@ export default function PetaDesaViewer() {
 
         .badge-kkn {
           background: rgba(16, 185, 129, 0.15);
-          color: #34d399;
+          color: var(--clr-primary-light);
           padding: 5px 12px;
           border-radius: 8px;
           font-size: 0.78rem;
@@ -504,7 +504,7 @@ export default function PetaDesaViewer() {
 
         .badge-scale {
           font-size: 0.82rem;
-          color: #94a3b8;
+          color: var(--clr-text-dim);
         }
 
         .cetak-actions-group {
