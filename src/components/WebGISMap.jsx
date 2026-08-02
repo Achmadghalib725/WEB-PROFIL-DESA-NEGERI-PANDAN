@@ -324,8 +324,22 @@ export default function WebGISMap() {
           ? `<span style="background: #e2e8f0; color: #334155; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">Elevasi: ${item.elevation} m</span>`
           : '';
 
+        const imageHTML = item.image
+          ? `
+            <div style="position: relative; width: 100%; height: 135px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #0f172a; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+              <img
+                src="${encodeURI(item.image)}"
+                alt="${item.name}"
+                style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                onerror="this.parentElement.style.display='none'"
+              />
+            </div>
+          `
+          : '';
+
         const popupHTML = `
-          <div style="font-family: 'Inter', sans-serif; min-width: 230px; color: #1e293b; padding: 4px;">
+          <div style="font-family: 'Inter', sans-serif; min-width: 240px; max-width: 280px; color: #1e293b; padding: 2px;">
+            ${imageHTML}
             <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
               <span style="background: ${item.color}; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">
                 ${item.categoryLabel}
@@ -344,7 +358,7 @@ export default function WebGISMap() {
             <div style="font-size: 10px; color: #94a3b8; margin-bottom: 10px; font-family: monospace;">
               Koor: ${item.coords[0].toFixed(6)}, ${item.coords[1].toFixed(6)}
             </div>
-            <a href="https://maps.google.com/?q=${item.coords[0]},${item.coords[1]}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; background: #2563eb; color: #ffffff; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600;">
+            <a href="https://maps.google.com/?q=${item.coords[0]},${item.coords[1]}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; background: #2563eb; color: #ffffff; text-decoration: none; padding: 7px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 6px rgba(37,99,235,0.35);">
               Navigasi Google Maps ↗
             </a>
           </div>

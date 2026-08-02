@@ -1138,6 +1138,7 @@ export const FASILITAS_DESA = [
     "name": "Kantor Balai Desa Negeri Pandan",
     "category": "pemerintahan",
     "categoryLabel": "Pemerintahan Desa",
+    "image": "/documents/Foto Peta/kantor balai desa negeri pandan.png",
     "coords": [
       -5.728725,
       105.630256667
@@ -1155,6 +1156,7 @@ export const FASILITAS_DESA = [
     "name": "Lapas Kelas IIA Kalianda",
     "category": "pemerintahan",
     "categoryLabel": "Pemerintahan & Hukum",
+    "image": "/documents/Foto Peta/lapas kelas 2a kalianda.png",
     "coords": [
       -5.724865289999968,
       105.62797090800007
@@ -1170,6 +1172,7 @@ export const FASILITAS_DESA = [
     "name": "Area Makam Umum Desa",
     "category": "pemerintahan",
     "categoryLabel": "Fasilitas Umum",
+    "image": "/documents/Foto Peta/area pemakaman umum desa.png",
     "coords": [
       -5.726551667,
       105.629505
@@ -1186,6 +1189,7 @@ export const FASILITAS_DESA = [
     "name": "Masjid Nurul Falah",
     "category": "ibadah",
     "categoryLabel": "Tempat Ibadah",
+    "image": "/documents/Foto Peta/masjid nurul falah.png",
     "coords": [
       -5.729822156999944,
       105.62664644000006
@@ -1201,6 +1205,7 @@ export const FASILITAS_DESA = [
     "name": "Masjid Nurul Yaqin",
     "category": "ibadah",
     "categoryLabel": "Tempat Ibadah",
+    "image": "/documents/Foto Peta/masjid nurul yaqin.png",
     "coords": [
       -5.728590942999972,
       105.62770416600006
@@ -1216,6 +1221,7 @@ export const FASILITAS_DESA = [
     "name": "Masjid Nurul Amal",
     "category": "ibadah",
     "categoryLabel": "Tempat Ibadah",
+    "image": "/documents/Foto Peta/masjid nurul amal.png",
     "coords": [
       -5.728675502048493,
       105.63148415452517
@@ -1231,6 +1237,7 @@ export const FASILITAS_DESA = [
     "name": "Sumber Mata Air Desa",
     "category": "pemerintahan",
     "categoryLabel": "Sumber Daya Alam",
+    "image": "/documents/Foto Peta/sumber mata air desa.png",
     "coords": [
       -5.724256667,
       105.625716667
@@ -1247,6 +1254,7 @@ export const FASILITAS_DESA = [
     "name": "Tower XL Negeripandan",
     "category": "pemerintahan",
     "categoryLabel": "Telekomunikasi",
+    "image": "/documents/Foto Peta/tower xl negeri pandan.png",
     "coords": [
       -5.726038159999973,
       105.62945310100008
@@ -1262,6 +1270,7 @@ export const FASILITAS_DESA = [
     "name": "PAUD Restu Bunda",
     "category": "pendidikan",
     "categoryLabel": "Pendidikan Anak Usia Dini",
+    "image": "/documents/Foto Peta/paud.png",
     "coords": [
       -5.728825,
       105.630263333
@@ -1278,6 +1287,7 @@ export const FASILITAS_DESA = [
     "name": "PLN PT Persero Gardu Induk Kalianda",
     "category": "pemerintahan",
     "categoryLabel": "Infrastruktur Energi Listrik",
+    "image": "/documents/Foto Peta/PLN PT Persero Gardu Induk Kalianda.png",
     "coords": [
       -5.723463145999972,
       105.62625123800007
@@ -1293,6 +1303,7 @@ export const FASILITAS_DESA = [
     "name": "SDN Negeri Pandan",
     "category": "pendidikan",
     "categoryLabel": "Pendidikan Dasar",
+    "image": "/documents/Foto Peta/sdn negeri pandan.png",
     "coords": [
       -5.728254449999952,
       105.63074310700006
@@ -1308,6 +1319,7 @@ export const FASILITAS_DESA = [
     "name": "Praktik Bidan Desa",
     "category": "kesehatan",
     "categoryLabel": "Layanan Kesehatan & Kebidanan",
+    "image": "/documents/Foto Peta/puskesdes.png",
     "coords": [
       -5.728560250999976,
       105.63023465600008
