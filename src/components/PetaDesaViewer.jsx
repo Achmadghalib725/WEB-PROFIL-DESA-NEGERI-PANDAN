@@ -1,9 +1,39 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+
+const WebGISMap = dynamic(() => import('@/components/WebGISMap'), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        height: '600px',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--clr-bg-card, #0c1a13)',
+        borderRadius: '16px',
+        color: 'var(--clr-text-secondary)',
+        gap: '16px',
+      }}
+    >
+      <div className="spinner" style={{ width: '36px', height: '36px', border: '3px solid rgba(16, 185, 129, 0.2)', borderTopColor: '#10b981', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+      <p style={{ fontSize: '0.9rem' }}>Memuat WebGIS Interaktif Leaflet...</p>
+      <style jsx>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  ),
+});
 
 export default function PetaDesaViewer() {
-  const [activeTab, setActiveTab] = useState('administrasi'); // 'administrasi' | 'google'
+  const [activeTab, setActiveTab] = useState('webgis'); // 'webgis' | 'dokumen' | 'google'
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
@@ -58,7 +88,6 @@ export default function PetaDesaViewer() {
     setPosition({ x: 0, y: 0 });
   };
 
-  // Drag / Pan in modal
   const handleMouseDown = (e) => {
     if (zoomLevel <= 1) return;
     setIsDragging(true);
@@ -78,466 +107,395 @@ export default function PetaDesaViewer() {
   };
 
   return (
-    <div className="peta-desa-wrapper" style={{ marginTop: '2rem' }}>
-      {/* Tab Switcher */}
+    <div className="peta-desa-wrapper" style={{ marginTop: '1.5rem' }}>
+      {/* Header & Tabs */}
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
-          gap: '10px',
-          marginBottom: '1.5rem',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           flexWrap: 'wrap',
+          gap: '1rem',
+          marginBottom: '1.5rem',
         }}
       >
-        <button
-          onClick={() => setActiveTab('administrasi')}
-          className={`btn ${activeTab === 'administrasi' ? 'btn-primary' : 'btn-outline'}`}
+        <div>
+          <h3 style={{ fontSize: '1.4rem', color: 'var(--clr-text-primary)', margin: '0 0 0.4rem 0' }}>
+            Peta Digital & Administrasi Wilayah
+          </h3>
+          <p style={{ color: 'var(--clr-text-secondary)', fontSize: '0.9rem', margin: 0 }}>
+            Eksplorasi batas desa, pembagian dusun, dan sebaran fasilitas umum Desa Negeri Pandan secara interaktif.
+          </p>
+        </div>
+
+        {/* Tab Buttons */}
+        <div
           style={{
-            padding: '10px 22px',
-            fontSize: '0.9rem',
-            borderRadius: 'var(--radius-full)',
-            cursor: 'pointer',
+            display: 'flex',
+            background: 'rgba(255, 255, 255, 0.05)',
+            padding: '4px',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            gap: '4px',
+            flexWrap: 'wrap',
           }}
         >
-          <i className="ph-bold ph-map-trifold" style={{ fontSize: '1.1rem' }}></i>
-          Peta Administrasi Desa (GIS)
-        </button>
-        <button
-          onClick={() => setActiveTab('google')}
-          className={`btn ${activeTab === 'google' ? 'btn-primary' : 'btn-outline'}`}
-          style={{
-            padding: '10px 22px',
-            fontSize: '0.9rem',
-            borderRadius: 'var(--radius-full)',
-            cursor: 'pointer',
-          }}
-        >
-          <i className="ph-bold ph-globe-hemisphere-east" style={{ fontSize: '1.1rem' }}></i>
-          Google Maps Satelit & Navigasi
-        </button>
+          <button
+            onClick={() => setActiveTab('webgis')}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: 'none',
+              background: activeTab === 'webgis' ? 'var(--clr-primary)' : 'transparent',
+              color: '#ffffff',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <i className="ph-bold ph-stack"></i> WebGIS Interaktif (Leaflet)
+          </button>
+          <button
+            onClick={() => setActiveTab('dokumen')}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: 'none',
+              background: activeTab === 'dokumen' ? 'var(--clr-primary)' : 'transparent',
+              color: '#ffffff',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <i className="ph-bold ph-map-trifold"></i> Peta Cetak ArcGIS (PDF)
+          </button>
+          <button
+            onClick={() => setActiveTab('google')}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: 'none',
+              background: activeTab === 'google' ? 'var(--clr-primary)' : 'transparent',
+              color: '#ffffff',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <i className="ph-bold ph-navigation-arrow"></i> Google Maps
+          </button>
+        </div>
       </div>
 
-      {/* Main Map Box */}
-      <div
-        className="glass-card"
-        style={{
-          padding: '1.5rem',
-          borderRadius: 'var(--radius-lg)',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {activeTab === 'administrasi' ? (
-          <div>
-            {/* Header info */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '12px',
-                marginBottom: '1rem',
-                paddingBottom: '0.8rem',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-              }}
-            >
-              <div>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '4px 10px',
-                    borderRadius: 'var(--radius-full)',
-                    background: 'rgba(46, 204, 128, 0.15)',
-                    color: 'var(--clr-primary-light)',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    marginBottom: '4px',
-                  }}
-                >
-                  <i className="ph-bold ph-check-circle"></i> Peta Spasial Resmi
-                </span>
-                <h3 style={{ fontSize: '1.25rem', margin: 0, color: 'var(--clr-text)' }}>
-                  Peta Wilayah Administrasi Desa Negeri Pandan
-                </h3>
-              </div>
+      {/* ── TAB 1: WEBGIS INTERAKTIF (LEAFLET) ── */}
+      {activeTab === 'webgis' && (
+        <div>
+          <WebGISMap />
+          <div style={{ marginTop: '1rem', textAlign: 'right' }}>
+            <Link href="/peta" className="btn btn-outline" style={{ fontSize: '0.85rem', padding: '8px 16px' }}>
+              Buka Halaman Penuh Peta WebGIS →
+            </Link>
+          </div>
+        </div>
+      )}
 
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <button
-                  onClick={openModal}
-                  className="btn btn-outline"
-                  style={{
-                    padding: '8px 16px',
-                    fontSize: '0.85rem',
-                    borderRadius: '8px',
-                  }}
-                  title="Klik untuk memperbesar peta"
-                >
-                  <i className="ph-bold ph-arrows-out"></i> Layar Penuh (Zoom)
-                </button>
-                <a
-                  href="/documents/KKN.pdf"
-                  download="Peta-Desa-Negeri-Pandan.pdf"
-                  className="btn btn-primary"
-                  style={{
-                    padding: '8px 16px',
-                    fontSize: '0.85rem',
-                    borderRadius: '8px',
-                    textDecoration: 'none',
-                  }}
-                >
-                  <i className="ph-bold ph-download-simple"></i> Unduh PDF
-                </a>
-              </div>
-            </div>
-
-            {/* Interactive Image Preview Box */}
-            <div
-              onClick={openModal}
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '480px',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                background: '#0a1610',
-              }}
-              className="map-preview-container"
-            >
-              <Image
-                src="/images/peta-desa.jpg"
-                alt="Peta Administrasi Desa Negeri Pandan"
-                fill
-                style={{ objectFit: 'contain' }}
-                priority
-              />
-
-              {/* Overlay Prompt */}
-              <div
+      {/* ── TAB 2: PETA CETAK ARCGIS (PREVIEW & ZOOM MODAL) ── */}
+      {activeTab === 'dokumen' && (
+        <div
+          className="glass-card"
+          style={{
+            padding: '1.25rem',
+            borderRadius: '16px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Action Toolbar */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '10px',
+              marginBottom: '1rem',
+              paddingBottom: '0.8rem',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background:
-                    'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%)',
-                  opacity: 0,
-                  transition: 'opacity 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  gap: '8px',
-                }}
-                className="map-overlay-hover"
-              >
-                <div
-                  style={{
-                    padding: '12px 24px',
-                    borderRadius: 'var(--radius-full)',
-                    background: 'rgba(3, 15, 9, 0.85)',
-                    border: '1px solid var(--clr-primary-light)',
-                    color: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontWeight: 600,
-                    fontSize: '0.95rem',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
-                  }}
-                >
-                  <i className="ph-bold ph-magnifying-glass-plus" style={{ fontSize: '1.2rem' }}></i>
-                  Klik untuk Memperbesar & Zoom Detail
-                </div>
-              </div>
-
-              {/* Floating Bottom Badge */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '12px',
-                  right: '12px',
-                  background: 'rgba(0, 0, 0, 0.75)',
-                  backdropFilter: 'blur(8px)',
-                  padding: '6px 14px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: 'var(--clr-primary-light)',
+                  padding: '4px 10px',
                   borderRadius: '6px',
                   fontSize: '0.78rem',
-                  color: 'var(--clr-text-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  pointerEvents: 'none',
+                  fontWeight: 600,
                 }}
               >
-                <i className="ph-bold ph-hand-pointing"></i> Klik untuk navigasi / zoom
-              </div>
+                Dokumen Resmi KKN Unila 2026
+              </span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--clr-text-muted)' }}>
+                Skala 1:10.000 &bull; UTM Zone 48S
+              </span>
             </div>
 
-            {/* Map Footnote & Document details */}
-            <div
-              style={{
-                marginTop: '1.2rem',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: '1rem',
-                fontSize: '0.88rem',
-                color: 'var(--clr-text-secondary)',
-              }}
-            >
-              <div
-                style={{
-                  padding: '12px',
-                  background: 'rgba(255,255,255,0.02)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                }}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                onClick={openModal}
+                className="btn btn-secondary"
+                style={{ fontSize: '0.82rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <strong style={{ color: 'var(--clr-primary-light)', display: 'block', marginBottom: '4px' }}>
-                  <i className="ph-bold ph-buildings" style={{ marginRight: '6px' }}></i>
-                  Cakupan Wilayah
-                </strong>
-                Desa Negeri Pandan, Kec. Kalianda, Kab. Lampung Selatan
-              </div>
-
-              <div
-                style={{
-                  padding: '12px',
-                  background: 'rgba(255,255,255,0.02)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                }}
-              >
-                <strong style={{ color: 'var(--clr-primary-light)', display: 'block', marginBottom: '4px' }}>
-                  <i className="ph-bold ph-compass" style={{ marginRight: '6px' }}></i>
-                  Sumber Data
-                </strong>
-                Pemetaan Spasial GIS KKN & Tim Desa Negeri Pandan
-              </div>
-
-              <div
-                style={{
-                  padding: '12px',
-                  background: 'rgba(255,255,255,0.02)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                }}
-              >
-                <strong style={{ color: 'var(--clr-primary-light)', display: 'block', marginBottom: '4px' }}>
-                  <i className="ph-bold ph-file-pdf" style={{ marginRight: '6px' }}></i>
-                  Format Asli
-                </strong>
-                <a
-                  href="/documents/KKN.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: 'var(--clr-primary-light)', textDecoration: 'underline' }}
-                >
-                  Buka Dokumen PDF (27 MB) ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div>
-            {/* Google Maps View */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '12px',
-                marginBottom: '1rem',
-                paddingBottom: '0.8rem',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-              }}
-            >
-              <div>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '4px 10px',
-                    borderRadius: 'var(--radius-full)',
-                    background: 'rgba(46, 204, 128, 0.15)',
-                    color: 'var(--clr-primary-light)',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    marginBottom: '4px',
-                  }}
-                >
-                  <i className="ph-bold ph-navigation-arrow"></i> Navigasi Interaktif
-                </span>
-                <h3 style={{ fontSize: '1.25rem', margin: 0, color: 'var(--clr-text)' }}>
-                  Peta Lokasi Satelit Google Maps
-                </h3>
-              </div>
-
+                <i className="ph-bold ph-magnifying-glass-plus"></i> Perbesar (HD Zoom)
+              </button>
               <a
-                href="https://maps.google.com/?q=Negeri+Pandan,+Kalianda,+Lampung+Selatan"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/documents/KKN.pdf"
+                download="Peta-Desa-Negeri-Pandan.pdf"
                 className="btn btn-outline"
-                style={{
-                  padding: '8px 16px',
-                  fontSize: '0.85rem',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                }}
+                style={{ fontSize: '0.82rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <i className="ph-bold ph-arrow-square-out"></i> Buka di Google Maps
+                <i className="ph-bold ph-download-simple"></i> Unduh PDF
               </a>
             </div>
+          </div>
+
+          {/* Interactive Image Container */}
+          <div
+            onClick={openModal}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '520px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              cursor: 'zoom-in',
+              background: '#040d07',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+            }}
+            className="peta-preview-box"
+          >
+            <Image
+              src="/images/peta-desa.jpg"
+              alt="Peta Administrasi Desa Negeri Pandan"
+              fill
+              style={{ objectFit: 'contain' }}
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              priority
+            />
 
             <div
               style={{
-                width: '100%',
-                height: '480px',
-                borderRadius: '12px',
-                overflow: 'hidden',
+                position: 'absolute',
+                bottom: '16px',
+                right: '16px',
+                background: 'rgba(0, 0, 0, 0.75)',
+                backdropFilter: 'blur(8px)',
+                color: '#ffffff',
+                padding: '8px 14px',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
+                pointerEvents: 'none',
               }}
             >
-              <iframe
-                src="https://maps.google.com/maps?q=Negeri+Pandan,+Kec.+Kalianda,+Kabupaten+Lampung+Selatan&t=k&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Peta Satelit Google Maps Desa Negeri Pandan"
-              ></iframe>
+              <i className="ph-bold ph-arrows-out-cardinal"></i> Klik untuk melihat peta resolusi tinggi
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Fullscreen HD Zoom Modal */}
+      {/* ── TAB 3: GOOGLE MAPS EMBED ── */}
+      {activeTab === 'google' && (
+        <div
+          className="glass-card"
+          style={{
+            padding: '1.25rem',
+            borderRadius: '16px',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '520px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+            }}
+          >
+            <iframe
+              src="https://maps.google.com/maps?q=7JCJ%2BF3X,+Negeri+Pandan,+Kec.+Kalianda,+Kabupaten+Lampung+Selatan&t=k&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Peta Satelit Google Maps Desa Negeri Pandan"
+            ></iframe>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL VIEWER HD FULLSCREEN ── */}
       {isModalOpen && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 99999,
-            background: 'rgba(0, 0, 0, 0.94)',
-            backdropFilter: 'blur(12px)',
+            background: 'rgba(3, 10, 6, 0.95)',
+            backdropFilter: 'blur(16px)',
             display: 'flex',
             flexDirection: 'column',
           }}
-          onClick={closeModal}
         >
-          {/* Top Control Bar */}
+          {/* Modal Header Bar */}
           <div
             style={{
+              padding: '12px 24px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '12px 20px',
-              background: 'rgba(10, 20, 15, 0.9)',
               borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-              zIndex: 10,
+              background: 'rgba(255, 255, 255, 0.02)',
             }}
-            onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <i className="ph-bold ph-map-trifold" style={{ color: 'var(--clr-primary-light)', fontSize: '1.4rem' }}></i>
+              <i className="ph-bold ph-map-trifold" style={{ fontSize: '1.5rem', color: 'var(--clr-primary-light)' }}></i>
               <div>
-                <h4 style={{ margin: 0, fontSize: '1rem', color: '#fff' }}>
-                  Peta Administrasi Desa Negeri Pandan (HD View)
+                <h4 style={{ margin: 0, fontSize: '1.05rem', color: '#ffffff' }}>
+                  Peta Administrasi Desa Negeri Pandan (Resolusi Ultra-HD)
                 </h4>
-                <span style={{ fontSize: '0.78rem', color: 'var(--clr-text-secondary)' }}>
-                  Gunakan tombol zoom atau drag untuk menggeser peta
-                </span>
+                <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--clr-text-muted)' }}>
+                  Gunakan scroll atau tombol zoom untuk memperbesar, klik & tahan untuk menggeser.
+                </p>
               </div>
             </div>
 
-            {/* Zoom & Action Controls */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button
-                onClick={handleZoomIn}
-                className="btn btn-outline"
-                style={{ padding: '6px 12px', fontSize: '0.85rem', borderRadius: '6px' }}
-                title="Perbesar (Zoom In)"
-              >
-                <i className="ph-bold ph-plus"></i>
-              </button>
-              <button
-                onClick={handleZoomOut}
-                className="btn btn-outline"
-                style={{ padding: '6px 12px', fontSize: '0.85rem', borderRadius: '6px' }}
-                title="Perkecil (Zoom Out)"
-              >
-                <i className="ph-bold ph-minus"></i>
-              </button>
-              <button
-                onClick={handleResetZoom}
-                className="btn btn-outline"
-                style={{ padding: '6px 12px', fontSize: '0.85rem', borderRadius: '6px' }}
-                title="Reset Ukuran"
-              >
-                <i className="ph-bold ph-arrows-counter-clockwise"></i> Reset ({Math.round(zoomLevel * 100)}%)
-              </button>
-              <a
-                href="/documents/KKN.pdf"
-                download="Peta-Desa-Negeri-Pandan.pdf"
-                className="btn btn-primary"
-                style={{ padding: '6px 14px', fontSize: '0.85rem', borderRadius: '6px', textDecoration: 'none' }}
-              >
-                <i className="ph-bold ph-download-simple"></i> Unduh PDF
-              </a>
-              <button
-                onClick={closeModal}
+            {/* Modal Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
                 style={{
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  color: '#fff',
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  fontSize: '1.2rem',
-                  marginLeft: '8px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '8px',
+                  padding: '2px',
                 }}
-                title="Tutup (Esc)"
               >
-                <i className="ph-bold ph-x"></i>
+                <button
+                  onClick={handleZoomIn}
+                  title="Perbesar"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#fff',
+                    padding: '8px 12px',
+                    cursor: 'pointer',
+                    borderRadius: '6px',
+                    fontSize: '1rem',
+                  }}
+                >
+                  <i className="ph-bold ph-plus"></i>
+                </button>
+                <span style={{ fontSize: '0.8rem', color: '#fff', padding: '0 8px', minWidth: '45px', textAlign: 'center' }}>
+                  {Math.round(zoomLevel * 100)}%
+                </span>
+                <button
+                  onClick={handleZoomOut}
+                  title="Perkecil"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#fff',
+                    padding: '8px 12px',
+                    cursor: 'pointer',
+                    borderRadius: '6px',
+                    fontSize: '1rem',
+                  }}
+                >
+                  <i className="ph-bold ph-minus"></i>
+                </button>
+                <button
+                  onClick={handleResetZoom}
+                  title="Reset Ukuran"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#fff',
+                    padding: '8px 12px',
+                    cursor: 'pointer',
+                    borderRadius: '6px',
+                    fontSize: '0.8rem',
+                    borderLeft: '1px solid rgba(255,255,255,0.1)',
+                  }}
+                >
+                  Reset
+                </button>
+              </div>
+
+              <a
+                href="/documents/KKN.pdf"
+                download="Peta-Desa-Negeri-Pandan-HD.pdf"
+                className="btn btn-outline"
+                style={{ padding: '8px 14px', fontSize: '0.82rem' }}
+              >
+                <i className="ph-bold ph-download-simple"></i> Unduh Asli
+              </a>
+
+              <button
+                onClick={closeModal}
+                className="btn btn-secondary"
+                style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+                title="Tutup (ESC)"
+              >
+                <i className="ph-bold ph-x"></i> Tutup
               </button>
             </div>
           </div>
 
-          {/* Modal Map Canvas / Container */}
+          {/* Modal Pan/Zoom Canvas */}
           <div
             style={{
               flex: 1,
               position: 'relative',
               overflow: 'hidden',
+              cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-              userSelect: 'none',
             }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
-            onClick={(e) => e.stopPropagation()}
           >
             <div
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) scale(${zoomLevel})`,
                 transition: isDragging ? 'none' : 'transform 0.15s ease-out',
-                maxWidth: '92vw',
-                maxHeight: '82vh',
                 position: 'relative',
+                width: '92vw',
+                height: '84vh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -545,26 +503,19 @@ export default function PetaDesaViewer() {
             >
               <img
                 src="/images/peta-desa-hd.jpg"
-                alt="Peta Administrasi Desa Negeri Pandan Resolusi Tinggi"
+                alt="Peta HD Desa Negeri Pandan"
                 style={{
                   maxWidth: '100%',
-                  maxHeight: '82vh',
+                  maxHeight: '100%',
                   objectFit: 'contain',
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.8)',
-                  borderRadius: '8px',
+                  userSelect: 'none',
+                  pointerEvents: 'none',
                 }}
-                draggable={false}
               />
             </div>
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        .map-preview-container:hover .map-overlay-hover {
-          opacity: 1 !important;
-        }
-      `}</style>
     </div>
   );
 }

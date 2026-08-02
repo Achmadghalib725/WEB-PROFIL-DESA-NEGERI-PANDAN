@@ -14,9 +14,11 @@ export default async function sitemap() {
   const staticPages = [
     '',
     '/profil',
+    '/peta',
     '/berita',
     '/layanan',
     '/potensi',
+    '/kontak',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

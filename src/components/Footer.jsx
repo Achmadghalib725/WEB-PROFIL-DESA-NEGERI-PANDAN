@@ -52,8 +52,8 @@ export default function Footer() {
 
           <div className="footer-col">
             <h4>Informasi</h4>
+            <Link href="/peta">Peta Digital Desa (WebGIS)</Link>
             <Link href="/kontak">Hubungi Kami</Link>
-            <a href="#">Peta Desa</a>
           </div>
 
           <div className="footer-col">

@@ -62,6 +62,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Beranda' },
     { href: '/profil', label: 'Profil' },
+    { href: '/peta', label: 'Peta Desa' },
     { href: '/layanan', label: 'Layanan' },
     { href: '/potensi', label: 'Potensi' },
     { href: '/berita', label: 'Berita' },
