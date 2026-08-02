@@ -201,7 +201,7 @@ export default function BerandaPage() {
               </div>
 
               <div style={{ marginTop: '2rem' }}>
-                <Link href="/profil" className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <Link href="/peta" className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                   <i className="ph-bold ph-map-trifold"></i> Jelajahi Peta & Batas Wilayah →
                 </Link>
               </div>

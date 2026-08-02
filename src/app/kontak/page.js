@@ -92,7 +92,7 @@ export default function KontakPage() {
 
               <div style={{ marginTop: '1rem', textAlign: 'center' }}>
                 <Link
-                  href="/profil"
+                  href="/peta"
                   className="btn btn-outline"
                   style={{ width: '100%', fontSize: '0.88rem', padding: '10px 16px' }}
                 >
