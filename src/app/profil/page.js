@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import PetaDesaViewer from '@/components/PetaDesaViewer';
 import './org.css';
 
 export default function ProfilPage() {
@@ -158,6 +159,11 @@ export default function ProfilPage() {
                  </li>
                </ul>
             </div>
+          </div>
+
+          {/* Peta Wilayah Desa */}
+          <div className="reveal" style={{ marginTop: '2.5rem' }}>
+            <PetaDesaViewer />
           </div>
         </div>
       </section>

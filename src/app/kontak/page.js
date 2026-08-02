@@ -89,6 +89,16 @@ export default function KontakPage() {
                   title="Peta Lokasi Desa Negeri Pandan"
                 ></iframe>
               </div>
+
+              <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                <Link
+                  href="/profil"
+                  className="btn btn-outline"
+                  style={{ width: '100%', fontSize: '0.88rem', padding: '10px 16px' }}
+                >
+                  <i className="ph-bold ph-map-trifold"></i> Lihat Peta Administrasi Desa (GIS) →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
