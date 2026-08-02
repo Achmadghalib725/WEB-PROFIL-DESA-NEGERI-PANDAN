@@ -311,7 +311,7 @@ export default function WebGISMap() {
         const customIcon = L.divIcon({
           className: 'custom-webgis-marker',
           html: `
-            <div class="webgis-pin-bubble" style="background: ${item.color}; border: 2.5px solid #ffffff; box-shadow: 0 4px 14px ${item.color}88;">
+            <div class="webgis-pin-bubble" style="background: ${item.color}; border: 2.5px solid #ffffff; border-radius: 50% !important; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #ffffff; box-shadow: 0 4px 14px ${item.color}aa; cursor: pointer; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);">
               ${getIconSVG(item.icon)}
             </div>
           `,
@@ -1717,6 +1717,39 @@ export default function WebGISMap() {
           .webgis-workspace {
             height: 500px !important;
           }
+        }
+
+        /* Marker Pin & Tooltip Global Overrides */
+        .custom-leaflet-tooltip {
+          background: rgba(12, 26, 19, 0.95) !important;
+          border: 1px solid rgba(255, 255, 255, 0.15) !important;
+          color: #ffffff !important;
+          border-radius: 8px !important;
+          padding: 6px 10px !important;
+          font-family: inherit !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+        }
+        .custom-leaflet-tooltip::before {
+          border-top-color: rgba(12, 26, 19, 0.95) !important;
+        }
+        .custom-webgis-marker {
+          background: transparent !important;
+          border: none !important;
+        }
+        .webgis-pin-bubble {
+          width: 36px !important;
+          height: 36px !important;
+          border-radius: 50% !important;
+          border-radius: 9999px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          color: #ffffff !important;
+          cursor: pointer !important;
+          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+        .webgis-pin-bubble:hover {
+          transform: scale(1.25) !important;
         }
       `}</style>
     </div>
