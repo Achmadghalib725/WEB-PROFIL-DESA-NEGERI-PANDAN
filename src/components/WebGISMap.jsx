@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import {
   DESA_INFO,
@@ -16,6 +16,7 @@ export default function WebGISMap() {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const layersGroupRef = useRef({});
+  const wrapperRef = useRef(null);
 
   // Layer Visibility State
   const [layers, setLayers] = useState({
@@ -45,6 +46,11 @@ export default function WebGISMap() {
     kesehatan: true,
   });
 
+  // Mobile Bottom Sheet / Drawer State
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  // Desktop Sidebar Collapse state (allow user to minimize sidebar on desktop)
+  const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState(false);
+
   // Search filter
   const [searchQuery, setSearchQuery] = useState('');
   // Active Tile Layer ('satellite' | 'osm' | 'dark')
@@ -56,20 +62,73 @@ export default function WebGISMap() {
   });
   // Fullscreen state
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const wrapperRef = useRef(null);
 
-  // Toggle Collapse
+  // Count active facilities
+  const activeFacilityCount = useMemo(() => {
+    return FASILITAS_DESA.filter(
+      (f) => layers.categories[f.category] && layers.facilityItems[f.id]
+    ).length;
+  }, [layers]);
+
+  // Toggle Group Collapse
   const toggleGroup = (grp) => {
     setOpenGroups((prev) => ({ ...prev, [grp]: !prev[grp] }));
+  };
+
+  // Toggle All Groups
+  const toggleAllGroups = (expand) => {
+    setOpenGroups({
+      wilayah: expand,
+      jaringan: expand,
+      pemerintahan: expand,
+      ibadah: expand,
+      pendidikan: expand,
+      kesehatan: expand,
+    });
+  };
+
+  // Select / Deselect All Facilities
+  const toggleAllFacilities = (enable) => {
+    setLayers((prev) => {
+      const updatedCategories = {
+        pemerintahan: enable,
+        ibadah: enable,
+        pendidikan: enable,
+        kesehatan: enable,
+      };
+      const updatedItems = {};
+      FASILITAS_DESA.forEach((f) => {
+        updatedItems[f.id] = enable;
+      });
+      return {
+        ...prev,
+        categories: updatedCategories,
+        facilityItems: updatedItems,
+      };
+    });
   };
 
   // Toggle Fullscreen
   const toggleFullscreen = () => {
     if (!wrapperRef.current) return;
     if (!document.fullscreenElement) {
-      wrapperRef.current.requestFullscreen?.().then(() => setIsFullscreen(true)).catch(() => {});
+      wrapperRef.current
+        .requestFullscreen?.()
+        .then(() => setIsFullscreen(true))
+        .catch(() => {});
     } else {
       document.exitFullscreen?.().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  };
+
+  // Reset View to Bounds
+  const resetMapView = () => {
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.fitBounds(PETA_CONFIG.bounds, {
+        padding: [30, 30],
+        animate: true,
+        duration: 1,
+      });
     }
   };
 
@@ -91,11 +150,9 @@ export default function WebGISMap() {
     if (typeof window === 'undefined') return;
     let isMounted = true;
 
-    // Dynamically import Leaflet
     import('leaflet').then((L) => {
       if (!isMounted || !mapContainerRef.current) return;
 
-      // Clean existing instance
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
       }
@@ -115,7 +172,7 @@ export default function WebGISMap() {
       // 2. Add Zoom control to top right
       L.control.zoom({ position: 'topright' }).addTo(map);
 
-      // Fit bounds initially to ensure perfect framing
+      // Fit bounds initially
       map.fitBounds(PETA_CONFIG.bounds, { padding: [30, 30] });
 
       // 3. Tile Layers
@@ -124,7 +181,7 @@ export default function WebGISMap() {
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           {
             maxZoom: 19,
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, BIG, OpenStreetMap',
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, BIG',
           }
         ),
         osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -152,7 +209,7 @@ export default function WebGISMap() {
         });
       });
 
-      // 5. Inverted Mask (Gelapkan area luar batas desa agar desa fokus)
+      // 5. Inverted Mask (Gelapkan area luar desa)
       const maskLayer = L.polygon(MASK_LUAR_DESA, {
         color: 'transparent',
         fillColor: '#000000',
@@ -168,7 +225,7 @@ export default function WebGISMap() {
         opacity: 0.95,
         dashArray: '8, 6',
         fillColor: '#10b981',
-        fillOpacity: 0.1,
+        fillOpacity: 0.12,
       }).bindTooltip(
         `<b>Batas Administrasi Desa Negeri Pandan</b><br/><span style="font-size: 11px;">Luas: ${DESA_INFO.luasHa} Ha &bull; Sumber: BIG</span>`,
         {
@@ -180,10 +237,10 @@ export default function WebGISMap() {
       layersGroupRef.current.batasDesaLayer = batasDesaLayer;
       if (layers.batasDesa) batasDesaLayer.addTo(map);
 
-      // 7. Jaringan Jalan (Shapefile Jalan)
+      // 7. Jaringan Jalan
       const jalanGroup = L.layerGroup();
       JARINGAN_JALAN.forEach((j) => {
-        let roadColor = '#fbbf24'; // default yellow
+        let roadColor = '#fbbf24';
         let roadWeight = 2.5;
         if (j.type.includes('Tol')) {
           roadColor = '#ef4444';
@@ -209,7 +266,7 @@ export default function WebGISMap() {
       layersGroupRef.current.jalanGroup = jalanGroup;
       if (layers.jalan) jalanGroup.addTo(map);
 
-      // 8. Jaringan Sungai (Shapefile Sungai)
+      // 8. Jaringan Sungai
       const sungaiGroup = L.layerGroup();
       JARINGAN_SUNGAI.forEach((s) => {
         const polyline = L.polyline(s.coordinates, {
@@ -228,7 +285,6 @@ export default function WebGISMap() {
       // 9. Facilities / Markers Group
       const facilityMarkers = {};
       FASILITAS_DESA.forEach((item) => {
-        // Icon rendering
         const getIconSVG = (iconName) => {
           switch (iconName) {
             case 'ph-bank':
@@ -313,7 +369,7 @@ export default function WebGISMap() {
     };
   }, []);
 
-  // Update Base Tile Layer when `baseTile` changes
+  // Update Base Tile Layer
   useEffect(() => {
     const map = mapInstanceRef.current;
     const { tileLayers, currentTile } = layersGroupRef.current;
@@ -383,6 +439,7 @@ export default function WebGISMap() {
   const focusLocation = (coords) => {
     if (mapInstanceRef.current) {
       mapInstanceRef.current.flyTo(coords, 17, { duration: 1.2 });
+      if (isMobileDrawerOpen) setIsMobileDrawerOpen(false);
     }
   };
 
@@ -416,652 +473,1249 @@ export default function WebGISMap() {
     });
   };
 
+  // Reusable Layers List Content (Used in both Desktop Sidebar and Mobile Bottom Sheet)
+  const renderLayersTree = () => (
+    <div className="webgis-layers-list-inner">
+      {/* Search Bar */}
+      <div className="webgis-search-wrapper">
+        <div className="webgis-search-input-box">
+          <i className="ph-bold ph-magnifying-glass"></i>
+          <input
+            type="text"
+            placeholder="Cari fasilitas di peta..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="search-clear-btn">
+              &times;
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Quick Action Tools */}
+      <div className="webgis-quick-actions">
+        <button onClick={() => toggleAllFacilities(true)} className="action-pill-btn">
+          <i className="ph-bold ph-check-square"></i> Pilih Semua
+        </button>
+        <button onClick={() => toggleAllFacilities(false)} className="action-pill-btn">
+          <i className="ph-bold ph-square"></i> Sembunyikan
+        </button>
+        <button
+          onClick={() => toggleAllGroups(!openGroups.pemerintahan)}
+          className="action-pill-btn"
+        >
+          <i className="ph-bold ph-arrows-out-line-vertical"></i> Lipat/Buka
+        </button>
+      </div>
+
+      {/* 1. Batas Wilayah Group */}
+      <div className="layer-group-card">
+        <div onClick={() => toggleGroup('wilayah')} className="layer-group-header">
+          <div className="group-title-left">
+            <span className="group-icon-badge" style={{ background: '#10b98122', color: '#10b981' }}>
+              <i className="ph-bold ph-map-trifold"></i>
+            </span>
+            <span className="group-label">Batas Administrasi Desa</span>
+          </div>
+          <i className={`ph-bold ${openGroups.wilayah ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
+        </div>
+
+        {openGroups.wilayah && (
+          <div className="layer-group-body">
+            <label className="layer-item-row">
+              <input
+                type="checkbox"
+                checked={layers.maskLuar}
+                onChange={(e) => setLayers((prev) => ({ ...prev, maskLuar: e.target.checked }))}
+                style={{ accentColor: '#10b981' }}
+              />
+              <span className="color-dot" style={{ background: '#475569' }}></span>
+              <span>Area Luar Batas Desa (Dim)</span>
+            </label>
+
+            <label className="layer-item-row">
+              <input
+                type="checkbox"
+                checked={layers.batasDesa}
+                onChange={(e) => setLayers((prev) => ({ ...prev, batasDesa: e.target.checked }))}
+                style={{ accentColor: '#10b981' }}
+              />
+              <span className="color-dot" style={{ background: '#10b981' }}></span>
+              <span>Batas Desa (227 Titik Poligon BIG)</span>
+            </label>
+          </div>
+        )}
+      </div>
+
+      {/* 2. Jaringan Infrastruktur (Jalan & Sungai) */}
+      <div className="layer-group-card">
+        <div onClick={() => toggleGroup('jaringan')} className="layer-group-header">
+          <div className="group-title-left">
+            <span className="group-icon-badge" style={{ background: '#f59e0b22', color: '#f59e0b' }}>
+              <i className="ph-bold ph-git-branch"></i>
+            </span>
+            <span className="group-label">Jaringan Infrastruktur</span>
+          </div>
+          <i className={`ph-bold ${openGroups.jaringan ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
+        </div>
+
+        {openGroups.jaringan && (
+          <div className="layer-group-body">
+            <label className="layer-item-row">
+              <input
+                type="checkbox"
+                checked={layers.jalan}
+                onChange={(e) => setLayers((prev) => ({ ...prev, jalan: e.target.checked }))}
+                style={{ accentColor: '#fbbf24' }}
+              />
+              <span className="color-dot" style={{ background: '#fbbf24' }}></span>
+              <span>Jaringan Jalan ({JARINGAN_JALAN.length} Segmen)</span>
+            </label>
+
+            <label className="layer-item-row">
+              <input
+                type="checkbox"
+                checked={layers.sungai}
+                onChange={(e) => setLayers((prev) => ({ ...prev, sungai: e.target.checked }))}
+                style={{ accentColor: '#38bdf8' }}
+              />
+              <span className="color-dot" style={{ background: '#38bdf8' }}></span>
+              <span>Jaringan Aliran Sungai ({JARINGAN_SUNGAI.length} Segmen)</span>
+            </label>
+          </div>
+        )}
+      </div>
+
+      {/* Category Groups: Pemerintahan, Ibadah, Pendidikan, Kesehatan */}
+      {[
+        { key: 'pemerintahan', label: 'Pemerintahan & Fasilitas Umum', icon: 'ph-bank', color: '#2563eb' },
+        { key: 'ibadah', label: 'Tempat Ibadah', icon: 'ph-mosque', color: '#059669' },
+        { key: 'pendidikan', label: 'Sarana Pendidikan', icon: 'ph-graduation-cap', color: '#ea580c' },
+        { key: 'kesehatan', label: 'Layanan Kesehatan', icon: 'ph-first-aid', color: '#dc2626' },
+      ].map((cat) => {
+        const catItems = FASILITAS_DESA.filter((f) => f.category === cat.key);
+        if (catItems.length === 0) return null;
+
+        return (
+          <div key={cat.key} className="layer-group-card">
+            <div className="layer-group-header">
+              <label className="group-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={layers.categories[cat.key] || false}
+                  onChange={() => handleCategoryToggle(cat.key)}
+                  style={{ accentColor: cat.color }}
+                />
+                <span
+                  className="group-icon-badge"
+                  style={{ background: `${cat.color}22`, color: cat.color }}
+                >
+                  <i className={`ph-bold ${cat.icon}`}></i>
+                </span>
+                <span className="group-label">{cat.label}</span>
+              </label>
+
+              <button
+                onClick={() => toggleGroup(cat.key)}
+                className="group-collapse-btn"
+                aria-label="Toggle group"
+              >
+                <i className={`ph-bold ${openGroups[cat.key] ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
+              </button>
+            </div>
+
+            {openGroups[cat.key] && (
+              <div className="layer-group-body">
+                {catItems.map((item) => (
+                  <div key={item.id} className="facility-item-row">
+                    <label className="facility-checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={layers.facilityItems[item.id] || false}
+                        onChange={() => handleItemToggle(item.id, cat.key)}
+                        style={{ accentColor: item.color }}
+                      />
+                      <span className="color-dot" style={{ background: item.color }}></span>
+                      <span className="facility-name-text">{item.name}</span>
+                    </label>
+
+                    <button
+                      onClick={() => focusLocation(item.coords)}
+                      title="Arahkan Peta ke Lokasi"
+                      className="focus-crosshair-btn"
+                    >
+                      <i className="ph-bold ph-crosshair"></i>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div
       ref={wrapperRef}
-      className={`webgis-container ${isFullscreen ? 'webgis-fullscreen' : ''}`}
-      style={{
-        width: '100%',
-        background: 'var(--clr-bg-card, #0c1a13)',
-        borderRadius: isFullscreen ? '0' : 'var(--radius-lg, 16px)',
-        border: isFullscreen ? 'none' : '1px solid var(--clr-border, rgba(255,255,255,0.08))',
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
+      className={`webgis-root-container ${isFullscreen ? 'webgis-fullscreen' : ''}`}
     >
-      {/* Top App Sub-Bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 20px',
-          background: 'rgba(255, 255, 255, 0.02)',
-          borderBottom: '1px solid var(--clr-border, rgba(255,255,255,0.06))',
-          flexWrap: 'wrap',
-          gap: '12px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* ── TOP NAV BAR ── */}
+      <div className="webgis-topbar">
+        <div className="topbar-left">
           <Image
             src="/images/logo-lamsel.png"
             alt="Logo Kabupaten Lampung Selatan"
-            width={28}
-            height={28}
-            style={{ objectFit: 'contain' }}
+            width={32}
+            height={32}
+            className="topbar-logo"
           />
-          <div>
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--clr-primary-light)' }}>
-              WebGIS Desa {DESA_INFO.nama} (Akurasi Presisi SHP / BIG)
-            </span>
-            <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--clr-text-muted)' }}>
-              Luas Wilayah: <strong>{DESA_INFO.luasHa.toLocaleString('id-ID')} Ha</strong> ({(DESA_INFO.luasM2 / 1000000).toFixed(2)} km²) &bull; {DESA_INFO.delineasi}
+          <div className="topbar-info">
+            <h2 className="topbar-title">WebGIS Desa {DESA_INFO.nama}</h2>
+            <p className="topbar-subtitle">
+              Luas: <strong>{DESA_INFO.luasHa.toLocaleString('id-ID')} Ha</strong> ({DESA_INFO.delineasi})
             </p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Base Layer Switcher */}
-          <div
-            style={{
-              display: 'flex',
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '8px',
-              padding: '3px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-            }}
-          >
+        <div className="topbar-controls">
+          {/* Base Layer Switcher (Desktop & Tablet) */}
+          <div className="basemap-pill-group">
             <button
               onClick={() => setBaseTile('satellite')}
-              style={{
-                background: baseTile === 'satellite' ? 'var(--clr-primary, #10b981)' : 'transparent',
-                color: '#fff',
-                border: 'none',
-                padding: '4px 10px',
-                borderRadius: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className={`basemap-btn ${baseTile === 'satellite' ? 'active' : ''}`}
             >
               🛰️ Satelit
             </button>
             <button
               onClick={() => setBaseTile('osm')}
-              style={{
-                background: baseTile === 'osm' ? 'var(--clr-primary, #10b981)' : 'transparent',
-                color: '#fff',
-                border: 'none',
-                padding: '4px 10px',
-                borderRadius: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className={`basemap-btn ${baseTile === 'osm' ? 'active' : ''}`}
             >
               🗺️ Jalan
             </button>
             <button
               onClick={() => setBaseTile('dark')}
-              style={{
-                background: baseTile === 'dark' ? 'var(--clr-primary, #10b981)' : 'transparent',
-                color: '#fff',
-                border: 'none',
-                padding: '4px 10px',
-                borderRadius: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className={`basemap-btn ${baseTile === 'dark' ? 'active' : ''}`}
             >
               🌙 Dark
             </button>
           </div>
 
+          {/* Reset View Button */}
+          <button
+            onClick={resetMapView}
+            className="topbar-action-btn"
+            title="Reset Peta ke Batas Desa"
+          >
+            <i className="ph-bold ph-arrows-out-cardinal"></i>
+            <span className="btn-label-desktop">Reset View</span>
+          </button>
+
+          {/* Fullscreen Button */}
           <button
             onClick={toggleFullscreen}
-            className="btn btn-outline"
-            style={{ padding: '6px 14px', fontSize: '0.78rem', borderRadius: '8px' }}
+            className="topbar-action-btn"
+            title={isFullscreen ? 'Keluar Layar Penuh' : 'Layar Penuh'}
           >
-            <i className={`ph-bold ${isFullscreen ? 'ph-corners-in' : 'ph-corners-out'}`}></i>{' '}
-            {isFullscreen ? 'Tutup Fullscreen' : 'Buka Layar Penuh'}
+            <i className={`ph-bold ${isFullscreen ? 'ph-corners-in' : 'ph-corners-out'}`}></i>
+            <span className="btn-label-desktop">
+              {isFullscreen ? 'Tutup Fullscreen' : 'Layar Penuh'}
+            </span>
           </button>
         </div>
       </div>
 
-      {/* Main Grid: Sidebar + Map */}
-      <div
-        className="webgis-main-grid"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '320px 1fr',
-          minHeight: isFullscreen ? 'calc(100vh - 60px)' : '650px',
-          height: isFullscreen ? 'calc(100vh - 60px)' : '650px',
-        }}
-      >
-        {/* ── LEFT SIDEBAR: LAYER PETA ── */}
-        <div
-          className="webgis-sidebar"
-          style={{
-            background: 'var(--clr-bg, #08130d)',
-            borderRight: '1px solid var(--clr-border, rgba(255,255,255,0.08))',
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-          }}
+      {/* ── MOBILE HORIZONTAL QUICK FILTER CAROUSEL (Chips) ── */}
+      <div className="mobile-quick-chips-wrapper">
+        <button
+          onClick={() => setIsMobileDrawerOpen(true)}
+          className="chip-btn chip-highlight"
         >
-          <div
-            style={{
-              padding: '14px 16px',
-              borderBottom: '1px solid var(--clr-border, rgba(255,255,255,0.06))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '0.8rem',
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                color: 'var(--clr-primary-light)',
-              }}
+          <i className="ph-bold ph-sliders-horizontal"></i>
+          <span>Layer ({activeFacilityCount})</span>
+        </button>
+        <button
+          onClick={() => setLayers((p) => ({ ...p, batasDesa: !p.batasDesa }))}
+          className={`chip-btn ${layers.batasDesa ? 'chip-active-emerald' : ''}`}
+        >
+          🗺️ Batas Desa
+        </button>
+        <button
+          onClick={() => setLayers((p) => ({ ...p, jalan: !p.jalan }))}
+          className={`chip-btn ${layers.jalan ? 'chip-active-yellow' : ''}`}
+        >
+          🛣️ Jalan
+        </button>
+        <button
+          onClick={() => setLayers((p) => ({ ...p, sungai: !p.sungai }))}
+          className={`chip-btn ${layers.sungai ? 'chip-active-blue' : ''}`}
+        >
+          🌊 Sungai
+        </button>
+        <button
+          onClick={() => handleCategoryToggle('pemerintahan')}
+          className={`chip-btn ${layers.categories.pemerintahan ? 'chip-active-blue' : ''}`}
+        >
+          🏛️ Balai & Fasum
+        </button>
+        <button
+          onClick={() => handleCategoryToggle('ibadah')}
+          className={`chip-btn ${layers.categories.ibadah ? 'chip-active-emerald' : ''}`}
+        >
+          🕌 Masjid
+        </button>
+        <button
+          onClick={() => handleCategoryToggle('pendidikan')}
+          className={`chip-btn ${layers.categories.pendidikan ? 'chip-active-orange' : ''}`}
+        >
+          🏫 Sekolah
+        </button>
+        <button
+          onClick={() => handleCategoryToggle('kesehatan')}
+          className={`chip-btn ${layers.categories.kesehatan ? 'chip-active-red' : ''}`}
+        >
+          🏥 Kesehatan
+        </button>
+      </div>
+
+      {/* ── MAIN WORKSPACE (Desktop Sidebar + Map Canvas) ── */}
+      <div
+        className={`webgis-workspace ${
+          isDesktopSidebarCollapsed ? 'sidebar-collapsed' : ''
+        }`}
+      >
+        {/* ── DESKTOP SIDEBAR ── */}
+        <aside className="webgis-desktop-sidebar">
+          {/* Sidebar Top Header */}
+          <div className="sidebar-header-fixed">
+            <div className="sidebar-header-title-box">
+              <span className="sidebar-title-text">
+                <i className="ph-bold ph-stack"></i> Layer Peta (GIS)
+              </span>
+              <span className="active-badge">
+                {activeFacilityCount}/{FASILITAS_DESA.length} Aktif
+              </span>
+            </div>
+            <button
+              onClick={() => setIsDesktopSidebarCollapsed(true)}
+              className="sidebar-collapse-toggle-btn"
+              title="Sembunyikan Panel Samping"
             >
-              <i className="ph-bold ph-stack" style={{ marginRight: '6px' }}></i> Layer Peta (GIS)
-            </span>
-            <span
-              style={{
-                fontSize: '0.72rem',
-                background: 'rgba(255, 255, 255, 0.06)',
-                padding: '2px 8px',
-                borderRadius: '9999px',
-                color: 'var(--clr-text-muted)',
-              }}
-            >
-              {FASILITAS_DESA.length} Titik Valid
-            </span>
+              <i className="ph-bold ph-caret-left"></i>
+            </button>
           </div>
 
-          {/* Search box */}
-          <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '8px',
-                padding: '6px 10px',
-                gap: '6px',
-              }}
-            >
-              <i className="ph-bold ph-magnifying-glass" style={{ color: 'var(--clr-text-muted)', fontSize: '0.9rem' }}></i>
-              <input
-                type="text"
-                placeholder="Cari fasilitas di peta..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  color: '#fff',
-                  fontSize: '0.82rem',
-                  width: '100%',
-                }}
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--clr-text-muted)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  &times;
-                </button>
-              )}
-            </div>
+          {/* Scrollable Tree Container */}
+          <div className="webgis-layers-scroll-container">
+            {renderLayersTree()}
           </div>
 
-          {/* Scrollable Tree Layers */}
-          <div
-            className="webgis-layers-list"
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '12px 14px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-            }}
-          >
-            {/* 1. Batas Wilayah Group */}
-            <div
-              style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: '10px',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                onClick={() => toggleGroup('wilayah')}
-                style={{
-                  padding: '10px 12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  cursor: 'pointer',
-                  background: 'rgba(255,255,255,0.03)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '6px',
-                      background: '#10b98122',
-                      color: '#10b981',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.85rem',
-                    }}
-                  >
-                    <i className="ph-bold ph-map-trifold"></i>
-                  </span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--clr-text)' }}>
-                    Batas Administrasi Desa
-                  </span>
-                </div>
-                <i
-                  className={`ph-bold ${openGroups.wilayah ? 'ph-caret-up' : 'ph-caret-down'}`}
-                  style={{ color: 'var(--clr-text-muted)', fontSize: '0.8rem' }}
-                ></i>
-              </div>
-
-              {openGroups.wilayah && (
-                <div style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {/* Mask */}
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--clr-text-secondary)', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={layers.maskLuar}
-                      onChange={(e) => setLayers((prev) => ({ ...prev, maskLuar: e.target.checked }))}
-                      style={{ accentColor: '#10b981' }}
-                    />
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#475569', display: 'inline-block' }}></span>
-                    Area Luar Batas Desa (Dim)
-                  </label>
-
-                  {/* Batas Desa */}
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--clr-text-secondary)', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={layers.batasDesa}
-                      onChange={(e) => setLayers((prev) => ({ ...prev, batasDesa: e.target.checked }))}
-                      style={{ accentColor: '#10b981' }}
-                    />
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-                    Batas Desa (227 Titik Poligon BIG)
-                  </label>
-                </div>
-              )}
+          {/* Sidebar Fixed Bottom Footer */}
+          <div className="sidebar-footer-fixed">
+            <div className="footer-meta-row">
+              <span>Format Data:</span>
+              <strong style={{ color: 'var(--clr-primary-light)' }}>SHP & GeoJSON (BIG)</strong>
             </div>
-
-            {/* 2. Jaringan Infrastruktur (Jalan & Sungai) */}
-            <div
-              style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: '10px',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                onClick={() => toggleGroup('jaringan')}
-                style={{
-                  padding: '10px 12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  cursor: 'pointer',
-                  background: 'rgba(255,255,255,0.03)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '6px',
-                      background: '#f59e0b22',
-                      color: '#f59e0b',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.85rem',
-                    }}
-                  >
-                    <i className="ph-bold ph-git-branch"></i>
-                  </span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--clr-text)' }}>
-                    Jaringan Infrastruktur
-                  </span>
-                </div>
-                <i
-                  className={`ph-bold ${openGroups.jaringan ? 'ph-caret-up' : 'ph-caret-down'}`}
-                  style={{ color: 'var(--clr-text-muted)', fontSize: '0.8rem' }}
-                ></i>
-              </div>
-
-              {openGroups.jaringan && (
-                <div style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {/* Jalan */}
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--clr-text-secondary)', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={layers.jalan}
-                      onChange={(e) => setLayers((prev) => ({ ...prev, jalan: e.target.checked }))}
-                      style={{ accentColor: '#fbbf24' }}
-                    />
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#fbbf24', display: 'inline-block' }}></span>
-                    Jaringan Jalan ({JARINGAN_JALAN.length} Segmen)
-                  </label>
-
-                  {/* Sungai */}
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--clr-text-secondary)', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={layers.sungai}
-                      onChange={(e) => setLayers((prev) => ({ ...prev, sungai: e.target.checked }))}
-                      style={{ accentColor: '#38bdf8' }}
-                    />
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#38bdf8', display: 'inline-block' }}></span>
-                    Jaringan Aliran Sungai ({JARINGAN_SUNGAI.length} Segmen)
-                  </label>
-                </div>
-              )}
-            </div>
-
-            {/* Category Groups: Pemerintahan, Ibadah, Pendidikan, Kesehatan */}
-            {[
-              { key: 'pemerintahan', label: 'Pemerintahan & Fasilitas Umum', icon: 'ph-bank', color: '#2563eb' },
-              { key: 'ibadah', label: 'Tempat Ibadah', icon: 'ph-mosque', color: '#059669' },
-              { key: 'pendidikan', label: 'Sarana Pendidikan', icon: 'ph-graduation-cap', color: '#ea580c' },
-              { key: 'kesehatan', label: 'Layanan Kesehatan', icon: 'ph-first-aid', color: '#dc2626' },
-            ].map((cat) => {
-              const catItems = FASILITAS_DESA.filter((f) => f.category === cat.key);
-              if (catItems.length === 0) return null;
-
-              return (
-                <div
-                  key={cat.key}
-                  style={{
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: '10px',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: '10px 12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      background: 'rgba(255,255,255,0.03)',
-                    }}
-                  >
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', margin: 0 }}>
-                      <input
-                        type="checkbox"
-                        checked={layers.categories[cat.key] || false}
-                        onChange={() => handleCategoryToggle(cat.key)}
-                        style={{ accentColor: cat.color }}
-                      />
-                      <span
-                        style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '6px',
-                          background: `${cat.color}22`,
-                          color: cat.color,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '0.85rem',
-                        }}
-                      >
-                        <i className={`ph-bold ${cat.icon}`}></i>
-                      </span>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--clr-text)' }}>
-                        {cat.label}
-                      </span>
-                    </label>
-
-                    <button
-                      onClick={() => toggleGroup(cat.key)}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: 'var(--clr-text-muted)',
-                        cursor: 'pointer',
-                        padding: '4px',
-                      }}
-                    >
-                      <i className={`ph-bold ${openGroups[cat.key] ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
-                    </button>
-                  </div>
-
-                  {openGroups[cat.key] && (
-                    <div style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {catItems.map((item) => (
-                        <div
-                          key={item.id}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '4px 6px',
-                            borderRadius: '6px',
-                            transition: 'background 0.2s',
-                          }}
-                          className="hover-bg"
-                        >
-                          <label
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '8px',
-                              fontSize: '0.78rem',
-                              color: 'var(--clr-text-secondary)',
-                              cursor: 'pointer',
-                              margin: 0,
-                              flex: 1,
-                            }}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={layers.facilityItems[item.id] || false}
-                              onChange={() => handleItemToggle(item.id, cat.key)}
-                              style={{ accentColor: item.color }}
-                            />
-                            <span
-                              style={{
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: item.color,
-                                display: 'inline-block',
-                              }}
-                            ></span>
-                            <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '170px' }}>
-                              {item.name}
-                            </span>
-                          </label>
-
-                          <button
-                            onClick={() => focusLocation(item.coords)}
-                            title="Arahkan Peta ke Lokasi"
-                            style={{
-                              background: 'transparent',
-                              border: 'none',
-                              color: 'var(--clr-primary-light)',
-                              cursor: 'pointer',
-                              padding: '2px 4px',
-                              fontSize: '0.85rem',
-                            }}
-                          >
-                            <i className="ph-bold ph-crosshair"></i>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Sidebar Footer Data Info */}
-          <div
-            style={{
-              padding: '10px 14px',
-              borderTop: '1px solid var(--clr-border, rgba(255,255,255,0.06))',
-              background: 'rgba(0,0,0,0.3)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '6px',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem' }}>
-              <span style={{ color: 'var(--clr-text-muted)' }}>Format Data:</span>
-              <span style={{ color: 'var(--clr-primary-light)', fontWeight: 600 }}>ESRI Shapefile (SHP) & GeoJSON</span>
-            </div>
-            <div style={{ display: 'flex', gap: '6px', marginTop: '2px' }}>
+            <div className="footer-btn-grid">
               <a
                 href="/gis/batas-desa.geojson"
                 download="batas-desa-negeri-pandan.geojson"
-                className="btn btn-outline"
-                style={{ flex: 1, fontSize: '0.72rem', padding: '4px 8px', textAlign: 'center', justifyContent: 'center' }}
+                className="footer-dl-btn btn-geojson"
               >
-                Unduh GeoJSON
+                <i className="ph-bold ph-download-simple"></i> GeoJSON
               </a>
               <a
                 href="/documents/KKN.pdf"
                 download="Peta-Desa-Negeri-Pandan.pdf"
-                className="btn btn-secondary"
-                style={{ flex: 1, fontSize: '0.72rem', padding: '4px 8px', textAlign: 'center', justifyContent: 'center' }}
+                className="footer-dl-btn btn-pdf"
               >
-                Unduh PDF
+                <i className="ph-bold ph-file-pdf"></i> Peta PDF
               </a>
             </div>
           </div>
-        </div>
+        </aside>
 
-        {/* ── RIGHT: MAP CONTAINER ── */}
-        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-          <div ref={mapContainerRef} style={{ width: '100%', height: '100%', zIndex: 1 }} />
-
-          {/* Coordinates Bar */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '12px',
-              left: '12px',
-              zIndex: 999,
-              background: 'rgba(5, 15, 10, 0.85)',
-              backdropFilter: 'blur(8px)',
-              padding: '6px 12px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              fontSize: '0.75rem',
-              color: '#ffffff',
-              fontFamily: 'monospace',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
+        {/* Collapsed Sidebar Expand Button (Floating on left when sidebar hidden) */}
+        {isDesktopSidebarCollapsed && (
+          <button
+            onClick={() => setIsDesktopSidebarCollapsed(false)}
+            className="sidebar-expand-float-btn"
+            title="Tampilkan Panel Layer"
           >
-            <span style={{ color: 'var(--clr-primary-light)' }}>●</span>
+            <i className="ph-bold ph-stack"></i>
+            <span>Layer</span>
+          </button>
+        )}
+
+        {/* ── MAP CONTAINER ── */}
+        <main className="webgis-map-canvas-wrapper">
+          <div ref={mapContainerRef} className="webgis-leaflet-canvas" />
+
+          {/* Live Coordinates Floating HUD */}
+          <div className="floating-hud-coords">
+            <span className="hud-live-dot">●</span>
             <span>
-              Lat: {cursorCoords.lat.toFixed(6)}, Lng: {cursorCoords.lng.toFixed(6)}
+              {cursorCoords.lat.toFixed(5)}, {cursorCoords.lng.toFixed(5)}
             </span>
           </div>
 
-          {/* Legend Watermark Badge */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '12px',
-              right: '12px',
-              zIndex: 999,
-              background: 'rgba(5, 15, 10, 0.85)',
-              backdropFilter: 'blur(8px)',
-              padding: '6px 12px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              fontSize: '0.75rem',
-              color: 'var(--clr-text-secondary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            <i className="ph-bold ph-shield-check" style={{ color: 'var(--clr-primary-light)' }}></i>
-            <span>Delineasi BIG & Kemendagri &bull; KKN Unila 2026</span>
+          {/* Mobile Bottom Floating Action Trigger */}
+          <div className="mobile-floating-dock">
+            <button
+              onClick={() => setIsMobileDrawerOpen(true)}
+              className="dock-layer-btn"
+            >
+              <i className="ph-bold ph-stack"></i>
+              <span>Kelola Layer ({activeFacilityCount})</span>
+            </button>
+
+            <div className="dock-tile-selector">
+              <button
+                onClick={() => setBaseTile('satellite')}
+                className={`dock-tile-btn ${baseTile === 'satellite' ? 'active' : ''}`}
+                title="Satelit"
+              >
+                🛰️
+              </button>
+              <button
+                onClick={() => setBaseTile('osm')}
+                className={`dock-tile-btn ${baseTile === 'osm' ? 'active' : ''}`}
+                title="Jalan"
+              >
+                🗺️
+              </button>
+              <button
+                onClick={() => setBaseTile('dark')}
+                className={`dock-tile-btn ${baseTile === 'dark' ? 'active' : ''}`}
+                title="Dark"
+              >
+                🌙
+              </button>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
 
+      {/* ── MOBILE BOTTOM SHEET / DRAWER ── */}
+      {isMobileDrawerOpen && (
+        <div className="mobile-sheet-overlay" onClick={() => setIsMobileDrawerOpen(false)}>
+          <div
+            className="mobile-sheet-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Sheet Handle */}
+            <div className="sheet-drag-handle-bar">
+              <div className="sheet-drag-handle" />
+            </div>
+
+            {/* Sheet Header */}
+            <div className="sheet-header">
+              <div>
+                <h3 className="sheet-title">Filter & Layer Peta</h3>
+                <p className="sheet-subtitle">
+                  {activeFacilityCount} dari {FASILITAS_DESA.length} Fasilitas Ditampilkan
+                </p>
+              </div>
+              <button
+                onClick={() => setIsMobileDrawerOpen(false)}
+                className="sheet-close-btn"
+                aria-label="Tutup"
+              >
+                <i className="ph-bold ph-x"></i>
+              </button>
+            </div>
+
+            {/* Sheet Scrollable Layers Tree */}
+            <div className="sheet-body-scroll">
+              {renderLayersTree()}
+            </div>
+
+            {/* Sheet Footer */}
+            <div className="sheet-footer">
+              <div className="sheet-download-row">
+                <a
+                  href="/gis/batas-desa.geojson"
+                  download="batas-desa-negeri-pandan.geojson"
+                  className="footer-dl-btn btn-geojson"
+                >
+                  <i className="ph-bold ph-download-simple"></i> GeoJSON
+                </a>
+                <a
+                  href="/documents/KKN.pdf"
+                  download="Peta-Desa-Negeri-Pandan.pdf"
+                  className="footer-dl-btn btn-pdf"
+                >
+                  <i className="ph-bold ph-file-pdf"></i> PDF
+                </a>
+              </div>
+              <button
+                onClick={() => setIsMobileDrawerOpen(false)}
+                className="sheet-apply-btn"
+              >
+                Terapkan & Lihat Peta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── GLOBAL COMPONENT STYLES ── */}
       <style jsx global>{`
-        .custom-leaflet-tooltip {
-          background: rgba(12, 26, 19, 0.95) !important;
-          border: 1px solid rgba(255, 255, 255, 0.15) !important;
-          color: #ffffff !important;
-          border-radius: 8px !important;
-          padding: 6px 10px !important;
-          font-family: inherit !important;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+        /* Root container */
+        .webgis-root-container {
+          width: 100%;
+          background: var(--clr-bg-card, #0c1a13);
+          border-radius: var(--radius-lg, 16px);
+          border: 1px solid var(--clr-border, rgba(255, 255, 255, 0.08));
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+          overflow: hidden;
+          position: relative;
+          display: flex;
+          flex-direction: column;
         }
-        .custom-leaflet-tooltip::before {
-          border-top-color: rgba(12, 26, 19, 0.95) !important;
+        .webgis-root-container.webgis-fullscreen {
+          border-radius: 0 !important;
+          border: none !important;
+          position: fixed !important;
+          inset: 0 !important;
+          z-index: 99999 !important;
+          height: 100vh !important;
+          width: 100vw !important;
         }
-        .custom-webgis-marker {
+
+        /* Topbar */
+        .webgis-topbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 18px;
+          background: rgba(12, 26, 19, 0.95);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          gap: 12px;
+          flex-shrink: 0;
+          z-index: 10;
+        }
+        .topbar-left {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .topbar-logo {
+          object-fit: contain;
+          flex-shrink: 0;
+        }
+        .topbar-title {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: var(--clr-primary-light, #34d399);
+          margin: 0;
+          line-height: 1.2;
+        }
+        .topbar-subtitle {
+          font-size: 0.73rem;
+          color: var(--clr-text-muted, #94a3b8);
+          margin: 2px 0 0 0;
+        }
+        .topbar-controls {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .basemap-pill-group {
+          display: flex;
+          background: rgba(255, 255, 255, 0.06);
+          border-radius: 8px;
+          padding: 2px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .basemap-btn {
+          background: transparent;
+          color: #cbd5e1;
+          border: none;
+          padding: 5px 10px;
+          border-radius: 6px;
+          font-size: 0.76rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .basemap-btn.active {
+          background: var(--clr-primary, #10b981);
+          color: #ffffff;
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+        .topbar-action-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255, 255, 255, 0.05);
+          color: #f1f5f9;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .topbar-action-btn:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Quick Horizontal Chips */
+        .mobile-quick-chips-wrapper {
+          display: none;
+          overflow-x: auto;
+          white-space: nowrap;
+          padding: 8px 12px;
+          background: rgba(8, 19, 13, 0.98);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          gap: 6px;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .mobile-quick-chips-wrapper::-webkit-scrollbar {
+          display: none;
+        }
+        .chip-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 6px 12px;
+          border-radius: 9999px;
+          font-size: 0.76rem;
+          font-weight: 600;
+          background: rgba(255, 255, 255, 0.06);
+          color: #cbd5e1;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: all 0.2s;
+        }
+        .chip-btn.chip-highlight {
+          background: rgba(16, 185, 129, 0.2);
+          color: #34d399;
+          border-color: rgba(16, 185, 129, 0.5);
+        }
+        .chip-btn.chip-active-emerald {
+          background: #10b981;
+          color: #ffffff;
+          border-color: #10b981;
+        }
+        .chip-btn.chip-active-yellow {
+          background: #f59e0b;
+          color: #000000;
+          border-color: #f59e0b;
+          font-weight: 700;
+        }
+        .chip-btn.chip-active-blue {
+          background: #2563eb;
+          color: #ffffff;
+          border-color: #2563eb;
+        }
+        .chip-btn.chip-active-orange {
+          background: #ea580c;
+          color: #ffffff;
+          border-color: #ea580c;
+        }
+        .chip-btn.chip-active-red {
+          background: #dc2626;
+          color: #ffffff;
+          border-color: #dc2626;
+        }
+
+        /* Workspace Grid (Sidebar + Map) */
+        .webgis-workspace {
+          display: grid;
+          grid-template-columns: 340px 1fr;
+          height: 680px;
+          min-height: 0;
+          position: relative;
+          overflow: hidden;
+        }
+        .webgis-root-container.webgis-fullscreen .webgis-workspace {
+          height: calc(100vh - 60px) !important;
+        }
+        .webgis-workspace.sidebar-collapsed {
+          grid-template-columns: 0px 1fr !important;
+        }
+
+        /* Desktop Sidebar */
+        .webgis-desktop-sidebar {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          max-height: 100%;
+          min-height: 0;
+          background: var(--clr-bg, #08130d);
+          border-right: 1px solid var(--clr-border, rgba(255, 255, 255, 0.08));
+          overflow: hidden;
+          position: relative;
+          z-index: 5;
+        }
+        .sidebar-header-fixed {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 14px;
+          background: rgba(255, 255, 255, 0.02);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          flex-shrink: 0;
+        }
+        .sidebar-header-title-box {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .sidebar-title-text {
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          color: var(--clr-primary-light, #34d399);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .active-badge {
+          font-size: 0.7rem;
+          background: rgba(16, 185, 129, 0.15);
+          color: #34d399;
+          padding: 2px 8px;
+          border-radius: 9999px;
+          font-weight: 600;
+          border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .sidebar-collapse-toggle-btn {
           background: transparent;
           border: none;
-        }
-        .webgis-pin-bubble {
-          width: 34px;
-          height: 34px;
-          border-radius: 50%;
+          color: #94a3b8;
+          font-size: 1rem;
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 4px;
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+        .sidebar-collapse-toggle-btn:hover {
+          color: #fff;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Scrollable Layers Container */
+        .webgis-layers-scroll-container {
+          flex: 1 1 0%;
+          min-height: 0;
+          height: 100%;
+          overflow-y: auto;
+          overflow-x: hidden;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+          padding: 12px 14px;
+        }
+
+        /* Custom Scrollbar */
+        .webgis-layers-scroll-container::-webkit-scrollbar,
+        .sheet-body-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .webgis-layers-scroll-container::-webkit-scrollbar-track,
+        .sheet-body-scroll::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 3px;
+        }
+        .webgis-layers-scroll-container::-webkit-scrollbar-thumb,
+        .sheet-body-scroll::-webkit-scrollbar-thumb {
+          background: rgba(16, 185, 129, 0.35);
+          border-radius: 3px;
+        }
+        .webgis-layers-scroll-container::-webkit-scrollbar-thumb:hover,
+        .sheet-body-scroll::-webkit-scrollbar-thumb:hover {
+          background: rgba(16, 185, 129, 0.65);
+        }
+
+        /* Inner Tree */
+        .webgis-layers-list-inner {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .webgis-search-wrapper {
+          margin-bottom: 2px;
+        }
+        .webgis-search-input-box {
+          display: flex;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.09);
+          border-radius: 8px;
+          padding: 7px 10px;
+          gap: 8px;
+          color: #94a3b8;
+        }
+        .webgis-search-input-box input {
+          background: transparent;
+          border: none;
+          outline: none;
           color: #ffffff;
+          font-size: 0.82rem;
+          width: 100%;
+        }
+        .webgis-search-input-box input::placeholder {
+          color: #64748b;
+        }
+        .search-clear-btn {
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          font-size: 1rem;
           cursor: pointer;
-          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+          line-height: 1;
         }
-        .webgis-pin-bubble:hover {
-          transform: scale(1.25);
+
+        .webgis-quick-actions {
+          display: flex;
+          gap: 6px;
+          margin-bottom: 2px;
         }
-        .hover-bg:hover {
+        .action-pill-btn {
+          flex: 1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #cbd5e1;
+          padding: 5px 6px;
+          border-radius: 6px;
+          font-size: 0.72rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .action-pill-btn:hover {
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+        }
+
+        /* Layer Group Cards */
+        .layer-group-card {
+          background: rgba(255, 255, 255, 0.025);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 10px;
+          overflow: hidden;
+        }
+        .layer-group-header {
+          padding: 9px 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(255, 255, 255, 0.035);
+          cursor: pointer;
+          user-select: none;
+        }
+        .group-title-left,
+        .group-checkbox-label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          margin: 0;
+          flex: 1;
+        }
+        .group-icon-badge {
+          width: 24px;
+          height: 24px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.85rem;
+          flex-shrink: 0;
+        }
+        .group-label {
+          font-size: 0.84rem;
+          font-weight: 600;
+          color: var(--clr-text, #f1f5f9);
+        }
+        .group-collapse-btn {
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          cursor: pointer;
+          padding: 2px 4px;
+        }
+        .layer-group-body {
+          padding: 8px 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+          border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .layer-item-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.8rem;
+          color: #cbd5e1;
+          cursor: pointer;
+          margin: 0;
+        }
+        .facility-item-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 4px 6px;
+          border-radius: 6px;
+          transition: background 0.15s;
+        }
+        .facility-item-row:hover {
           background: rgba(255, 255, 255, 0.05);
         }
+        .facility-checkbox-label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.78rem;
+          color: #cbd5e1;
+          cursor: pointer;
+          margin: 0;
+          flex: 1;
+          min-width: 0;
+        }
+        .facility-name-text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .color-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          flex-shrink: 0;
+          display: inline-block;
+        }
+        .focus-crosshair-btn {
+          background: transparent;
+          border: none;
+          color: #34d399;
+          cursor: pointer;
+          padding: 2px 4px;
+          font-size: 0.9rem;
+          border-radius: 4px;
+          transition: all 0.2s;
+        }
+        .focus-crosshair-btn:hover {
+          color: #ffffff;
+          background: rgba(16, 185, 129, 0.3);
+        }
+
+        /* Sidebar Fixed Footer */
+        .sidebar-footer-fixed {
+          padding: 10px 14px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          background: rgba(0, 0, 0, 0.35);
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          flex-shrink: 0;
+        }
+        .footer-meta-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.72rem;
+          color: #94a3b8;
+        }
+        .footer-btn-grid {
+          display: flex;
+          gap: 6px;
+        }
+        .footer-dl-btn {
+          flex: 1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          font-size: 0.73rem;
+          font-weight: 600;
+          padding: 6px 10px;
+          border-radius: 6px;
+          text-decoration: none;
+          transition: all 0.2s;
+        }
+        .btn-geojson {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: #ffffff;
+        }
+        .btn-geojson:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+        .btn-pdf {
+          background: rgba(16, 185, 129, 0.15);
+          border: 1px solid rgba(16, 185, 129, 0.3);
+          color: #34d399;
+        }
+        .btn-pdf:hover {
+          background: #10b981;
+          color: #ffffff;
+        }
+
+        /* Sidebar Expand Floating Button */
+        .sidebar-expand-float-btn {
+          position: absolute;
+          top: 16px;
+          left: 16px;
+          z-index: 999;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(8, 19, 13, 0.9);
+          backdrop-filter: blur(8px);
+          color: #34d399;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          padding: 8px 14px;
+          border-radius: 8px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Map Canvas */
+        .webgis-map-canvas-wrapper {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          min-height: 0;
+          overflow: hidden;
+        }
+        .webgis-leaflet-canvas {
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+        }
+
+        /* Floating HUD */
+        .floating-hud-coords {
+          position: absolute;
+          bottom: 12px;
+          left: 12px;
+          z-index: 990;
+          background: rgba(5, 15, 10, 0.85);
+          backdrop-filter: blur(8px);
+          padding: 5px 10px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          font-size: 0.72rem;
+          color: #ffffff;
+          font-family: monospace;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .hud-live-dot {
+          color: #34d399;
+          font-size: 0.85rem;
+          animation: pulseDot 2s infinite;
+        }
+        @keyframes pulseDot {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+
+        /* Mobile Floating Bottom Dock */
+        .mobile-floating-dock {
+          display: none;
+          position: absolute;
+          bottom: 14px;
+          left: 12px;
+          right: 12px;
+          z-index: 990;
+          gap: 8px;
+          align-items: center;
+        }
+        .dock-layer-btn {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: rgba(12, 26, 19, 0.95);
+          backdrop-filter: blur(12px);
+          color: #ffffff;
+          border: 1.5px solid rgba(16, 185, 129, 0.6);
+          padding: 10px 16px;
+          border-radius: 12px;
+          font-size: 0.85rem;
+          font-weight: 700;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+          cursor: pointer;
+        }
+        .dock-tile-selector {
+          display: flex;
+          background: rgba(12, 26, 19, 0.95);
+          backdrop-filter: blur(12px);
+          border-radius: 12px;
+          padding: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+          gap: 4px;
+        }
+        .dock-tile-btn {
+          background: transparent;
+          border: none;
+          font-size: 1rem;
+          padding: 6px 8px;
+          border-radius: 8px;
+          cursor: pointer;
+        }
+        .dock-tile-btn.active {
+          background: var(--clr-primary, #10b981);
+        }
+
+        /* Mobile Sheet Modal */
+        .mobile-sheet-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 999999;
+          background: rgba(0, 0, 0, 0.65);
+          backdrop-filter: blur(6px);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          animation: fadeIn 0.2s ease-out;
+        }
+        .mobile-sheet-drawer {
+          background: #091710;
+          border-top: 1px solid rgba(16, 185, 129, 0.3);
+          border-radius: 20px 20px 0 0;
+          max-height: 85vh;
+          display: flex;
+          flex-direction: column;
+          animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+        }
+        .sheet-drag-handle-bar {
+          padding-top: 10px;
+          display: flex;
+          justify-content: center;
+        }
+        .sheet-drag-handle {
+          width: 40px;
+          height: 4px;
+          border-radius: 9999px;
+          background: rgba(255, 255, 255, 0.25);
+        }
+        .sheet-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 18px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .sheet-title {
+          font-size: 1rem;
+          font-weight: 700;
+          color: #ffffff;
+          margin: 0;
+        }
+        .sheet-subtitle {
+          font-size: 0.75rem;
+          color: #94a3b8;
+          margin: 2px 0 0 0;
+        }
+        .sheet-close-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.08);
+          border: none;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.1rem;
+          cursor: pointer;
+        }
+        .sheet-body-scroll {
+          flex: 1;
+          overflow-y: auto;
+          padding: 14px 18px;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+        }
+        .sheet-footer {
+          padding: 12px 18px 24px 18px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          background: rgba(0, 0, 0, 0.4);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .sheet-download-row {
+          display: flex;
+          gap: 8px;
+        }
+        .sheet-apply-btn {
+          width: 100%;
+          background: #10b981;
+          color: #ffffff;
+          border: none;
+          padding: 12px;
+          border-radius: 10px;
+          font-size: 0.9rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVE STYLING ── */
         @media (max-width: 900px) {
-          .webgis-main-grid {
+          .webgis-workspace {
             grid-template-columns: 1fr !important;
-            height: auto !important;
+            height: 560px !important;
           }
-          .webgis-sidebar {
-            max-height: 340px;
+          .webgis-desktop-sidebar {
+            display: none !important;
+          }
+          .mobile-quick-chips-wrapper {
+            display: flex !important;
+          }
+          .mobile-floating-dock {
+            display: flex !important;
+          }
+          .floating-hud-coords {
+            bottom: 64px !important;
+          }
+          .btn-label-desktop {
+            display: none;
+          }
+          .basemap-pill-group {
+            display: none;
+          }
+        }
+        @media (max-width: 480px) {
+          .topbar-subtitle {
+            display: none;
+          }
+          .webgis-workspace {
+            height: 500px !important;
           }
         }
       `}</style>
