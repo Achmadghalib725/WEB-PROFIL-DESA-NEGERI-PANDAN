@@ -34,14 +34,14 @@ const WebGISMap = dynamic(() => import('@/components/WebGISMap'), {
 
 export default function PetaPage() {
   return (
-    <main className="page-wrapper" style={{ paddingTop: '100px', minHeight: '100vh', paddingBottom: '80px' }}>
+    <main className="page-wrapper" style={{ paddingTop: '120px', minHeight: '100vh', paddingBottom: '80px' }}>
       <div className="container">
         {/* Breadcrumb & Header */}
         <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--clr-text-muted)', marginBottom: '0.5rem' }}>
             <Link href="/" style={{ color: 'var(--clr-text-muted)', textDecoration: 'none' }}>Beranda</Link>
             <span>/</span>
-            <span style={{ color: 'var(--clr-primary-light)' }}>Peta Digital Desa</span>
+            <span style={{ color: 'var(--clr-primary-light)', fontWeight: 600 }}>Peta Digital Desa</span>
           </div>
           <div className="section-label">WebGIS Interaktif</div>
           <h1 className="section-title" style={{ marginBottom: '0.5rem' }}>

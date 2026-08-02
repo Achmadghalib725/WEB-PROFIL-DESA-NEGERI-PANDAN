@@ -1779,6 +1779,238 @@ export default function WebGISMap() {
         .webgis-pin-bubble:hover {
           transform: scale(1.25) !important;
         }
+
+        /* ═══════════════════════════════════════════
+           LIGHT THEME COMPONENT OVERRIDES FOR WEBGIS
+           ═══════════════════════════════════════════ */
+        [data-theme='light'] .webgis-root-container {
+          background: #ffffff;
+          border-color: rgba(0, 30, 15, 0.12);
+          box-shadow: 0 16px 48px rgba(15, 36, 25, 0.08);
+        }
+
+        [data-theme='light'] .webgis-topbar {
+          background: #ffffff;
+          border-bottom-color: rgba(0, 30, 15, 0.08);
+        }
+        [data-theme='light'] .topbar-title {
+          color: #065f46;
+        }
+        [data-theme='light'] .topbar-subtitle {
+          color: #475569;
+        }
+        [data-theme='light'] .basemap-pill-group {
+          background: #f1f5f9;
+          border-color: #e2e8f0;
+        }
+        [data-theme='light'] .basemap-btn {
+          color: #475569;
+        }
+        [data-theme='light'] .basemap-btn:hover {
+          color: #0f172a;
+          background: #e2e8f0;
+        }
+        [data-theme='light'] .basemap-btn.active {
+          background: #10b981;
+          color: #ffffff;
+        }
+        [data-theme='light'] .topbar-action-btn {
+          background: #ffffff;
+          color: #1e293b;
+          border-color: #cbd5e1;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        [data-theme='light'] .topbar-action-btn:hover {
+          background: #f8fafc;
+          border-color: #94a3b8;
+          color: #0f172a;
+        }
+
+        [data-theme='light'] .webgis-desktop-sidebar {
+          background: #ffffff;
+          border-right-color: rgba(0, 30, 15, 0.08);
+        }
+        [data-theme='light'] .sidebar-header-fixed {
+          background: #f8fafc;
+          border-bottom-color: #e2e8f0;
+        }
+        [data-theme='light'] .sidebar-title-text {
+          color: #065f46;
+        }
+        [data-theme='light'] .active-badge {
+          background: #dcfce7;
+          color: #15803d;
+          border-color: #86efac;
+        }
+        [data-theme='light'] .sidebar-collapse-toggle-btn {
+          color: #64748b;
+        }
+        [data-theme='light'] .sidebar-collapse-toggle-btn:hover {
+          color: #0f172a;
+          background: #e2e8f0;
+        }
+        [data-theme='light'] .webgis-search-input-box {
+          background: #f1f5f9;
+          border-color: #cbd5e1;
+          color: #334155;
+        }
+        [data-theme='light'] .webgis-search-input-box input {
+          color: #0f172a;
+        }
+        [data-theme='light'] .webgis-search-input-box input::placeholder {
+          color: #94a3b8;
+        }
+        [data-theme='light'] .action-pill-btn {
+          background: #f8fafc;
+          border-color: #cbd5e1;
+          color: #334155;
+        }
+        [data-theme='light'] .action-pill-btn:hover {
+          background: #e2e8f0;
+          color: #0f172a;
+        }
+        [data-theme='light'] .layer-group-card {
+          background: #f8fafc;
+          border-color: #e2e8f0;
+        }
+        [data-theme='light'] .layer-group-header {
+          background: #f1f5f9;
+        }
+        [data-theme='light'] .group-label {
+          color: #0f172a;
+        }
+        [data-theme='light'] .group-collapse-btn {
+          color: #64748b;
+        }
+        [data-theme='light'] .layer-group-body {
+          border-top-color: #e2e8f0;
+        }
+        [data-theme='light'] .layer-item-row {
+          color: #1e293b;
+          font-weight: 500;
+        }
+        [data-theme='light'] .facility-checkbox-label {
+          color: #1e293b;
+          font-weight: 500;
+        }
+        [data-theme='light'] .facility-item-row:hover {
+          background: #f1f5f9;
+        }
+        [data-theme='light'] .focus-crosshair-btn {
+          color: #059669;
+        }
+        [data-theme='light'] .focus-crosshair-btn:hover {
+          background: #d1fae5;
+          color: #047857;
+        }
+        [data-theme='light'] .sidebar-footer-fixed {
+          background: #f8fafc;
+          border-top-color: #e2e8f0;
+        }
+        [data-theme='light'] .footer-meta-row {
+          color: #64748b;
+        }
+        [data-theme='light'] .btn-geojson {
+          background: #ffffff;
+          border-color: #cbd5e1;
+          color: #1e293b;
+        }
+        [data-theme='light'] .btn-geojson:hover {
+          background: #f1f5f9;
+        }
+        [data-theme='light'] .btn-pdf {
+          background: #10b981;
+          color: #ffffff !important;
+          font-weight: 700;
+          border: none;
+          box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
+        }
+        [data-theme='light'] .btn-pdf:hover {
+          background: #059669;
+          color: #ffffff !important;
+        }
+        [data-theme='light'] .webgis-layers-scroll-container::-webkit-scrollbar-track {
+          background: #f1f5f9;
+        }
+        [data-theme='light'] .webgis-layers-scroll-container::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+        }
+        [data-theme='light'] .floating-hud-coords {
+          background: rgba(255, 255, 255, 0.95);
+          border-color: rgba(0, 0, 0, 0.12);
+          color: #0f172a;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        [data-theme='light'] .hud-live-dot {
+          color: #059669;
+        }
+        [data-theme='light'] .sidebar-expand-float-btn {
+          background: #ffffff;
+          color: #065f46;
+          border-color: #10b981;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme='light'] .mobile-quick-chips-wrapper {
+          background: rgba(255, 255, 255, 0.98);
+          border-bottom-color: #e2e8f0;
+        }
+        [data-theme='light'] .chip-btn {
+          background: #f1f5f9;
+          color: #334155;
+          border-color: #cbd5e1;
+        }
+        [data-theme='light'] .dock-layer-btn {
+          background: #ffffff;
+          color: #0f172a;
+          border-color: #10b981;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme='light'] .dock-tile-selector {
+          background: #ffffff;
+          border-color: #cbd5e1;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme='light'] .dock-tile-btn {
+          color: #64748b;
+        }
+        [data-theme='light'] .dock-tile-btn.active {
+          background: #10b981;
+          color: #ffffff;
+        }
+        [data-theme='light'] .mobile-sheet-drawer {
+          background: #ffffff;
+          border-top-color: #10b981;
+          box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme='light'] .sheet-drag-handle {
+          background: #cbd5e1;
+        }
+        [data-theme='light'] .sheet-header {
+          border-bottom-color: #e2e8f0;
+        }
+        [data-theme='light'] .sheet-title {
+          color: #0f172a;
+        }
+        [data-theme='light'] .sheet-subtitle {
+          color: #64748b;
+        }
+        [data-theme='light'] .sheet-close-btn {
+          background: #f1f5f9;
+          color: #334155;
+        }
+        [data-theme='light'] .sheet-footer {
+          background: #f8fafc;
+          border-top-color: #e2e8f0;
+        }
+        [data-theme='light'] .custom-leaflet-tooltip {
+          background: #ffffff !important;
+          border: 1px solid #cbd5e1 !important;
+          color: #0f172a !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+        }
+        [data-theme='light'] .custom-leaflet-tooltip::before {
+          border-top-color: #ffffff !important;
+        }
       `}</style>
     </div>
   );
