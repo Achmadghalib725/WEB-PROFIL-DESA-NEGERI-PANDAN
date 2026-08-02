@@ -240,24 +240,27 @@ export default function WebGISMap() {
       // 7. Jaringan Jalan
       const jalanGroup = L.layerGroup();
       JARINGAN_JALAN.forEach((j) => {
-        let roadColor = '#fbbf24';
-        let roadWeight = 2.5;
+        let roadColor = '#facc15';
+        let roadWeight = 2.6;
         if (j.type.includes('Tol')) {
           roadColor = '#ef4444';
           roadWeight = 3.5;
         } else if (j.type.includes('Kolektor') || j.type.includes('Arteri')) {
-          roadColor = '#f59e0b';
-          roadWeight = 3;
+          roadColor = '#ea580c';
+          roadWeight = 3.0;
         } else if (j.type.includes('Lokal')) {
-          roadColor = '#38bdf8';
-          roadWeight = 2.5;
+          roadColor = '#facc15';
+          roadWeight = 2.8;
+        } else {
+          roadColor = '#fbbf24';
+          roadWeight = 2.2;
         }
 
         const polyline = L.polyline(j.coordinates, {
           color: roadColor,
           weight: roadWeight,
-          opacity: 0.85,
-        }).bindTooltip(`<b>${j.name}</b>`, {
+          opacity: 0.9,
+        }).bindTooltip(`<b>${j.name}</b><br/><span style="font-size: 10px; color: #cbd5e1;">Tipe: ${j.type}</span>`, {
           sticky: true,
           className: 'custom-leaflet-tooltip',
         });
@@ -270,10 +273,10 @@ export default function WebGISMap() {
       const sungaiGroup = L.layerGroup();
       JARINGAN_SUNGAI.forEach((s) => {
         const polyline = L.polyline(s.coordinates, {
-          color: '#38bdf8',
-          weight: 2.8,
-          opacity: 0.9,
-        }).bindTooltip(`<b>${s.name}</b>`, {
+          color: '#0284c7',
+          weight: 3.2,
+          opacity: 0.95,
+        }).bindTooltip(`<b>${s.name}</b><br/><span style="font-size: 10px; color: #93c5fd;">Aliran Sungai Alami</span>`, {
           sticky: true,
           className: 'custom-leaflet-tooltip',
         });
@@ -582,9 +585,9 @@ export default function WebGISMap() {
                 type="checkbox"
                 checked={layers.jalan}
                 onChange={(e) => setLayers((prev) => ({ ...prev, jalan: e.target.checked }))}
-                style={{ accentColor: '#fbbf24' }}
+                style={{ accentColor: '#facc15' }}
               />
-              <span className="color-dot" style={{ background: '#fbbf24' }}></span>
+              <span className="color-dot" style={{ background: '#facc15' }}></span>
               <span>Jaringan Jalan ({JARINGAN_JALAN.length} Segmen)</span>
             </label>
 
@@ -593,9 +596,9 @@ export default function WebGISMap() {
                 type="checkbox"
                 checked={layers.sungai}
                 onChange={(e) => setLayers((prev) => ({ ...prev, sungai: e.target.checked }))}
-                style={{ accentColor: '#38bdf8' }}
+                style={{ accentColor: '#0284c7' }}
               />
-              <span className="color-dot" style={{ background: '#38bdf8' }}></span>
+              <span className="color-dot" style={{ background: '#0284c7' }}></span>
               <span>Jaringan Aliran Sungai ({JARINGAN_SUNGAI.length} Segmen)</span>
             </label>
           </div>
