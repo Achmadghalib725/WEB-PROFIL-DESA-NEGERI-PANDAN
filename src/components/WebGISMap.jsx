@@ -822,10 +822,6 @@ export default function WebGISMap() {
 
           {/* Sidebar Fixed Bottom Footer */}
           <div className="sidebar-footer-fixed">
-            <div className="footer-meta-row">
-              <span>Sumber Data:</span>
-              <strong style={{ color: 'var(--clr-primary-light)' }}>Delineasi BIG & Kemendagri</strong>
-            </div>
             <div className="footer-btn-grid">
               <a
                 href="/documents/KKN.pdf"

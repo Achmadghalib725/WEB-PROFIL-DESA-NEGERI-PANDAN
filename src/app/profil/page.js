@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import PetaDesaViewer from '@/components/PetaDesaViewer';
 import './org.css';
 
 export default function ProfilPage() {
@@ -161,9 +160,53 @@ export default function ProfilPage() {
             </div>
           </div>
 
-          {/* Peta Wilayah Desa */}
+          {/* Banner Menuju Halaman Peta */}
           <div className="reveal" style={{ marginTop: '2.5rem' }}>
-            <PetaDesaViewer />
+            <div
+              className="glass-card"
+              style={{
+                padding: '2rem',
+                borderRadius: '16px',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(8, 19, 13, 0.6) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '1.5rem',
+              }}
+            >
+              <div style={{ maxWidth: '600px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem', color: 'var(--clr-primary-light)', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <i className="ph-bold ph-map-pin" style={{ fontSize: '1.1rem' }}></i>
+                  <span>Peta Spasial & WebGIS Desa</span>
+                </div>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--clr-text-primary)', marginBottom: '0.5rem' }}>
+                  Jelajahi Peta Digital & WebGIS Desa Negeri Pandan
+                </h3>
+                <p style={{ color: 'var(--clr-text-secondary)', fontSize: '0.9rem', margin: 0, lineHeight: 1.5 }}>
+                  Lihat persebaran fasilitas umum, batas 6 dusun, jaringan jalan, sungai, serta unduh dokumen peta cetak resolusi tinggi di halaman khusus Peta Desa.
+                </p>
+              </div>
+              <Link
+                href="/peta"
+                className="btn btn-primary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  fontSize: '0.95rem',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <i className="ph-bold ph-globe-hemisphere-west" style={{ fontSize: '1.1rem' }}></i>
+                <span>Buka WebGIS Peta Desa</span>
+                <i className="ph-bold ph-arrow-right"></i>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
