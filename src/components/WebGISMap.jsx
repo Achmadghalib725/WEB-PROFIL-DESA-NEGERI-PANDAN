@@ -675,9 +675,6 @@ export default function WebGISMap() {
           />
           <div className="topbar-info">
             <h2 className="topbar-title">WebGIS Desa {DESA_INFO.nama}</h2>
-            <p className="topbar-subtitle">
-              Luas: <strong>{DESA_INFO.luasHa.toLocaleString('id-ID')} Ha</strong> ({DESA_INFO.delineasi})
-            </p>
           </div>
         </div>
 
@@ -688,19 +685,22 @@ export default function WebGISMap() {
               onClick={() => setBaseTile('satellite')}
               className={`basemap-btn ${baseTile === 'satellite' ? 'active' : ''}`}
             >
-              🛰️ Satelit
+              <i className="ph-bold ph-globe-hemisphere-west"></i>
+              <span>Satelit</span>
             </button>
             <button
               onClick={() => setBaseTile('osm')}
               className={`basemap-btn ${baseTile === 'osm' ? 'active' : ''}`}
             >
-              🗺️ Jalan
+              <i className="ph-bold ph-map-trifold"></i>
+              <span>Jalan</span>
             </button>
             <button
               onClick={() => setBaseTile('dark')}
               className={`basemap-btn ${baseTile === 'dark' ? 'active' : ''}`}
             >
-              🌙 Dark
+              <i className="ph-bold ph-moon-stars"></i>
+              <span>Dark</span>
             </button>
           </div>
 
@@ -741,43 +741,50 @@ export default function WebGISMap() {
           onClick={() => setLayers((p) => ({ ...p, batasDesa: !p.batasDesa }))}
           className={`chip-btn ${layers.batasDesa ? 'chip-active-emerald' : ''}`}
         >
-          🗺️ Batas Desa
+          <i className="ph-bold ph-polygon"></i>
+          <span>Batas Desa</span>
         </button>
         <button
           onClick={() => setLayers((p) => ({ ...p, jalan: !p.jalan }))}
           className={`chip-btn ${layers.jalan ? 'chip-active-yellow' : ''}`}
         >
-          🛣️ Jalan
+          <i className="ph-bold ph-path"></i>
+          <span>Jalan</span>
         </button>
         <button
           onClick={() => setLayers((p) => ({ ...p, sungai: !p.sungai }))}
           className={`chip-btn ${layers.sungai ? 'chip-active-blue' : ''}`}
         >
-          🌊 Sungai
+          <i className="ph-bold ph-waves"></i>
+          <span>Sungai</span>
         </button>
         <button
           onClick={() => handleCategoryToggle('pemerintahan')}
           className={`chip-btn ${layers.categories.pemerintahan ? 'chip-active-blue' : ''}`}
         >
-          🏛️ Balai & Fasum
+          <i className="ph-bold ph-bank"></i>
+          <span>Balai & Fasum</span>
         </button>
         <button
           onClick={() => handleCategoryToggle('ibadah')}
           className={`chip-btn ${layers.categories.ibadah ? 'chip-active-emerald' : ''}`}
         >
-          🕌 Masjid
+          <i className="ph-bold ph-mosque"></i>
+          <span>Masjid</span>
         </button>
         <button
           onClick={() => handleCategoryToggle('pendidikan')}
           className={`chip-btn ${layers.categories.pendidikan ? 'chip-active-orange' : ''}`}
         >
-          🏫 Sekolah
+          <i className="ph-bold ph-graduation-cap"></i>
+          <span>Sekolah</span>
         </button>
         <button
           onClick={() => handleCategoryToggle('kesehatan')}
           className={`chip-btn ${layers.categories.kesehatan ? 'chip-active-red' : ''}`}
         >
-          🏥 Kesehatan
+          <i className="ph-bold ph-first-aid"></i>
+          <span>Kesehatan</span>
         </button>
       </div>
 
@@ -816,23 +823,16 @@ export default function WebGISMap() {
           {/* Sidebar Fixed Bottom Footer */}
           <div className="sidebar-footer-fixed">
             <div className="footer-meta-row">
-              <span>Format Data:</span>
-              <strong style={{ color: 'var(--clr-primary-light)' }}>SHP & GeoJSON (BIG)</strong>
+              <span>Sumber Data:</span>
+              <strong style={{ color: 'var(--clr-primary-light)' }}>Delineasi BIG & Kemendagri</strong>
             </div>
             <div className="footer-btn-grid">
-              <a
-                href="/gis/batas-desa.geojson"
-                download="batas-desa-negeri-pandan.geojson"
-                className="footer-dl-btn btn-geojson"
-              >
-                <i className="ph-bold ph-download-simple"></i> GeoJSON
-              </a>
               <a
                 href="/documents/KKN.pdf"
                 download="Peta-Desa-Negeri-Pandan.pdf"
                 className="footer-dl-btn btn-pdf"
               >
-                <i className="ph-bold ph-file-pdf"></i> Peta PDF
+                <i className="ph-bold ph-file-pdf"></i> Unduh Peta Cetak (PDF)
               </a>
             </div>
           </div>
@@ -876,23 +876,23 @@ export default function WebGISMap() {
               <button
                 onClick={() => setBaseTile('satellite')}
                 className={`dock-tile-btn ${baseTile === 'satellite' ? 'active' : ''}`}
-                title="Satelit"
+                title="Peta Satelit"
               >
-                🛰️
+                <i className="ph-bold ph-globe-hemisphere-west"></i>
               </button>
               <button
                 onClick={() => setBaseTile('osm')}
                 className={`dock-tile-btn ${baseTile === 'osm' ? 'active' : ''}`}
-                title="Jalan"
+                title="Peta Jalan"
               >
-                🗺️
+                <i className="ph-bold ph-map-trifold"></i>
               </button>
               <button
                 onClick={() => setBaseTile('dark')}
                 className={`dock-tile-btn ${baseTile === 'dark' ? 'active' : ''}`}
-                title="Dark"
+                title="Mode Gelap"
               >
-                🌙
+                <i className="ph-bold ph-moon-stars"></i>
               </button>
             </div>
           </div>
@@ -928,7 +928,7 @@ export default function WebGISMap() {
               </button>
             </div>
 
-            {/* Sheet Scrollable Layers Tree */}
+            {/* Sheet Body */}
             <div className="sheet-body-scroll">
               {renderLayersTree()}
             </div>
@@ -937,18 +937,11 @@ export default function WebGISMap() {
             <div className="sheet-footer">
               <div className="sheet-download-row">
                 <a
-                  href="/gis/batas-desa.geojson"
-                  download="batas-desa-negeri-pandan.geojson"
-                  className="footer-dl-btn btn-geojson"
-                >
-                  <i className="ph-bold ph-download-simple"></i> GeoJSON
-                </a>
-                <a
                   href="/documents/KKN.pdf"
                   download="Peta-Desa-Negeri-Pandan.pdf"
                   className="footer-dl-btn btn-pdf"
                 >
-                  <i className="ph-bold ph-file-pdf"></i> PDF
+                  <i className="ph-bold ph-file-pdf"></i> Unduh Peta Cetak (PDF)
                 </a>
               </div>
               <button
@@ -1027,26 +1020,38 @@ export default function WebGISMap() {
         }
         .basemap-pill-group {
           display: flex;
-          background: rgba(255, 255, 255, 0.06);
-          border-radius: 8px;
-          padding: 2px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+          padding: 3px;
           border: 1px solid rgba(255, 255, 255, 0.1);
+          gap: 3px;
         }
         .basemap-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
           background: transparent;
-          color: #cbd5e1;
+          color: #94a3b8;
           border: none;
-          padding: 5px 10px;
-          border-radius: 6px;
-          font-size: 0.76rem;
+          padding: 6px 12px;
+          border-radius: 7px;
+          font-size: 0.78rem;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .basemap-btn i {
+          font-size: 0.95rem;
+          color: inherit;
+        }
+        .basemap-btn:hover {
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.06);
         }
         .basemap-btn.active {
           background: var(--clr-primary, #10b981);
           color: #ffffff;
-          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+          box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
         }
         .topbar-action-btn {
           display: inline-flex;
@@ -1562,8 +1567,8 @@ export default function WebGISMap() {
         .dock-tile-selector {
           display: flex;
           background: rgba(12, 26, 19, 0.95);
-          backdrop-filter: blur(12px);
-          border-radius: 12px;
+          backdrop-filter: blur(16px);
+          border-radius: 14px;
           padding: 4px;
           border: 1px solid rgba(255, 255, 255, 0.15);
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -1572,13 +1577,23 @@ export default function WebGISMap() {
         .dock-tile-btn {
           background: transparent;
           border: none;
-          font-size: 1rem;
-          padding: 6px 8px;
-          border-radius: 8px;
+          color: #94a3b8;
+          font-size: 1.05rem;
+          padding: 8px 10px;
+          border-radius: 9px;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .dock-tile-btn:hover {
+          color: #ffffff;
         }
         .dock-tile-btn.active {
           background: var(--clr-primary, #10b981);
+          color: #ffffff;
+          box-shadow: 0 2px 10px rgba(16, 185, 129, 0.45);
         }
 
         /* Mobile Sheet Modal */
