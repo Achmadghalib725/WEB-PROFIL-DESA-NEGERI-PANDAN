@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"name": "Bidan",
+"features": [
+{ "type": "Feature", "properties": { "OID_": 0, "Name": "Praktik Bidan", "FolderPath": "Kesehatan.kml/Kesehatan", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.630234656000084, -5.728560250999976, 0.0 ] } }
+]
+}

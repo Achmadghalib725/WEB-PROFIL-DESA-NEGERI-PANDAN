@@ -2,11 +2,12 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import {
+  DESA_INFO,
   PETA_CONFIG,
   MASK_LUAR_DESA,
   BATAS_DESA_POLYGON,
-  BATAS_DUSUN_DATA,
-  BATAS_RT_LINES,
+  JARINGAN_JALAN,
+  JARINGAN_SUNGAI,
   FASILITAS_DESA,
 } from '@/data/petaDesaData';
 import 'leaflet/dist/leaflet.css';
@@ -20,15 +21,8 @@ export default function WebGISMap() {
   const [layers, setLayers] = useState({
     maskLuar: true,
     batasDesa: true,
-    batasDusun: {
-      'dusun-1': false,
-      'dusun-2': false,
-      'dusun-3': false,
-      'dusun-4': false,
-      'dusun-5': false,
-      'dusun-6': false,
-    },
-    batasRT: true,
+    jalan: true,
+    sungai: true,
     categories: {
       pemerintahan: true,
       ibadah: true,
@@ -44,6 +38,7 @@ export default function WebGISMap() {
   // Collapsible Groups in Sidebar
   const [openGroups, setOpenGroups] = useState({
     wilayah: true,
+    jaringan: true,
     pemerintahan: true,
     ibadah: true,
     pendidikan: true,
@@ -120,13 +115,16 @@ export default function WebGISMap() {
       // 2. Add Zoom control to top right
       L.control.zoom({ position: 'topright' }).addTo(map);
 
+      // Fit bounds initially to ensure perfect framing
+      map.fitBounds(PETA_CONFIG.bounds, { padding: [30, 30] });
+
       // 3. Tile Layers
       const tileLayers = {
         satellite: L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           {
             maxZoom: 19,
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, BIG, OpenStreetMap',
           }
         ),
         osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -154,7 +152,7 @@ export default function WebGISMap() {
         });
       });
 
-      // 5. Inverted Mask (Gelapkan area luar batas desa)
+      // 5. Inverted Mask (Gelapkan area luar batas desa agar desa fokus)
       const maskLayer = L.polygon(MASK_LUAR_DESA, {
         color: 'transparent',
         fillColor: '#000000',
@@ -163,57 +161,69 @@ export default function WebGISMap() {
       layersGroupRef.current.maskLayer = maskLayer;
       if (layers.maskLuar) maskLayer.addTo(map);
 
-      // 6. Batas Desa Polygon (Outline utama)
+      // 6. Batas Desa Polygon (Outline resmi BIG)
       const batasDesaLayer = L.polygon(BATAS_DESA_POLYGON, {
         color: '#10b981',
         weight: 3.5,
         opacity: 0.95,
         dashArray: '8, 6',
         fillColor: '#10b981',
-        fillOpacity: 0.08,
-      }).bindTooltip('<b>Batas Wilayah Desa Negeri Pandan</b>', {
-        sticky: true,
-        direction: 'top',
-        className: 'custom-leaflet-tooltip',
-      });
+        fillOpacity: 0.1,
+      }).bindTooltip(
+        `<b>Batas Administrasi Desa Negeri Pandan</b><br/><span style="font-size: 11px;">Luas: ${DESA_INFO.luasHa} Ha &bull; Sumber: BIG</span>`,
+        {
+          sticky: true,
+          direction: 'top',
+          className: 'custom-leaflet-tooltip',
+        }
+      );
       layersGroupRef.current.batasDesaLayer = batasDesaLayer;
       if (layers.batasDesa) batasDesaLayer.addTo(map);
 
-      // 7. Batas Dusun Polygons
-      const dusunLayerGroups = {};
-      BATAS_DUSUN_DATA.forEach((d) => {
-        const poly = L.polygon(d.polygon, {
-          color: d.color,
-          weight: 2,
-          opacity: 0.85,
-          fillColor: d.color,
-          fillOpacity: 0.22,
-        }).bindTooltip(`<b>${d.name}</b>`, {
-          sticky: true,
-          direction: 'center',
-          className: 'custom-leaflet-tooltip',
-        });
-        dusunLayerGroups[d.id] = poly;
-        if (layers.batasDusun[d.id]) poly.addTo(map);
-      });
-      layersGroupRef.current.dusunLayerGroups = dusunLayerGroups;
+      // 7. Jaringan Jalan (Shapefile Jalan)
+      const jalanGroup = L.layerGroup();
+      JARINGAN_JALAN.forEach((j) => {
+        let roadColor = '#fbbf24'; // default yellow
+        let roadWeight = 2.5;
+        if (j.type.includes('Tol')) {
+          roadColor = '#ef4444';
+          roadWeight = 3.5;
+        } else if (j.type.includes('Kolektor') || j.type.includes('Arteri')) {
+          roadColor = '#f59e0b';
+          roadWeight = 3;
+        } else if (j.type.includes('Lokal')) {
+          roadColor = '#38bdf8';
+          roadWeight = 2.5;
+        }
 
-      // 8. Batas RT Lines
-      const rtLineGroup = L.layerGroup();
-      BATAS_RT_LINES.forEach((line) => {
-        const pline = L.polyline(line.coordinates, {
-          color: '#f97316',
-          weight: 2.2,
-          opacity: 0.9,
-          dashArray: '4, 4',
-        }).bindTooltip(`<b>${line.name}</b>`, {
+        const polyline = L.polyline(j.coordinates, {
+          color: roadColor,
+          weight: roadWeight,
+          opacity: 0.85,
+        }).bindTooltip(`<b>${j.name}</b>`, {
           sticky: true,
           className: 'custom-leaflet-tooltip',
         });
-        pline.addTo(rtLineGroup);
+        polyline.addTo(jalanGroup);
       });
-      layersGroupRef.current.rtLineGroup = rtLineGroup;
-      if (layers.batasRT) rtLineGroup.addTo(map);
+      layersGroupRef.current.jalanGroup = jalanGroup;
+      if (layers.jalan) jalanGroup.addTo(map);
+
+      // 8. Jaringan Sungai (Shapefile Sungai)
+      const sungaiGroup = L.layerGroup();
+      JARINGAN_SUNGAI.forEach((s) => {
+        const polyline = L.polyline(s.coordinates, {
+          color: '#38bdf8',
+          weight: 2.8,
+          opacity: 0.9,
+        }).bindTooltip(`<b>${s.name}</b>`, {
+          sticky: true,
+          className: 'custom-leaflet-tooltip',
+        });
+        polyline.addTo(sungaiGroup);
+      });
+      layersGroupRef.current.sungaiGroup = sungaiGroup;
+      if (layers.sungai) sungaiGroup.addTo(map);
 
       // 9. Facilities / Markers Group
       const facilityMarkers = {};
@@ -233,6 +243,10 @@ export default function WebGISMap() {
               return '<svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M215.79,118.17a8,8,0,0,0-7.79-6.17H144V32a8,8,0,0,0-13.66-5.66l-96,96a8,8,0,0,0,5.66,13.66H112v80a8,8,0,0,0,13.66,5.66l96-96A8,8,0,0,0,215.79,118.17Z"/></svg>';
             case 'ph-broadcast':
               return '<svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M128,144a16,16,0,1,0-16-16A16,16,0,0,0,128,144Zm0-64a48,48,0,0,0-48,48,8,8,0,0,0,16,0,32,32,0,0,1,32-32,8,8,0,0,0,0-16Zm48,48a48.05,48.05,0,0,0-48-48,8,8,0,0,0,0,16,32,32,0,0,1,32,32,8,8,0,0,0,16,0Zm32,0a80.09,80.09,0,0,0-80-80,8,8,0,0,0,0,16,64.07,64.07,0,0,1,64,64,8,8,0,0,0,16,0ZM48,128a80.09,80.09,0,0,0,80,80,8,8,0,0,0,0-16,64.07,64.07,0,0,1-64-64,8,8,0,0,0-16,0Z"/></svg>';
+            case 'ph-shield-check':
+              return '<svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.54,15.54,0,0,0,10,0c15.18-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm-34.34,77.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,156.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"/></svg>';
+            case 'ph-drop':
+              return '<svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M174.63,94.34,133.66,36.08a8,8,0,0,0-13.32,0L79.37,94.34A79.4,79.4,0,0,0,64,144a64,64,0,0,0,128,0A79.4,79.4,0,0,0,174.63,94.34ZM128,192a48,48,0,0,1-48-48,63.66,63.66,0,0,1,12.35-37.45L128,56.67l35.65,49.88A63.66,63.66,0,0,1,176,144,48,48,0,0,1,128,192Z"/></svg>';
             default:
               return '<svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,120a32,32,0,1,1,32-32A32,32,0,0,1,128,136Z"/></svg>';
           }
@@ -250,12 +264,17 @@ export default function WebGISMap() {
           popupAnchor: [0, -20],
         });
 
+        const elevationBadge = item.elevation
+          ? `<span style="background: #e2e8f0; color: #334155; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">Elevasi: ${item.elevation} m</span>`
+          : '';
+
         const popupHTML = `
-          <div style="font-family: 'Inter', sans-serif; min-width: 220px; color: #1e293b; padding: 4px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <div style="font-family: 'Inter', sans-serif; min-width: 230px; color: #1e293b; padding: 4px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
               <span style="background: ${item.color}; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">
                 ${item.categoryLabel}
               </span>
+              ${elevationBadge}
             </div>
             <h4 style="font-size: 14px; font-weight: 700; margin: 0 0 4px 0; color: #0f172a; line-height: 1.3;">
               ${item.name}
@@ -263,8 +282,11 @@ export default function WebGISMap() {
             <p style="font-size: 12px; color: #475569; margin: 0 0 8px 0; line-height: 1.4;">
               ${item.description}
             </p>
-            <div style="font-size: 11px; color: #64748b; margin-bottom: 10px;">
+            <div style="font-size: 11px; color: #64748b; margin-bottom: 4px;">
               📍 ${item.address}
+            </div>
+            <div style="font-size: 10px; color: #94a3b8; margin-bottom: 10px; font-family: monospace;">
+              Koor: ${item.coords[0].toFixed(6)}, ${item.coords[1].toFixed(6)}
             </div>
             <a href="https://maps.google.com/?q=${item.coords[0]},${item.coords[1]}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; background: #2563eb; color: #ffffff; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600;">
               Navigasi Google Maps ↗
@@ -308,7 +330,7 @@ export default function WebGISMap() {
   // Update Layers when state changes
   useEffect(() => {
     const map = mapInstanceRef.current;
-    const { maskLayer, batasDesaLayer, dusunLayerGroups, rtLineGroup, facilityMarkers } =
+    const { maskLayer, batasDesaLayer, jalanGroup, sungaiGroup, facilityMarkers } =
       layersGroupRef.current;
     if (!map) return;
 
@@ -324,19 +346,16 @@ export default function WebGISMap() {
       else map.removeLayer(batasDesaLayer);
     }
 
-    // Batas Dusun
-    if (dusunLayerGroups) {
-      Object.keys(dusunLayerGroups).forEach((did) => {
-        const poly = dusunLayerGroups[did];
-        if (layers.batasDusun[did]) poly.addTo(map);
-        else map.removeLayer(poly);
-      });
+    // Jalan
+    if (jalanGroup) {
+      if (layers.jalan) jalanGroup.addTo(map);
+      else map.removeLayer(jalanGroup);
     }
 
-    // Batas RT
-    if (rtLineGroup) {
-      if (layers.batasRT) rtLineGroup.addTo(map);
-      else map.removeLayer(rtLineGroup);
+    // Sungai
+    if (sungaiGroup) {
+      if (layers.sungai) sungaiGroup.addTo(map);
+      else map.removeLayer(sungaiGroup);
     }
 
     // Facility Markers
@@ -433,11 +452,11 @@ export default function WebGISMap() {
             style={{ objectFit: 'contain' }}
           />
           <div>
-            <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--clr-primary-light)' }}>
-              Peta Digital Desa Negeri Pandan
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--clr-primary-light)' }}>
+              WebGIS Desa {DESA_INFO.nama} (Akurasi Presisi SHP / BIG)
             </span>
             <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--clr-text-muted)' }}>
-              Kec. Kalianda, Lampung Selatan &bull; Sistem Informasi Geografis Spasial
+              Luas Wilayah: <strong>{DESA_INFO.luasHa.toLocaleString('id-ID')} Ha</strong> ({(DESA_INFO.luasM2 / 1000000).toFixed(2)} km²) &bull; {DESA_INFO.delineasi}
             </p>
           </div>
         </div>
@@ -550,7 +569,7 @@ export default function WebGISMap() {
                 color: 'var(--clr-primary-light)',
               }}
             >
-              <i className="ph-bold ph-stack" style={{ marginRight: '6px' }}></i> Layer Peta
+              <i className="ph-bold ph-stack" style={{ marginRight: '6px' }}></i> Layer Peta (GIS)
             </span>
             <span
               style={{
@@ -561,7 +580,7 @@ export default function WebGISMap() {
                 color: 'var(--clr-text-muted)',
               }}
             >
-              {FASILITAS_DESA.length} Titik
+              {FASILITAS_DESA.length} Titik Valid
             </span>
           </div>
 
@@ -581,7 +600,7 @@ export default function WebGISMap() {
               <i className="ph-bold ph-magnifying-glass" style={{ color: 'var(--clr-text-muted)', fontSize: '0.9rem' }}></i>
               <input
                 type="text"
-                placeholder="Cari fasilitas..."
+                placeholder="Cari fasilitas di peta..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
@@ -658,7 +677,7 @@ export default function WebGISMap() {
                     <i className="ph-bold ph-map-trifold"></i>
                   </span>
                   <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--clr-text)' }}>
-                    Batas Wilayah
+                    Batas Administrasi Desa
                   </span>
                 </div>
                 <i
@@ -690,57 +709,82 @@ export default function WebGISMap() {
                       style={{ accentColor: '#10b981' }}
                     />
                     <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-                    Batas Desa Negeri Pandan
+                    Batas Desa (227 Titik Poligon BIG)
                   </label>
+                </div>
+              )}
+            </div>
 
-                  {/* 6 Dusun Items */}
-                  {BATAS_DUSUN_DATA.map((d) => (
-                    <label
-                      key={d.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontSize: '0.78rem',
-                        color: 'var(--clr-text-secondary)',
-                        paddingLeft: '12px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={layers.batasDusun[d.id] || false}
-                        onChange={(e) =>
-                          setLayers((prev) => ({
-                            ...prev,
-                            batasDusun: { ...prev.batasDusun, [d.id]: e.target.checked },
-                          }))
-                        }
-                        style={{ accentColor: d.color }}
-                      />
-                      <span
-                        style={{
-                          width: '8px',
-                          height: '8px',
-                          borderRadius: '50%',
-                          background: d.color,
-                          display: 'inline-block',
-                        }}
-                      ></span>
-                      {d.name}
-                    </label>
-                  ))}
+            {/* 2. Jaringan Infrastruktur (Jalan & Sungai) */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.02)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                borderRadius: '10px',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                onClick={() => toggleGroup('jaringan')}
+                style={{
+                  padding: '10px 12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  background: 'rgba(255,255,255,0.03)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '6px',
+                      background: '#f59e0b22',
+                      color: '#f59e0b',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.85rem',
+                    }}
+                  >
+                    <i className="ph-bold ph-git-branch"></i>
+                  </span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--clr-text)' }}>
+                    Jaringan Infrastruktur
+                  </span>
+                </div>
+                <i
+                  className={`ph-bold ${openGroups.jaringan ? 'ph-caret-up' : 'ph-caret-down'}`}
+                  style={{ color: 'var(--clr-text-muted)', fontSize: '0.8rem' }}
+                ></i>
+              </div>
 
-                  {/* Batas RT */}
+              {openGroups.jaringan && (
+                <div style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {/* Jalan */}
                   <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--clr-text-secondary)', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
-                      checked={layers.batasRT}
-                      onChange={(e) => setLayers((prev) => ({ ...prev, batasRT: e.target.checked }))}
-                      style={{ accentColor: '#f97316' }}
+                      checked={layers.jalan}
+                      onChange={(e) => setLayers((prev) => ({ ...prev, jalan: e.target.checked }))}
+                      style={{ accentColor: '#fbbf24' }}
                     />
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f97316', display: 'inline-block' }}></span>
-                    Batas RT (RT 01 - RT 12)
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#fbbf24', display: 'inline-block' }}></span>
+                    Jaringan Jalan ({JARINGAN_JALAN.length} Segmen)
+                  </label>
+
+                  {/* Sungai */}
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--clr-text-secondary)', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={layers.sungai}
+                      onChange={(e) => setLayers((prev) => ({ ...prev, sungai: e.target.checked }))}
+                      style={{ accentColor: '#38bdf8' }}
+                    />
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#38bdf8', display: 'inline-block' }}></span>
+                    Jaringan Aliran Sungai ({JARINGAN_SUNGAI.length} Segmen)
                   </label>
                 </div>
               )}
@@ -748,9 +792,9 @@ export default function WebGISMap() {
 
             {/* Category Groups: Pemerintahan, Ibadah, Pendidikan, Kesehatan */}
             {[
-              { key: 'pemerintahan', label: 'Pemerintahan & Umum', icon: 'ph-bank', color: '#2563eb' },
+              { key: 'pemerintahan', label: 'Pemerintahan & Fasilitas Umum', icon: 'ph-bank', color: '#2563eb' },
               { key: 'ibadah', label: 'Tempat Ibadah', icon: 'ph-mosque', color: '#059669' },
-              { key: 'pendidikan', label: 'Pendidikan', icon: 'ph-graduation-cap', color: '#ea580c' },
+              { key: 'pendidikan', label: 'Sarana Pendidikan', icon: 'ph-graduation-cap', color: '#ea580c' },
               { key: 'kesehatan', label: 'Layanan Kesehatan', icon: 'ph-first-aid', color: '#dc2626' },
             ].map((cat) => {
               const catItems = FASILITAS_DESA.filter((f) => f.category === cat.key);
@@ -817,7 +861,7 @@ export default function WebGISMap() {
                   </div>
 
                   {openGroups[cat.key] && (
-                    <div style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {catItems.map((item) => (
                         <div
                           key={item.id}
@@ -825,8 +869,11 @@ export default function WebGISMap() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            paddingLeft: '6px',
+                            padding: '4px 6px',
+                            borderRadius: '6px',
+                            transition: 'background 0.2s',
                           }}
+                          className="hover-bg"
                         >
                           <label
                             style={{
@@ -836,10 +883,8 @@ export default function WebGISMap() {
                               fontSize: '0.78rem',
                               color: 'var(--clr-text-secondary)',
                               cursor: 'pointer',
+                              margin: 0,
                               flex: 1,
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
                             }}
                           >
                             <input
@@ -854,22 +899,24 @@ export default function WebGISMap() {
                                 height: '8px',
                                 borderRadius: '50%',
                                 background: item.color,
-                                flexShrink: 0,
+                                display: 'inline-block',
                               }}
                             ></span>
-                            <span title={item.name}>{item.name}</span>
+                            <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '170px' }}>
+                              {item.name}
+                            </span>
                           </label>
 
                           <button
                             onClick={() => focusLocation(item.coords)}
-                            title="Arahkan Peta ke Titik Ini"
+                            title="Arahkan Peta ke Lokasi"
                             style={{
                               background: 'transparent',
                               border: 'none',
                               color: 'var(--clr-primary-light)',
                               cursor: 'pointer',
-                              fontSize: '0.85rem',
                               padding: '2px 4px',
+                              fontSize: '0.85rem',
                             }}
                           >
                             <i className="ph-bold ph-crosshair"></i>
@@ -882,106 +929,118 @@ export default function WebGISMap() {
               );
             })}
           </div>
-        </div>
 
-        {/* ── RIGHT MAP CANVAS ── */}
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-          {/* Leaflet DOM container */}
-          <div ref={mapContainerRef} style={{ width: '100%', height: '100%', zIndex: 1 }} />
-
-          {/* Top Left Watermark Card inside Map (Matching user screenshot) */}
+          {/* Sidebar Footer Data Info */}
           <div
             style={{
-              position: 'absolute',
-              top: '14px',
-              left: '14px',
-              zIndex: 1000,
-              background: 'rgba(3, 15, 9, 0.85)',
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: '12px',
-              padding: '10px 16px',
+              padding: '10px 14px',
+              borderTop: '1px solid var(--clr-border, rgba(255,255,255,0.06))',
+              background: 'rgba(0,0,0,0.3)',
               display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-              maxWidth: '380px',
+              flexDirection: 'column',
+              gap: '6px',
             }}
           >
-            <Image
-              src="/images/logo-lamsel.png"
-              alt="Logo KKN Unila & Lampung Selatan"
-              width={34}
-              height={34}
-              style={{ objectFit: 'contain' }}
-            />
-            <div>
-              <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                WebGIS by KKN Unila 2026
-              </h4>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--clr-text-secondary, #94a3b8)' }}>
-                Peta digital bangunan, fasilitas & batas wilayah Desa Negeri Pandan
-              </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem' }}>
+              <span style={{ color: 'var(--clr-text-muted)' }}>Format Data:</span>
+              <span style={{ color: 'var(--clr-primary-light)', fontWeight: 600 }}>ESRI Shapefile (SHP) & GeoJSON</span>
+            </div>
+            <div style={{ display: 'flex', gap: '6px', marginTop: '2px' }}>
+              <a
+                href="/gis/batas-desa.geojson"
+                download="batas-desa-negeri-pandan.geojson"
+                className="btn btn-outline"
+                style={{ flex: 1, fontSize: '0.72rem', padding: '4px 8px', textAlign: 'center', justifyContent: 'center' }}
+              >
+                Unduh GeoJSON
+              </a>
+              <a
+                href="/documents/KKN.pdf"
+                download="Peta-Desa-Negeri-Pandan.pdf"
+                className="btn btn-secondary"
+                style={{ flex: 1, fontSize: '0.72rem', padding: '4px 8px', textAlign: 'center', justifyContent: 'center' }}
+              >
+                Unduh PDF
+              </a>
             </div>
           </div>
+        </div>
 
-          {/* Top Right "Unduh Peta" Quick Button */}
-          <div style={{ position: 'absolute', top: '14px', right: '54px', zIndex: 1000 }}>
-            <a
-              href="/documents/KKN.pdf"
-              download="Peta-Desa-Negeri-Pandan.pdf"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                background: 'rgba(3, 15, 9, 0.85)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#ffffff',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                textDecoration: 'none',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-              }}
-            >
-              <i className="ph-bold ph-download-simple"></i> Unduh Peta (PDF)
-            </a>
-          </div>
+        {/* ── RIGHT: MAP CONTAINER ── */}
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          <div ref={mapContainerRef} style={{ width: '100%', height: '100%', zIndex: 1 }} />
 
-          {/* Bottom Left Cursor Coordinates Box (Like in screenshot) */}
+          {/* Coordinates Bar */}
           <div
             style={{
               position: 'absolute',
-              bottom: '14px',
-              left: '14px',
-              zIndex: 1000,
-              background: 'rgba(3, 15, 9, 0.9)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: '6px',
-              padding: '4px 10px',
+              bottom: '12px',
+              left: '12px',
+              zIndex: 999,
+              background: 'rgba(5, 15, 10, 0.85)',
+              backdropFilter: 'blur(8px)',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              fontSize: '0.75rem',
+              color: '#ffffff',
               fontFamily: 'monospace',
-              fontSize: '0.78rem',
-              color: '#38bdf8',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
             }}
           >
-            {cursorCoords.lat.toFixed(6)}, {cursorCoords.lng.toFixed(6)}
+            <span style={{ color: 'var(--clr-primary-light)' }}>●</span>
+            <span>
+              Lat: {cursorCoords.lat.toFixed(6)}, Lng: {cursorCoords.lng.toFixed(6)}
+            </span>
+          </div>
+
+          {/* Legend Watermark Badge */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '12px',
+              right: '12px',
+              zIndex: 999,
+              background: 'rgba(5, 15, 10, 0.85)',
+              backdropFilter: 'blur(8px)',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              fontSize: '0.75rem',
+              color: 'var(--clr-text-secondary)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <i className="ph-bold ph-shield-check" style={{ color: 'var(--clr-primary-light)' }}></i>
+            <span>Delineasi BIG & Kemendagri &bull; KKN Unila 2026</span>
           </div>
         </div>
       </div>
 
-      {/* Global CSS for Leaflet & Custom Markers */}
       <style jsx global>{`
+        .custom-leaflet-tooltip {
+          background: rgba(12, 26, 19, 0.95) !important;
+          border: 1px solid rgba(255, 255, 255, 0.15) !important;
+          color: #ffffff !important;
+          border-radius: 8px !important;
+          padding: 6px 10px !important;
+          font-family: inherit !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+        }
+        .custom-leaflet-tooltip::before {
+          border-top-color: rgba(12, 26, 19, 0.95) !important;
+        }
         .custom-webgis-marker {
           background: transparent;
           border: none;
         }
         .webgis-pin-bubble {
-          width: 32px;
-          height: 32px;
+          width: 34px;
+          height: 34px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -993,35 +1052,8 @@ export default function WebGISMap() {
         .webgis-pin-bubble:hover {
           transform: scale(1.25);
         }
-        .custom-leaflet-tooltip {
-          background: rgba(3, 15, 9, 0.9) !important;
-          border: 1px solid rgba(255, 255, 255, 0.15) !important;
-          color: #ffffff !important;
-          font-family: 'Inter', sans-serif !important;
-          font-size: 11px !important;
-          border-radius: 6px !important;
-          padding: 4px 8px !important;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-        }
-        .custom-leaflet-tooltip::before {
-          border-top-color: rgba(3, 15, 9, 0.9) !important;
-        }
-        .leaflet-popup-content-wrapper {
-          background: #ffffff !important;
-          border-radius: 12px !important;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
-          padding: 6px !important;
-        }
-        .leaflet-popup-tip {
-          background: #ffffff !important;
-        }
-        .webgis-fullscreen {
-          position: fixed !important;
-          inset: 0 !important;
-          z-index: 99999 !important;
-          width: 100vw !important;
-          height: 100vh !important;
-          border-radius: 0 !important;
+        .hover-bg:hover {
+          background: rgba(255, 255, 255, 0.05);
         }
         @media (max-width: 900px) {
           .webgis-main-grid {
@@ -1029,7 +1061,7 @@ export default function WebGISMap() {
             height: auto !important;
           }
           .webgis-sidebar {
-            max-height: 280px;
+            max-height: 340px;
           }
         }
       `}</style>
