@@ -1,232 +1,263 @@
 {
   "type": "FeatureCollection",
+  "name": "Fasilitas_Desa_Negeri_Pandan",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
   "features": [
     {
       "type": "Feature",
+      "properties": {
+        "id": "kantor-desa",
+        "name": "Kantor Balai Desa Negeri Pandan",
+        "category": "pemerintahan",
+        "categoryLabel": "Pemerintahan Desa",
+        "image": "/documents/Foto Peta/kantor balai desa negeri pandan.png",
+        "elevation": 150,
+        "surveyTime": "07/13/2026 11:10:34.000 GMT+07:00",
+        "address": "Dusun Kedaton, Desa Negeri Pandan",
+        "description": "Pusat pelayanan administrasi kependudukan dan balai pertemuan masyarakat Desa Negeri Pandan."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.630256667,
           -5.728725
         ]
-      },
-      "properties": {
-        "id": "kantor-desa",
-        "name": "Kantor Balai Desa Negeri Pandan",
-        "category": "pemerintahan",
-        "categoryLabel": "Pemerintahan Desa",
-        "address": "Dusun Kedaton, Desa Negeri Pandan",
-        "description": "Pusat pelayanan administrasi kependudukan dan balai pertemuan masyarakat Desa Negeri Pandan.",
-        "elevation": 150.0
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "lapas-kalianda",
+        "name": "Lapas Kelas IIA Kalianda",
+        "category": "pemerintahan",
+        "categoryLabel": "Pemerintahan & Hukum",
+        "image": "/documents/Foto Peta/lapas kelas 2a kalianda.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Jl. Lintas Sumatera, Kec. Kalianda",
+        "description": "Lembaga Pemasyarakatan Kelas IIA Kalianda yang berada di wilayah Desa Negeri Pandan."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.62797090800007,
           -5.724865289999968
         ]
-      },
-      "properties": {
-        "id": "lapas-kalianda",
-        "name": "Lapas Kelas IIA Kalianda",
-        "category": "pemerintahan",
-        "categoryLabel": "Pemerintahan & Hukum",
-        "address": "Jl. Lintas Sumatera, Kec. Kalianda",
-        "description": "Lembaga Pemasyarakatan Kelas IIA Kalianda yang berada di wilayah Desa Negeri Pandan.",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "makam-desa",
+        "name": "Area Makam Umum Desa",
+        "category": "pemerintahan",
+        "categoryLabel": "Fasilitas Umum",
+        "image": "/documents/Foto Peta/area pemakaman umum desa.png",
+        "elevation": 120.1,
+        "surveyTime": "07/15/2026 10:29:34.000 GMT+07:00",
+        "address": "Desa Negeri Pandan",
+        "description": "Tempat Pemakaman Umum (TPU) warga Desa Negeri Pandan."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.629505,
           -5.726551667
         ]
-      },
-      "properties": {
-        "id": "makam-desa",
-        "name": "Area Makam Umum Desa",
-        "category": "pemerintahan",
-        "categoryLabel": "Fasilitas Umum",
-        "address": "Desa Negeri Pandan",
-        "description": "Tempat Pemakaman Umum (TPU) warga Desa Negeri Pandan.",
-        "elevation": 120.1
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "masjid-1",
+        "name": "Masjid Nurul Falah",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "image": "/documents/Foto Peta/masjid nurul falah.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Nurul Falah)."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.62664644000006,
           -5.729822156999944
         ]
-      },
-      "properties": {
-        "id": "masjid-1",
-        "name": "Masjid Nurul Falah",
-        "category": "ibadah",
-        "categoryLabel": "Tempat Ibadah",
-        "address": "Desa Negeri Pandan",
-        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Nurul Falah).",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "masjid-2",
+        "name": "Masjid Nurul Yaqin",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "image": "/documents/Foto Peta/masjid nurul yaqin.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Nurul Yaqin)."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.62770416600006,
           -5.728590942999972
         ]
-      },
-      "properties": {
-        "id": "masjid-2",
-        "name": "Masjid Nurul Yaqin",
-        "category": "ibadah",
-        "categoryLabel": "Tempat Ibadah",
-        "address": "Desa Negeri Pandan",
-        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Nurul Yaqin).",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "masjid-3",
+        "name": "Masjid Nurul Amal",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "image": "/documents/Foto Peta/masjid nurul amal.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Nurul Amal)."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.63148415452517,
           -5.728675502048493
         ]
-      },
-      "properties": {
-        "id": "masjid-3",
-        "name": "Masjid Nurul Amal",
-        "category": "ibadah",
-        "categoryLabel": "Tempat Ibadah",
-        "address": "Desa Negeri Pandan",
-        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Nurul Amal).",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "mata-air",
+        "name": "Sumber Mata Air Desa",
+        "category": "pemerintahan",
+        "categoryLabel": "Sumber Daya Alam",
+        "image": "/documents/Foto Peta/sumber mata air desa.png",
+        "elevation": 96.1,
+        "surveyTime": "07/15/2026 11:26:54.000 GMT+07:00",
+        "address": "Desa Negeri Pandan",
+        "description": "Sumber mata air alami pegunungan yang mengalir untuk kebutuhan hidup masyarakat."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.625716667,
           -5.724256667
         ]
-      },
-      "properties": {
-        "id": "mata-air",
-        "name": "Sumber Mata Air Desa",
-        "category": "pemerintahan",
-        "categoryLabel": "Sumber Daya Alam",
-        "address": "Desa Negeri Pandan",
-        "description": "Sumber mata air alami pegunungan yang mengalir untuk kebutuhan hidup masyarakat.",
-        "elevation": 96.1
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "tower-xl",
+        "name": "Tower XL Negeripandan",
+        "category": "pemerintahan",
+        "categoryLabel": "Telekomunikasi",
+        "image": "/documents/Foto Peta/tower xl negeri pandan.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Menara pemancar BTS operator telekomunikasi seluler."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.62945310100008,
           -5.726038159999973
         ]
-      },
-      "properties": {
-        "id": "tower-xl",
-        "name": "Tower XL Negeripandan",
-        "category": "pemerintahan",
-        "categoryLabel": "Telekomunikasi",
-        "address": "Desa Negeri Pandan",
-        "description": "Menara pemancar BTS operator telekomunikasi seluler.",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "paud-restu-bunda",
+        "name": "PAUD Restu Bunda",
+        "category": "pendidikan",
+        "categoryLabel": "Pendidikan Anak Usia Dini",
+        "image": "/documents/Foto Peta/paud.png",
+        "elevation": 125.1,
+        "surveyTime": "07/13/2026 11:12:31.000 GMT+07:00",
+        "address": "Kompleks Balai Desa Negeri Pandan",
+        "description": "Lembaga Pendidikan Anak Usia Dini (PAUD) & Taman Kanak-Kanak Restu Bunda."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.630263333,
           -5.728825
         ]
-      },
-      "properties": {
-        "id": "paud-restu-bunda",
-        "name": "PAUD Restu Bunda",
-        "category": "pendidikan",
-        "categoryLabel": "Pendidikan Anak Usia Dini",
-        "address": "Kompleks Balai Desa Negeri Pandan",
-        "description": "Lembaga Pendidikan Anak Usia Dini (PAUD) & Taman Kanak-Kanak Restu Bunda.",
-        "elevation": 125.1
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "pln-gardu",
+        "name": "PLN PT Persero Gardu Induk Kalianda",
+        "category": "pemerintahan",
+        "categoryLabel": "Infrastruktur Energi Listrik",
+        "image": "/documents/Foto Peta/PLN PT Persero Gardu Induk Kalianda.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Gardu Induk transmisi tenaga kelistrikan PLN Kalianda."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.62625123800007,
           -5.723463145999972
         ]
-      },
-      "properties": {
-        "id": "pln-gardu",
-        "name": "PLN PT Persero Gardu Induk Kalianda",
-        "category": "pemerintahan",
-        "categoryLabel": "Infrastruktur Energi Listrik",
-        "address": "Desa Negeri Pandan",
-        "description": "Gardu Induk transmisi tenaga kelistrikan PLN Kalianda.",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "sdn-negeri-pandan",
+        "name": "SDN Negeri Pandan",
+        "category": "pendidikan",
+        "categoryLabel": "Pendidikan Dasar",
+        "image": "/documents/Foto Peta/sdn negeri pandan.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "JL. Kedaton, Desa Negeri Pandan",
+        "description": "Sekolah Dasar Negeri pusat pendidikan dasar dan pembinaan generasi muda desa."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.63074310700006,
           -5.728254449999952
         ]
-      },
-      "properties": {
-        "id": "sdn-negeri-pandan",
-        "name": "SDN Negeri Pandan",
-        "category": "pendidikan",
-        "categoryLabel": "Pendidikan Dasar",
-        "address": "JL. Kedaton, Desa Negeri Pandan",
-        "description": "Sekolah Dasar Negeri pusat pendidikan dasar dan pembinaan generasi muda desa.",
-        "elevation": null
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "bidan-desa",
+        "name": "Praktik Bidan Desa",
+        "category": "kesehatan",
+        "categoryLabel": "Layanan Kesehatan & Kebidanan",
+        "image": "/documents/Foto Peta/puskesdes.png",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Pelayanan persalinan, imunisasi bayi/balita, posyandu, dan kesehatan ibu & anak."
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [
           105.63023465600008,
           -5.728560250999976
         ]
-      },
-      "properties": {
-        "id": "bidan-desa",
-        "name": "Praktik Bidan Desa",
-        "category": "kesehatan",
-        "categoryLabel": "Layanan Kesehatan & Kebidanan",
-        "address": "Desa Negeri Pandan",
-        "description": "Pelayanan persalinan, imunisasi bayi/balita, posyandu, dan kesehatan ibu & anak.",
-        "elevation": null
       }
     }
   ]

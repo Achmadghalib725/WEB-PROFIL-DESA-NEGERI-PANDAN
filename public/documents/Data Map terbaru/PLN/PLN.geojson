@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"name": "PLN",
+"features": [
+{ "type": "Feature", "properties": { "OID_": 0, "Name": "PLN PT Persero Gardu Induk Kalianda", "FolderPath": "PLN.kml/PLN", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.626251238000066, -5.723463145999972, 0.0 ] } }
+]
+}

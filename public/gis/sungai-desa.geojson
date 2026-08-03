@@ -1,8 +1,19 @@
 {
   "type": "FeatureCollection",
+  "name": "Jaringan_Sungai_Desa_Negeri_Pandan",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
   "features": [
     {
       "type": "Feature",
+      "properties": {
+        "id": "sungai-0-0",
+        "name": "Sungai Satu Garis"
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -20,7 +31,7 @@
           ],
           [
             105.62519712100001,
-            -5.726496092999999
+            -5.726496093
           ],
           [
             105.62498908600013,
@@ -39,7 +50,7 @@
             -5.726169137999947
           ],
           [
-            105.62435869800001,
+            105.624358698,
             -5.726106216999981
           ],
           [
@@ -47,20 +58,20 @@
             -5.726063096156108
           ]
         ]
-      },
-      "properties": {
-        "id": "sungai-0-0",
-        "name": "Sungai Satu Garis"
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "sungai-0-1",
+        "name": "Sungai Satu Garis"
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
           [
             105.6295320439107,
-            -5.7350809328430055
+            -5.735080932843005
           ],
           [
             105.62942129300004,
@@ -76,7 +87,7 @@
           ],
           [
             105.62861059100001,
-            -5.7336908709999514
+            -5.733690870999951
           ],
           [
             105.62855606600003,
@@ -116,7 +127,7 @@
           ],
           [
             105.62663711100006,
-            -5.729910864000009
+            -5.729910864
           ],
           [
             105.6264529730001,
@@ -135,14 +146,14 @@
             -5.727146108956171
           ]
         ]
-      },
-      "properties": {
-        "id": "sungai-0-1",
-        "name": "Sungai Satu Garis"
       }
     },
     {
       "type": "Feature",
+      "properties": {
+        "id": "sungai-0-2",
+        "name": "Sungai Satu Garis"
+      },
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -155,10 +166,6 @@
             -5.735884107443522
           ]
         ]
-      },
-      "properties": {
-        "id": "sungai-0-2",
-        "name": "Sungai Satu Garis"
       }
     }
   ]

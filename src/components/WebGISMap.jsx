@@ -560,7 +560,7 @@ export default function WebGISMap() {
                 style={{ accentColor: '#10b981' }}
               />
               <span className="color-dot" style={{ background: '#10b981' }}></span>
-              <span>Batas Desa (227 Titik Poligon BIG)</span>
+              <span>Batas Wilayah Desa ({BATAS_DESA_POLYGON.length} Titik Poligon)</span>
             </label>
           </div>
         )}
