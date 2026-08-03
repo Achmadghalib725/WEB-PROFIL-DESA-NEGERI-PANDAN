@@ -242,15 +242,15 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "bidan-desa",
-        "name": "Praktik Bidan Desa",
+        "id": "puskesdes",
+        "name": "Puskesdes Desa Negeri Pandan",
         "category": "kesehatan",
-        "categoryLabel": "Layanan Kesehatan & Kebidanan",
+        "categoryLabel": "Pusat Kesehatan Desa (Puskesdes)",
         "image": "/documents/Foto Peta/puskesdes.png",
         "elevation": null,
         "surveyTime": null,
         "address": "Desa Negeri Pandan",
-        "description": "Pelayanan persalinan, imunisasi bayi/balita, posyandu, dan kesehatan ibu & anak."
+        "description": "Pusat Kesehatan Desa (Puskesdes) untuk pelayanan kesehatan dasar masyarakat, pemeriksaan, imunisasi, posyandu, dan pelayanan persalinan bidan desa."
       },
       "geometry": {
         "type": "Point",

@@ -1721,10 +1721,10 @@ export const FASILITAS_DESA = [
     "description": "Sekolah Dasar Negeri pusat pendidikan dasar dan pembinaan generasi muda desa."
   },
   {
-    "id": "bidan-desa",
-    "name": "Praktik Bidan Desa",
+    "id": "puskesdes",
+    "name": "Puskesdes Desa Negeri Pandan",
     "category": "kesehatan",
-    "categoryLabel": "Layanan Kesehatan & Kebidanan",
+    "categoryLabel": "Pusat Kesehatan Desa (Puskesdes)",
     "image": "/documents/Foto Peta/puskesdes.png",
     "coords": [
       -5.728560250999976,
@@ -1734,6 +1734,6 @@ export const FASILITAS_DESA = [
     "color": "#dc2626",
     "bgColor": "#ef4444",
     "address": "Desa Negeri Pandan",
-    "description": "Pelayanan persalinan, imunisasi bayi/balita, posyandu, dan kesehatan ibu & anak."
+    "description": "Pusat Kesehatan Desa (Puskesdes) untuk pelayanan kesehatan dasar masyarakat, pemeriksaan, imunisasi, posyandu, dan pelayanan persalinan bidan desa."
   }
 ];
