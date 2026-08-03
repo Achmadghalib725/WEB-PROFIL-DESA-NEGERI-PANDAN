@@ -329,11 +329,15 @@ export default function WebGISMap() {
 
         const imageHTML = item.image
           ? `
-            <div style="position: relative; width: 100%; height: 135px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #0f172a; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+            <div style="position: relative; width: 100%; height: 140px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #0f172a; box-shadow: 0 2px 8px rgba(0,0,0,0.18);">
               <img
                 src="${encodeURI(item.image)}"
                 alt="${item.name}"
-                style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                loading="lazy"
+                decoding="async"
+                width="280"
+                height="140"
+                style="width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.3s ease;"
                 onerror="this.parentElement.style.display='none'"
               />
             </div>

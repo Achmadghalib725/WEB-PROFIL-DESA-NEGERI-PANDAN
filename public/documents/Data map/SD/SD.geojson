@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "SD",
-"features": [
-{ "type": "Feature", "properties": { "OID_": 0, "Name": "SDN Negeri Pandan", "FolderPath": "Pendidikan.kml/Pendidikan", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.630743107000058, -5.728254449999952, 0.0 ] } }
-]
-}

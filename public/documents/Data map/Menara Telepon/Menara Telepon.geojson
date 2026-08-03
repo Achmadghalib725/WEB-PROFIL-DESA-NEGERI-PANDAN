@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Menara Telepon",
-"features": [
-{ "type": "Feature", "properties": { "NAMOBJ": "Tower XL Negeripandan", "FCODE": "HC01050180", "REMARK": "Menara Telepon", "METADATA": "RBI50KPROVINSILAMPUNG", "SRS_ID": "4326" }, "geometry": { "type": "Point", "coordinates": [ 105.629453101000081, -5.726038159999973, 0.0 ] } }
-]
-}

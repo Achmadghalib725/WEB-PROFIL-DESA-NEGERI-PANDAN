@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Paud",
-"features": [
-{ "type": "Feature", "properties": { "_ID": 5, "_NAME": null, "_REMARKS": "PAUD Restu Bunda", "_REC_TIME": "07/13/2026 11:12:31.000 GMT+07:00", "_LATITUDE": -5.728825, "_LONGITUDE": 105.630263333, "_ELEVATION": 125.1, "_ORTHO_HT": 0.0 }, "geometry": { "type": "Point", "coordinates": [ 105.630263333, -5.728825, 125.1 ] } }
-]
-}

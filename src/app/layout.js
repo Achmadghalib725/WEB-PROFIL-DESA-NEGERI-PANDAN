@@ -31,6 +31,12 @@ export const metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: '4c1e93eabe145c99',
+    other: {
+      'msvalidate.01': '00E9AFC94A0BD539D25ABA3ABD27C48A',
+    },
+  },
 };
 
 export default function RootLayout({ children }) {

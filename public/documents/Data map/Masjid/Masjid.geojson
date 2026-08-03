@@ -1,9 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Masjid",
-"features": [
-{ "type": "Feature", "properties": { "OID_": 0, "Name": "Masjid Nurul Falah", "FolderPath": "Tempat Ibadah2.kml/Tempat Ibadah", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.626646440000059, -5.729822156999944, 0.0 ] } },
-{ "type": "Feature", "properties": { "OID_": 0, "Name": "Masjid Nurul Yaqin", "FolderPath": "Tempat Ibadah2.kml/Tempat Ibadah", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.627704166000058, -5.728590942999972, 0.0 ] } },
-{ "type": "Feature", "properties": { "OID_": 0, "Name": "Masjid Nurul Amal", "FolderPath": "Tempat Ibadah2.kml/Tempat Ibadah", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.631484154525168, -5.728675502048493, 0.0 ] } }
-]
-}
