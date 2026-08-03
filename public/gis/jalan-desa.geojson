@@ -12,7 +12,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-0-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -33,7 +33,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-1-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -58,7 +58,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-2-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -83,8 +83,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-3-0",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -180,7 +180,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-4-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -201,7 +201,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-5-0",
-        "name": "Jalan Tol",
+        "name": "Jalan Tol Bakauheni - Terbanggi Besar",
         "type": "Jalan Tol"
       },
       "geometry": {
@@ -238,8 +238,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-6-0",
-        "name": "Jalan Desa",
-        "type": "Jalan Desa"
+        "name": "Jalan Lingkungan Permukiman",
+        "type": "Jalan Lingkungan"
       },
       "geometry": {
         "type": "LineString",
@@ -259,8 +259,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-7-0",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -336,7 +336,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-8-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -361,8 +361,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-9-0",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -430,7 +430,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-10-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -451,7 +451,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-11-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -472,8 +472,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-12-0",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -521,7 +521,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-13-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -546,7 +546,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-14-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -567,7 +567,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-15-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -592,7 +592,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-16-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -649,8 +649,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-17-0",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -738,8 +738,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-17-1",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jalan Penghubung Dusun",
+        "type": "Jalan Lingkungan"
       },
       "geometry": {
         "type": "LineString",
@@ -763,8 +763,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-17-2",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jalan Penghubung Dusun",
+        "type": "Jalan Lingkungan"
       },
       "geometry": {
         "type": "LineString",
@@ -788,7 +788,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-18-0",
-        "name": "Jalan Tol",
+        "name": "Jalan Tol Bakauheni - Terbanggi Besar",
         "type": "Jalan Tol"
       },
       "geometry": {
@@ -829,8 +829,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-19-0",
-        "name": "Jalan Lain",
-        "type": "Jalan Lain"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -850,7 +850,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-20-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -879,7 +879,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-21-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -908,7 +908,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-22-0",
-        "name": "Jalan Lokal",
+        "name": "Jl. Kedaton (Jalan Poros Desa)",
         "type": "Jalan Lokal"
       },
       "geometry": {
@@ -957,8 +957,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-23-0",
-        "name": "Jalan Desa",
-        "type": "Jalan Desa"
+        "name": "Jalan Lingkungan Permukiman",
+        "type": "Jalan Lingkungan"
       },
       "geometry": {
         "type": "LineString",
@@ -1018,7 +1018,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-24-0",
-        "name": "Jalan Arteri",
+        "name": "Jl. Lintas Sumatera",
         "type": "Jalan Arteri"
       },
       "geometry": {
@@ -1039,8 +1039,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-25-0",
-        "name": "Jalan Desa",
-        "type": "Jalan Desa"
+        "name": "Jalan Lingkungan Permukiman",
+        "type": "Jalan Lingkungan"
       },
       "geometry": {
         "type": "LineString",
@@ -1228,7 +1228,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-26-0",
-        "name": "Jalan Arteri",
+        "name": "Jl. Lintas Sumatera",
         "type": "Jalan Arteri"
       },
       "geometry": {
@@ -1249,7 +1249,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-26-1",
-        "name": "Jalan Arteri",
+        "name": "Jl. Lintas Sumatera",
         "type": "Jalan Arteri"
       },
       "geometry": {
@@ -1298,8 +1298,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-27-0",
-        "name": "Jalan Desa",
-        "type": "Jalan Desa"
+        "name": "Jalan Lingkungan Permukiman",
+        "type": "Jalan Lingkungan"
       },
       "geometry": {
         "type": "LineString",
@@ -1335,8 +1335,8 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-28-0",
-        "name": "Jalan Desa",
-        "type": "Jalan Desa"
+        "name": "Jl. Lintas Sumatera",
+        "type": "Jalan Arteri"
       },
       "geometry": {
         "type": "LineString",
@@ -1460,7 +1460,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-29-0",
-        "name": "Jalan Lain",
+        "name": "Jalan Lingkungan Permukiman",
         "type": "Jalan Lain"
       },
       "geometry": {
@@ -1525,7 +1525,7 @@
       "type": "Feature",
       "properties": {
         "id": "jalan-30-0",
-        "name": "Jalan Arteri",
+        "name": "Jl. Lintas Sumatera",
         "type": "Jalan Arteri"
       },
       "geometry": {

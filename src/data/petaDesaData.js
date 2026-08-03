@@ -42,7 +42,7 @@ export const BATAS_DESA_POLYGON = [[-5.689173614999959,105.65521902900008],[-5.6
 export const JARINGAN_JALAN = [
   {
     "id": "jalan-0-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -57,7 +57,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-1-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -76,7 +76,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-2-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -95,8 +95,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-3-0",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.70897812464068,
@@ -186,7 +186,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-4-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -201,7 +201,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-5-0",
-    "name": "Jalan Tol",
+    "name": "Jalan Tol Bakauheni - Terbanggi Besar",
     "type": "Jalan Tol",
     "coordinates": [
       [
@@ -232,8 +232,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-6-0",
-    "name": "Jalan Desa",
-    "type": "Jalan Desa",
+    "name": "Jalan Lingkungan Permukiman",
+    "type": "Jalan Lingkungan",
     "coordinates": [
       [
         -5.725052868594958,
@@ -247,8 +247,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-7-0",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.688681744466862,
@@ -318,7 +318,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-8-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -337,8 +337,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-9-0",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.700230498238852,
@@ -400,7 +400,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-10-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -415,7 +415,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-11-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -430,8 +430,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-12-0",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.688681744466862,
@@ -473,7 +473,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-13-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -492,7 +492,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-14-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -507,7 +507,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-15-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -526,7 +526,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-16-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -577,8 +577,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-17-0",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.716599101966949,
@@ -660,8 +660,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-17-1",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jalan Penghubung Dusun",
+    "type": "Jalan Lingkungan",
     "coordinates": [
       [
         -5.71736915186483,
@@ -679,8 +679,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-17-2",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jalan Penghubung Dusun",
+    "type": "Jalan Lingkungan",
     "coordinates": [
       [
         -5.720888026361308,
@@ -698,7 +698,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-18-0",
-    "name": "Jalan Tol",
+    "name": "Jalan Tol Bakauheni - Terbanggi Besar",
     "type": "Jalan Tol",
     "coordinates": [
       [
@@ -733,8 +733,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-19-0",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.688795285673848,
@@ -748,7 +748,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-20-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -771,7 +771,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-21-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -794,7 +794,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-22-0",
-    "name": "Jalan Lokal",
+    "name": "Jl. Kedaton (Jalan Poros Desa)",
     "type": "Jalan Lokal",
     "coordinates": [
       [
@@ -837,8 +837,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-23-0",
-    "name": "Jalan Desa",
-    "type": "Jalan Desa",
+    "name": "Jalan Lingkungan Permukiman",
+    "type": "Jalan Lingkungan",
     "coordinates": [
       [
         -5.724695531073849,
@@ -892,7 +892,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-24-0",
-    "name": "Jalan Arteri",
+    "name": "Jl. Lintas Sumatera",
     "type": "Jalan Arteri",
     "coordinates": [
       [
@@ -907,8 +907,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-25-0",
-    "name": "Jalan Desa",
-    "type": "Jalan Desa",
+    "name": "Jalan Lingkungan Permukiman",
+    "type": "Jalan Lingkungan",
     "coordinates": [
       [
         -5.728405276782041,
@@ -1090,7 +1090,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-26-0",
-    "name": "Jalan Arteri",
+    "name": "Jl. Lintas Sumatera",
     "type": "Jalan Arteri",
     "coordinates": [
       [
@@ -1105,7 +1105,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-26-1",
-    "name": "Jalan Arteri",
+    "name": "Jl. Lintas Sumatera",
     "type": "Jalan Arteri",
     "coordinates": [
       [
@@ -1148,8 +1148,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-27-0",
-    "name": "Jalan Desa",
-    "type": "Jalan Desa",
+    "name": "Jalan Lingkungan Permukiman",
+    "type": "Jalan Lingkungan",
     "coordinates": [
       [
         -5.728422609415873,
@@ -1179,8 +1179,8 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-28-0",
-    "name": "Jalan Desa",
-    "type": "Jalan Desa",
+    "name": "Jl. Lintas Sumatera",
+    "type": "Jalan Arteri",
     "coordinates": [
       [
         -5.72463130778857,
@@ -1298,7 +1298,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-29-0",
-    "name": "Jalan Lain",
+    "name": "Jalan Lingkungan Permukiman",
     "type": "Jalan Lain",
     "coordinates": [
       [
@@ -1357,7 +1357,7 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jalan-30-0",
-    "name": "Jalan Arteri",
+    "name": "Jl. Lintas Sumatera",
     "type": "Jalan Arteri",
     "coordinates": [
       [
