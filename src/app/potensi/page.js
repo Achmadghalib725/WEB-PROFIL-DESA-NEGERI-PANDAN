@@ -106,21 +106,22 @@ export default function PotensiPage() {
           {/* Potensi 3: Usaha Lokal & Peternakan */}
           <div className="potensi-detail">
             <div className="potensi-image reveal" style={{ position: 'relative', minHeight: '400px' }}>
-              <Image src="/images/agriculture.png" alt="Usaha dan Peternakan Desa" fill style={{ objectFit: 'cover', borderRadius: 'var(--radius-xl)' }} />
+               <Image src="/images/usaha lokal.jpeg" alt="Usaha Lokal Desa" fill style={{ objectFit: 'cover', borderRadius: 'var(--radius-xl)' }} />
             </div>
             <div className="reveal reveal-delay-1">
               <div className="section-label">Penggerak Ekonomi</div>
               <h3>Usaha Lokal &amp; Peternakan</h3>
               <p>
-                Selain mengandalkan hasil bumi, roda perekonomian Desa Negeri Pandan juga digerakkan oleh berbagai usaha lokal dan peternakan yang masih aktif beroperasi.
+                 Selain mengandalkan hasil bumi, perekonomian Desa Negeri Pandan didorong oleh usaha lokal, termasuk peternakan unggas seperti ayam dan kalkun, yang aktif beroperasi.
               </p>
               <p>
-                Di desa ini terdapat sentra pembuatan tahu, serta sekitar 3 hingga 4 pabrik penggilingan jagung yang senantiasa mendukung aktivitas warga. Selain itu, hadirnya peternakan ayam petelur turut menjadi komoditas penting dalam memenuhi kebutuhan pangan masyarakat sekitar.
+                 Di desa ini terdapat sentra pembuatan tahu, serta sekitar 3 hingga 4 pabrik penggilingan jagung yang mendukung aktivitas warga. Selain itu, peternakan ayam dan kalkun menjadi komoditas penting dalam memenuhi kebutuhan pangan masyarakat sekitar.
               </p>
               <div className="tag-list" style={{ marginTop: '1.5rem' }}>
                 <span className="tag">Pabrik Tahu</span>
                 <span className="tag">Giling Jagung</span>
                 <span className="tag">Ayam Petelur</span>
+                <span className="tag">Kalkun</span>
                 <span className="tag">UMKM Desa</span>
               </div>
             </div>
