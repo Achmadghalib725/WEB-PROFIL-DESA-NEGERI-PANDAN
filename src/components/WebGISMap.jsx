@@ -227,7 +227,7 @@ export default function WebGISMap() {
         fillColor: '#10b981',
         fillOpacity: 0.12,
       }).bindTooltip(
-        `<b>Batas Administrasi Desa Negeri Pandan</b><br/><span style="font-size: 11px;">Luas: ${DESA_INFO.luasHa} Ha &bull; Sumber: BIG</span>`,
+        `<b>Batas Administrasi Desa Negeri Pandan</b>`,
         {
           sticky: true,
           direction: 'top',
