@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Mata Air",
-"features": [
-{ "type": "Feature", "properties": { "_ID": 7, "_NAME": null, "_REMARKS": "Sumber Mata Air", "_REC_TIME": "07/15/2026 11:26:54.000 GMT+07:00", "_LATITUDE": -5.724256667, "_LONGITUDE": 105.62571666700001, "_ELEVATION": 96.1, "_ORTHO_HT": 0.0 }, "geometry": { "type": "Point", "coordinates": [ 105.625716667, -5.724256667, 96.1 ] } }
-]
-}

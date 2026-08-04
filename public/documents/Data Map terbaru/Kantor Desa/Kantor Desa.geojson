@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Kantor Desa",
-"features": [
-{ "type": "Feature", "properties": { "_ID": 4, "_NAME": null, "_REMARKS": "Balai Desa", "_REC_TIME": "07/13/2026 11:10:34.000 GMT+07:00", "_LATITUDE": -5.728725, "_LONGITUDE": 105.630256667, "_ELEVATION": 150.0, "_ORTHO_HT": 0.0 }, "geometry": { "type": "Point", "coordinates": [ 105.630256667, -5.728725, 150.0 ] } }
-]
-}

@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Makam",
-"features": [
-{ "type": "Feature", "properties": { "_ID": 6, "_NAME": null, "_REMARKS": "Makam", "_REC_TIME": "07/15/2026 10:29:34.000 GMT+07:00", "_LATITUDE": -5.726551667, "_LONGITUDE": 105.629505, "_ELEVATION": 120.1, "_ORTHO_HT": 0.0 }, "geometry": { "type": "Point", "coordinates": [ 105.629505, -5.726551667, 120.1 ] } }
-]
-}

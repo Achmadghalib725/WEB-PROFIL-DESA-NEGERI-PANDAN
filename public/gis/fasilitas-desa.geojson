@@ -74,6 +74,69 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "mata-air",
+        "name": "Sumber Mata Air Desa",
+        "category": "pemerintahan",
+        "categoryLabel": "Sumber Daya Alam",
+        "image": "/documents/Foto Peta/sumber mata air desa.webp",
+        "elevation": 96.1,
+        "surveyTime": "07/15/2026 11:26:54.000 GMT+07:00",
+        "address": "Desa Negeri Pandan",
+        "description": "Sumber mata air alami pegunungan yang mengalir untuk kebutuhan hidup masyarakat."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.625716667,
+          -5.724256667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tower-xl",
+        "name": "Tower XL Negeripandan",
+        "category": "pemerintahan",
+        "categoryLabel": "Telekomunikasi",
+        "image": "/documents/Foto Peta/tower xl negeri pandan.webp",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Menara pemancar BTS operator telekomunikasi seluler."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62945310100008,
+          -5.726038159999973
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pln-gardu",
+        "name": "PLN PT Persero Gardu Induk Kalianda",
+        "category": "pemerintahan",
+        "categoryLabel": "Infrastruktur Energi Listrik",
+        "image": "/documents/Foto Peta/PLN PT Persero Gardu Induk Kalianda.webp",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Desa Negeri Pandan",
+        "description": "Gardu Induk transmisi tenaga kelistrikan PLN Kalianda."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62625123800007,
+          -5.723463145999972
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "masjid-1",
         "name": "Masjid Nurul Falah",
         "category": "ibadah",
@@ -129,50 +192,50 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          105.63148415452517,
-          -5.728675502048493
+          105.63187219200006,
+          -5.728548113999977
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "mata-air",
-        "name": "Sumber Mata Air Desa",
-        "category": "pemerintahan",
-        "categoryLabel": "Sumber Daya Alam",
-        "image": "/documents/Foto Peta/sumber mata air desa.webp",
-        "elevation": 96.1,
-        "surveyTime": "07/15/2026 11:26:54.000 GMT+07:00",
-        "address": "Desa Negeri Pandan",
-        "description": "Sumber mata air alami pegunungan yang mengalir untuk kebutuhan hidup masyarakat."
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          105.625716667,
-          -5.724256667
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "tower-xl",
-        "name": "Tower XL Negeripandan",
-        "category": "pemerintahan",
-        "categoryLabel": "Telekomunikasi",
-        "image": "/documents/Foto Peta/tower xl negeri pandan.webp",
+        "id": "masjid-4",
+        "name": "Masjid Al-Husna",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "image": "/documents/Foto Peta/masjid al husna.jpeg",
         "elevation": null,
         "surveyTime": null,
         "address": "Desa Negeri Pandan",
-        "description": "Menara pemancar BTS operator telekomunikasi seluler."
+        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat (Masjid Al-Husna)."
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          105.62945310100008,
-          -5.726038159999973
+          105.63087866700005,
+          -5.724504884999931
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "masjid-5",
+        "name": "Masjid Nurul Iman Lubuk Jukung",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "image": "/documents/Foto Peta/masjid nurul iman lubuk jukung.jpeg",
+        "elevation": null,
+        "surveyTime": null,
+        "address": "Dusun Lubuk Jukung, Desa Negeri Pandan",
+        "description": "Tempat ibadah sholat berjamaah dan kegiatan keagamaan masyarakat Dusun Lubuk Jukung (Masjid Nurul Iman)."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.64985585800008,
+          -5.672174206999955
         ]
       }
     },
@@ -194,27 +257,6 @@
         "coordinates": [
           105.630263333,
           -5.728825
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "pln-gardu",
-        "name": "PLN PT Persero Gardu Induk Kalianda",
-        "category": "pemerintahan",
-        "categoryLabel": "Infrastruktur Energi Listrik",
-        "image": "/documents/Foto Peta/PLN PT Persero Gardu Induk Kalianda.webp",
-        "elevation": null,
-        "surveyTime": null,
-        "address": "Desa Negeri Pandan",
-        "description": "Gardu Induk transmisi tenaga kelistrikan PLN Kalianda."
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          105.62625123800007,
-          -5.723463145999972
         ]
       }
     },
@@ -243,14 +285,14 @@
       "type": "Feature",
       "properties": {
         "id": "puskesdes",
-        "name": "Puskesdes Desa Negeri Pandan",
+        "name": "Puskesdes / Praktik Bidan Desa",
         "category": "kesehatan",
-        "categoryLabel": "Pusat Kesehatan Desa (Puskesdes)",
+        "categoryLabel": "Pusat Pelayanan Kesehatan",
         "image": "/documents/Foto Peta/puskesdes.webp",
         "elevation": null,
         "surveyTime": null,
         "address": "Desa Negeri Pandan",
-        "description": "Pusat Kesehatan Desa (Puskesdes) untuk pelayanan kesehatan dasar masyarakat, pemeriksaan, imunisasi, posyandu, dan pelayanan persalinan bidan desa."
+        "description": "Pusat Kesehatan Desa (Puskesdes) & Praktik Bidan untuk pelayanan kesehatan dasar masyarakat, pemeriksaan, imunisasi, posyandu, dan pelayanan persalinan bidan desa."
       },
       "geometry": {
         "type": "Point",
