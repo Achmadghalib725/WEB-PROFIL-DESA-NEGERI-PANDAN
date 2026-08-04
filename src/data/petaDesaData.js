@@ -1824,7 +1824,7 @@ export const FASILITAS_DESA = [
     ],
     "elevation": 120.1,
     "surveyTime": "07/15/2026 10:29:34.000 GMT+07:00",
-    "icon": "ph-cross",
+    "icon": "ph-tombstone",
     "color": "#6b7280",
     "bgColor": "#4b5563",
     "address": "Desa Negeri Pandan",
@@ -1933,7 +1933,7 @@ export const FASILITAS_DESA = [
     "name": "Masjid Al-Husna",
     "category": "ibadah",
     "categoryLabel": "Tempat Ibadah",
-    "image": "",
+    "image": "/documents/Foto Peta/masjid al husna.jpeg",
     "coords": [
       -5.724504884999931,
       105.63087866700005
@@ -1949,7 +1949,7 @@ export const FASILITAS_DESA = [
     "name": "Masjid Nurul Iman Lubuk Jukung",
     "category": "ibadah",
     "categoryLabel": "Tempat Ibadah",
-    "image": "",
+    "image": "/documents/Foto Peta/masjid nurul iman lubuk jukung.jpeg",
     "coords": [
       -5.672174206999955,
       105.64985585800008
