@@ -229,7 +229,7 @@ export default function WebGISMap() {
       }).bindTooltip(
         `<b>Batas Administrasi Desa Negeri Pandan</b>`,
         {
-          sticky: true,
+          sticky: false,
           direction: 'top',
           className: 'custom-leaflet-tooltip',
         }
@@ -261,7 +261,7 @@ export default function WebGISMap() {
           weight: roadWeight,
           opacity: 0.9,
         }).bindTooltip(`<b>${j.name}</b><br/><span style="font-size: 10px; color: #cbd5e1;">Tipe: ${j.type}</span>`, {
-          sticky: true,
+          sticky: false,
           className: 'custom-leaflet-tooltip',
         });
         polyline.addTo(jalanGroup);
@@ -277,7 +277,7 @@ export default function WebGISMap() {
           weight: 3.2,
           opacity: 0.95,
         }).bindTooltip(`<b>${s.name}</b><br/><span style="font-size: 10px; color: #93c5fd;">Aliran Sungai Alami</span>`, {
-          sticky: true,
+          sticky: false,
           className: 'custom-leaflet-tooltip',
         });
         polyline.addTo(sungaiGroup);
