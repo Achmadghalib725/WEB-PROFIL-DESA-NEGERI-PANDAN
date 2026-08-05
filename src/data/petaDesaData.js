@@ -2450,7 +2450,7 @@ export const BATAS_DESA_POLYGON = [
   ]
 ];
 
-// Jaringan Jalan Desa Resmi
+// Jaringan Jalan Desa Resmi (Telah dipotong rapi sesuai batas wilayah desa)
 export const JARINGAN_JALAN = [
   {
     "id": "jl_01",
@@ -2754,46 +2754,46 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jl_05",
-    "name": "Jalan Lain",
+    "name": "Jalan Lain 5",
     "type": "Jalan Lain",
-    "length": "521.2 m",
+    "length": "118.0 m",
     "coordinates": [
       [
-        -5.6676237,
-        105.6467853
+        -5.6674543,
+        105.6474306
       ],
       [
         -5.6673196,
         105.6479437
       ],
       [
-        -5.6680717,
-        105.6457283
-      ],
+        -5.6674899,
+        105.647442
+      ]
+    ]
+  },
+  {
+    "id": "jl_06",
+    "name": "Jalan Lain 6",
+    "type": "Jalan Lain",
+    "length": "378.2 m",
+    "coordinates": [
       [
-        -5.6680446,
-        105.6462482
-      ],
-      [
-        -5.6680085,
-        105.6462894
+        -5.6713698,
+        105.6452806
       ],
       [
         -5.6730327,
         105.6447816
       ],
       [
-        -5.6706449,
-        105.6446627
-      ],
-      [
-        -5.6701716,
-        105.6448731
+        -5.671373,
+        105.644699
       ]
     ]
   },
   {
-    "id": "jl_06",
+    "id": "jl_07",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "281.9 m",
@@ -2853,7 +2853,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_07",
+    "id": "jl_08",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "426.0 m",
@@ -2877,7 +2877,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_08",
+    "id": "jl_09",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "548.6 m",
@@ -2905,7 +2905,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_09",
+    "id": "jl_10",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "579.9 m",
@@ -2945,22 +2945,6 @@ export const JARINGAN_JALAN = [
       [
         -5.6853186,
         105.6514762
-      ]
-    ]
-  },
-  {
-    "id": "jl_10",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
-    "length": "1.6 m",
-    "coordinates": [
-      [
-        -5.7230391,
-        105.6192833
-      ],
-      [
-        -5.723026,
-        105.6192882
       ]
     ]
   },
@@ -3064,7 +3048,7 @@ export const JARINGAN_JALAN = [
     "id": "jl_12",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
-    "length": "1181.9 m",
+    "length": "833.8 m",
     "coordinates": [
       [
         -5.6730015,
@@ -3103,16 +3087,8 @@ export const JARINGAN_JALAN = [
         105.6476323
       ],
       [
-        -5.6643441,
-        105.6477656
-      ],
-      [
-        -5.6640014,
-        105.6480892
-      ],
-      [
-        -5.6633077,
-        105.6479722
+        -5.6662924,
+        105.6476427
       ]
     ]
   },
@@ -3164,15 +3140,11 @@ export const JARINGAN_JALAN = [
     "id": "jl_15",
     "name": "Jalan Arteri",
     "type": "Jalan Arteri",
-    "length": "485.1 m",
+    "length": "917.6 m",
     "coordinates": [
       [
-        -5.7230835,
-        105.619617
-      ],
-      [
-        -5.723026,
-        105.6192882
+        -5.7234366,
+        105.6216595
       ],
       [
         -5.7241564,
@@ -3526,22 +3498,6 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jl_24",
-    "name": "Jalan Arteri",
-    "type": "Jalan Arteri",
-    "length": "14.2 m",
-    "coordinates": [
-      [
-        -5.723026,
-        105.6192882
-      ],
-      [
-        -5.7230041,
-        105.6191628
-      ]
-    ]
-  },
-  {
-    "id": "jl_25",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "293.2 m",
@@ -3561,7 +3517,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_26",
+    "id": "jl_25",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "164.6 m",
@@ -3577,7 +3533,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_27",
+    "id": "jl_26",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "236.5 m",
@@ -3601,18 +3557,14 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_28",
+    "id": "jl_27",
     "name": "Jalan Lokal",
     "type": "Jalan Lokal",
-    "length": "2037.0 m",
+    "length": "1774.8 m",
     "coordinates": [
       [
-        -5.6734219,
-        105.6423037
-      ],
-      [
-        -5.6732925,
-        105.6424786
+        -5.6732211,
+        105.6432299
       ],
       [
         -5.6732084,
@@ -3711,21 +3663,13 @@ export const JARINGAN_JALAN = [
         105.6497177
       ],
       [
-        -5.663597,
-        105.6502147
-      ],
-      [
-        -5.6634852,
-        105.6511233
-      ],
-      [
-        -5.6634019,
-        105.6515702
+        -5.6636074,
+        105.650207
       ]
     ]
   },
   {
-    "id": "jl_29",
+    "id": "jl_28",
     "name": "Jalan Tol",
     "type": "Jalan Tol",
     "length": "1609.7 m",
@@ -3761,7 +3705,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_30",
+    "id": "jl_29",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "358.6 m",
@@ -3777,7 +3721,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_31",
+    "id": "jl_30",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "705.3 m",
@@ -3809,7 +3753,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_32",
+    "id": "jl_31",
     "name": "Jalan Lokal",
     "type": "Jalan Lokal",
     "length": "763.1 m",
@@ -3857,13 +3801,13 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_33",
+    "id": "jl_32",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "588.4 m",
     "coordinates": [
       [
-        -5.6834696,
+        -5.6834697,
         105.656164
       ],
       [
@@ -3893,7 +3837,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_34",
+    "id": "jl_33",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "171.9 m",
@@ -3909,7 +3853,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_35",
+    "id": "jl_34",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "262.1 m",
@@ -3929,7 +3873,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_36",
+    "id": "jl_35",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "85.3 m",
@@ -3949,7 +3893,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_37",
+    "id": "jl_36",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "948.3 m",
@@ -4005,7 +3949,7 @@ export const JARINGAN_JALAN = [
     ]
   },
   {
-    "id": "jl_38",
+    "id": "jl_37",
     "name": "Jalan Lain",
     "type": "Jalan Lain",
     "length": "19.7 m",
@@ -4019,36 +3963,16 @@ export const JARINGAN_JALAN = [
         105.6551372
       ]
     ]
-  },
-  {
-    "id": "jl_39",
-    "name": "Jalan Lain",
-    "type": "Jalan Lain",
-    "length": "477.5 m",
-    "coordinates": [
-      [
-        -5.723026,
-        105.6192882
-      ],
-      [
-        -5.7224149,
-        105.6195998
-      ],
-      [
-        -5.7195714,
-        105.6218127
-      ]
-    ]
   }
 ];
 
-// Jaringan Sungai Desa
+// Jaringan Sungai Desa (Telah dipotong rapi sesuai batas wilayah desa)
 export const JARINGAN_SUNGAI = [
   {
     "id": "sg_01",
     "name": "Sungai Satu Garis",
     "type": "Aliran Sungai",
-    "length": "11473.7 m",
+    "length": "1620.4 m",
     "coordinates": [
       [
         -5.7350809,
@@ -4189,6 +4113,22 @@ export const JARINGAN_SUNGAI = [
       [
         -5.7260631,
         105.6242939
+      ],
+      [
+        -5.7292314,
+        105.6260556
+      ]
+    ]
+  },
+  {
+    "id": "sg_02",
+    "name": "Sungai Satu Garis",
+    "type": "Aliran Sungai",
+    "length": "699.8 m",
+    "coordinates": [
+      [
+        -5.7305822,
+        105.6268068
       ],
       [
         -5.7359857,
