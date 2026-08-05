@@ -328,10 +328,6 @@ export default function WebGISMap() {
           popupAnchor: [0, -20],
         });
 
-        const elevationBadge = item.elevation
-          ? `<span style="background: #e2e8f0; color: #334155; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">${item.elevation} m</span>`
-          : '';
-
         const imageHTML = item.image
           ? `
             <div style="position: relative; width: 100%; height: 140px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #0f172a; box-shadow: 0 2px 8px rgba(0,0,0,0.18);">
@@ -352,11 +348,10 @@ export default function WebGISMap() {
         const popupHTML = `
           <div style="font-family: 'Inter', sans-serif; min-width: 240px; max-width: 280px; color: #1e293b; padding: 2px;">
             ${imageHTML}
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
+            <div style="display: flex; align-items: center; margin-bottom: 6px;">
               <span style="background: ${item.color}; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">
                 ${item.categoryLabel}
               </span>
-              ${elevationBadge}
             </div>
             <h4 style="font-size: 14px; font-weight: 700; margin: 0 0 4px 0; color: #0f172a; line-height: 1.3;">
               ${item.name}
