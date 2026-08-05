@@ -19,7 +19,7 @@ export const PETA_CONFIG = {
   ],
   "zoom": 13,
   "minZoom": 11,
-  "maxZoom": 19,
+  "maxZoom": 18,
   "bounds": [
     [
       -5.740312319557859,
