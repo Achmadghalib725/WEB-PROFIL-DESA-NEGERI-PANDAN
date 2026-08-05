@@ -1,0 +1,258 @@
+{
+  "type": "FeatureCollection",
+  "name": "Fasilitas_Desa_Negeri_Pandan",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_01",
+        "name": "Kantor Balai Desa Negeri Pandan",
+        "category": "pemerintahan",
+        "categoryLabel": "Pemerintahan",
+        "description": "Pusat pelayanan administrasi dan pemerintahan Desa Negeri Pandan.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.63025667,
+          -5.728725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_02",
+        "name": "Lapas Kelas IIA Kalianda",
+        "category": "pemerintahan",
+        "categoryLabel": "Pemerintahan",
+        "description": "Lembaga Pemasyarakatan Kelas IIA Kalianda di wilayah Negeri Pandan.",
+        "address": "Jl. Lintas Sumatera, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62797091,
+          -5.72486529
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_03",
+        "name": "Area Makam Umum Desa",
+        "category": "pemerintahan",
+        "categoryLabel": "Fasilitas Umum",
+        "description": "Tempat Pemakaman Umum (TPU) warga Desa Negeri Pandan.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.629505,
+          -5.72655167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_04",
+        "name": "Sumber Mata Air Desa",
+        "category": "pemerintahan",
+        "categoryLabel": "Fasilitas Alam",
+        "description": "Sumber mata air alami kebutuhan warga Desa Negeri Pandan.",
+        "address": "Dusun 2, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62571667,
+          -5.72425667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_05",
+        "name": "Tower XL Negeripandan",
+        "category": "pemerintahan",
+        "categoryLabel": "Infrastruktur",
+        "description": "Menara telekomunikasi BTS penyedia jaringan seluler di desa.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.6294531,
+          -5.72603816
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_06",
+        "name": "PLN PT Persero Gardu Induk Kalianda",
+        "category": "pemerintahan",
+        "categoryLabel": "Infrastruktur",
+        "description": "Gardu Induk PLN distribusi kelistrikan wilayah Kalianda dan sekitarnya.",
+        "address": "Jl. Lintas Sumatera, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62625124,
+          -5.72346315
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_07",
+        "name": "Masjid Nurul Falah",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "description": "Masjid utama jemaah Dusun 1 Desa Negeri Pandan.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62664644,
+          -5.72982216
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_08",
+        "name": "Masjid Nurul Yaqin",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "description": "Masjid jemaah warga Desa Negeri Pandan.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.62770417,
+          -5.72859094
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_09",
+        "name": "Masjid Nurul Amal",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "description": "Masjid jemaah warga Dusun 2 Desa Negeri Pandan.",
+        "address": "Dusun 2, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.63187219,
+          -5.72854811
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_10",
+        "name": "Masjid Al-Husna",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "description": "Masjid jemaah warga Desa Negeri Pandan di kawasan pemukiman utara.",
+        "address": "Dusun 2, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.63087867,
+          -5.72450488
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_11",
+        "name": "Masjid Nurul Iman Lubuk Jukung",
+        "category": "ibadah",
+        "categoryLabel": "Tempat Ibadah",
+        "description": "Masjid jemaah Dusun Lubuk Jukung, Desa Negeri Pandan.",
+        "address": "Dusun Lubuk Jukung, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.64985586,
+          -5.67217421
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_12",
+        "name": "PAUD Restu Bunda",
+        "category": "pendidikan",
+        "categoryLabel": "Pendidikan",
+        "description": "Pendidikan Anak Usia Dini formal bagi anak-anak warga desa.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.63026333,
+          -5.728825
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_13",
+        "name": "SDN Negeri Pandan",
+        "category": "pendidikan",
+        "categoryLabel": "Pendidikan",
+        "description": "Sekolah Dasar Negeri pusat pendidikan dasar anak-anak Desa Negeri Pandan.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.63074311,
+          -5.72825445
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fas_14",
+        "name": "Puskesdes / Praktik Bidan Desa",
+        "category": "kesehatan",
+        "categoryLabel": "Kesehatan",
+        "description": "Pos Pelayanan Kesehatan Desa & Praktik Bidan Desa untuk pelayanan medis dasar.",
+        "address": "Dusun 1, Desa Negeri Pandan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.63023466,
+          -5.72856025
+        ]
+      }
+    }
+  ]
+}
