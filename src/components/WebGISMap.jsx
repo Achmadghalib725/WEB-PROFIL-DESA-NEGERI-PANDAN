@@ -328,7 +328,9 @@ export default function WebGISMap() {
           popupAnchor: [0, -20],
         });
 
-
+        const elevationBadge = item.elevation
+          ? `<span style="background: #e2e8f0; color: #334155; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">${item.elevation} m</span>`
+          : '';
 
         const imageHTML = item.image
           ? `
