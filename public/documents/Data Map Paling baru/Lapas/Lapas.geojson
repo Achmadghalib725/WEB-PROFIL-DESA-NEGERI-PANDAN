@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Lapas",
-"features": [
-{ "type": "Feature", "properties": { "OID_": 0, "Name": "Lapas Kelas IIA Kalianda", "FolderPath": "Lapas.kml/Lapas", "SymbolID": 0, "AltMode": -1, "Base": 0.0, "Snippet": null, "PopupInfo": null, "HasLabel": -1, "LabelID": 0 }, "geometry": { "type": "Point", "coordinates": [ 105.627970908000066, -5.724865289999968, 0.0 ] } }
-]
-}
