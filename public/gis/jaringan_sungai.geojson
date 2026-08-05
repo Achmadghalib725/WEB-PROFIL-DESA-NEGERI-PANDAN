@@ -8,7 +8,7 @@
         "id": "sg_01",
         "nama": "Sungai Satu Garis",
         "tipe": "Aliran Sungai",
-        "panjang": 1620.4
+        "panjang": 1216.9
       },
       "geometry": {
         "type": "LineString",
@@ -152,36 +152,6 @@
           [
             105.6242939,
             -5.7260631
-          ],
-          [
-            105.6260556,
-            -5.7292314
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "sg_02",
-        "nama": "Sungai Satu Garis",
-        "tipe": "Aliran Sungai",
-        "panjang": 699.8
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            105.6268068,
-            -5.7305822
-          ],
-          [
-            105.6298114,
-            -5.7359857
-          ],
-          [
-            105.6297888,
-            -5.7358841
           ]
         ]
       }

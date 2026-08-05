@@ -330,9 +330,9 @@
       "type": "Feature",
       "properties": {
         "id": "jl_05",
-        "nama": "Jalan Lain 5",
+        "nama": "Jalan Lain",
         "tipe": "Jalan Lain",
-        "panjang": 118.0
+        "panjang": 59.1
       },
       "geometry": {
         "type": "LineString",
@@ -344,10 +344,6 @@
           [
             105.6479437,
             -5.6673196
-          ],
-          [
-            105.647442,
-            -5.6674899
           ]
         ]
       }
@@ -356,17 +352,13 @@
       "type": "Feature",
       "properties": {
         "id": "jl_06",
-        "nama": "Jalan Lain 6",
+        "nama": "Jalan Lain",
         "tipe": "Jalan Lain",
-        "panjang": 378.2
+        "panjang": 185.0
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
-          [
-            105.6452806,
-            -5.6713698
-          ],
           [
             105.6447816,
             -5.6730327
@@ -776,15 +768,11 @@
         "id": "jl_15",
         "nama": "Jalan Arteri",
         "tipe": "Jalan Arteri",
-        "panjang": 917.6
+        "panjang": 447.9
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
-          [
-            105.6216595,
-            -5.7234366
-          ],
           [
             105.6258169,
             -5.7241564

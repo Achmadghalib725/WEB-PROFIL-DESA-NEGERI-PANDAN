@@ -2754,9 +2754,9 @@ export const JARINGAN_JALAN = [
   },
   {
     "id": "jl_05",
-    "name": "Jalan Lain 5",
+    "name": "Jalan Lain",
     "type": "Jalan Lain",
-    "length": "118.0 m",
+    "length": "59.1 m",
     "coordinates": [
       [
         -5.6674543,
@@ -2765,23 +2765,15 @@ export const JARINGAN_JALAN = [
       [
         -5.6673196,
         105.6479437
-      ],
-      [
-        -5.6674899,
-        105.647442
       ]
     ]
   },
   {
     "id": "jl_06",
-    "name": "Jalan Lain 6",
+    "name": "Jalan Lain",
     "type": "Jalan Lain",
-    "length": "378.2 m",
+    "length": "185.0 m",
     "coordinates": [
-      [
-        -5.6713698,
-        105.6452806
-      ],
       [
         -5.6730327,
         105.6447816
@@ -3140,12 +3132,8 @@ export const JARINGAN_JALAN = [
     "id": "jl_15",
     "name": "Jalan Arteri",
     "type": "Jalan Arteri",
-    "length": "917.6 m",
+    "length": "447.9 m",
     "coordinates": [
-      [
-        -5.7234366,
-        105.6216595
-      ],
       [
         -5.7241564,
         105.6258169
@@ -3966,13 +3954,13 @@ export const JARINGAN_JALAN = [
   }
 ];
 
-// Jaringan Sungai Desa (Telah dipotong rapi sesuai batas wilayah desa)
+// Jaringan Sungai Desa Resmi (Telah dibersihkan menjadi 1 garis aliran sungai alami)
 export const JARINGAN_SUNGAI = [
   {
     "id": "sg_01",
     "name": "Sungai Satu Garis",
     "type": "Aliran Sungai",
-    "length": "1620.4 m",
+    "length": "1216.9 m",
     "coordinates": [
       [
         -5.7350809,
@@ -4113,30 +4101,6 @@ export const JARINGAN_SUNGAI = [
       [
         -5.7260631,
         105.6242939
-      ],
-      [
-        -5.7292314,
-        105.6260556
-      ]
-    ]
-  },
-  {
-    "id": "sg_02",
-    "name": "Sungai Satu Garis",
-    "type": "Aliran Sungai",
-    "length": "699.8 m",
-    "coordinates": [
-      [
-        -5.7305822,
-        105.6268068
-      ],
-      [
-        -5.7359857,
-        105.6298114
-      ],
-      [
-        -5.7358841,
-        105.6297888
       ]
     ]
   }
